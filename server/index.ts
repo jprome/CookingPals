@@ -1,5 +1,6 @@
-import dotenv from 'dotenv'
-dotenv.config()
+
+import "dotenv/config"
+require("dotenv");
 
 import express from 'express'
 import cors from 'cors'
@@ -17,6 +18,8 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(cookieParser())
 
+
+
 // Socket.io
 const http = createServer(app)
 
@@ -27,6 +30,7 @@ app.use('/', routes.articleRouter)
 
 // Database
 import './config/database'
+import { Mongoose } from 'mongoose';
 
 // server listenning
 const PORT = process.env.PORT || 5000

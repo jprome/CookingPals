@@ -1,14 +1,20 @@
 
 import mongoose, { ConnectOptions } from "mongoose";
-const URI = "mongodb+srv://jose:1234@cluster0.fsdna.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+const URI = process.env.MONGODB_URL
 
 mongoose.connect(
-    URI,
+  `${URI}`,
     {
       useNewUrlParser: true,
       useFindAndModify: false,
       useUnifiedTopology: true,
       useCreateIndex: true
+    },
+    (err) => {
+      console.log(URI)
+      if(err) throw err;
+      console.log('Mongodb connection successfull')
     }
   );
   
