@@ -8,6 +8,7 @@ import { Dispatch } from "redux"
 import { Link , BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import RegisterForm from "./components/registerFrom"
 import Login from "./pages/login"
+import Register from "./pages/register"
 
 const App: React.FC = () => {
   const articles: readonly IArticle[] = useSelector(
@@ -36,7 +37,7 @@ const App: React.FC = () => {
       
         <Routes>
             <Route path="/login" element={<Login />}/>
-            <Route path="/register" element={<RegisterForm />}/>
+            <Route path="/register" element={<Register />}/>
         </Routes>
 
       

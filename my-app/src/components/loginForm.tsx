@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { InputChange, FormSubmit } from '../utils/Typescript'
 //import { Stack }  from '@material-ui/core'
 import { Button, TextField, Grid, Box } from "@material-ui/core"
+import {Navigate} from "react-router-dom";
 
 const LoginPass = () => {
-  const initialState = { account: '', password: '' }
+  const initialState = { account: '', password: '', validate:false}
   const [userLogin, setUserLogin] = useState(initialState)
-  const { account, password } = userLogin
+  const { account, password, validate} = userLogin
 
   const dispatch = useDispatch()
 
@@ -20,7 +21,20 @@ const LoginPass = () => {
     e.preventDefault()
     //dispatch(login(userLogin))
     console.log("Button Pressed", userLogin)
+    // send login request
+    setUserLogin({...userLogin, validate:true})
   }
+
+  const user:  IUser = useSelector(
+    (state: ArticleState) => state.user,
+    shallowEqual
+  )
+
+  //useEffect 
+    //if user
+    //if (validate) return <Navigate to="/profile/:id" /> ;
+
+  
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>

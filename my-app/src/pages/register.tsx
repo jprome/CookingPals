@@ -1,18 +1,17 @@
 
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import LoginPass from '../components/loginForm'
 import { Grid, Container ,Typography, ListItem, Box, Paper} from '@mui/material'
 import { Link} from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import RegisterForm from '../components/registerFrom'
+import Avatar from '@mui/material/Avatar';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const theme = createTheme();
 
-const Login = () => {
-    
-  
-
+const Register = () => {
 
     return (
         <ThemeProvider theme={theme}>
@@ -26,10 +25,13 @@ const Login = () => {
                     sx={{backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
+
                     }}>
                     <img style={{ position:"fixed", zIndex:-5,height:"100%", width:"60%"}} className="login-photo" src={require("../images/01.jpg")} alt={"login"}/>
                 </Grid>
+                
                 <Grid item xs={12}  sm={8} md={5} component={Paper} elevation={12} square >
+
                     <Box
                             sx={{
                             my: 8,
@@ -38,20 +40,20 @@ const Login = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            height: "90vh"
-                            
+                            height: "80vh"
                             }}>
-                                
-    
-
-                            <Grid  item><Typography variant="h4">Login to your account</Typography></Grid> 
-                            <Grid  item><LoginPass /></Grid> 
-                            <Grid  item><Typography variant="h6">Dont have an account? <Link to='/register'> Join free today </Link></Typography></Grid>   
+                                  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                            </Avatar>
+                            <Grid  item><Typography variant="h4">Create Account</Typography></Grid> 
+                            <Grid  item><RegisterForm /></Grid> 
+                            <Grid  item><Typography variant="h6">Already have an account?<Link to='/login'> Sign-in </Link></Typography></Grid>   
                     </Box> 
+                
                 </Grid>
             </Grid>
         </ThemeProvider>
     )
 }
 
-export default Login
+export default Register
