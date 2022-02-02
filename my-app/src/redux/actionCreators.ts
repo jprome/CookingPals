@@ -1,7 +1,5 @@
 import * as actionTypes from "./actionTypes";
 import { configureStore } from '@reduxjs/toolkit'
-import axios, {AxiosResponse
-    , AxiosError} from 'axios';
 import { Dispatch } from 'redux'
 import { ALERT, IAlertType} from '../types/alertType'
 import { postAPI, getAPI, putAPI } from '../utils/FetchData'
