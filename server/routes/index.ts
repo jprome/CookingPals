@@ -1,11 +1,9 @@
-import authRouter from './authRouter'
-import userRouter from './userRouter'
-import articleRouter from './articleRouter'
+import authRouter from "./authRouter";
+import userRouter from "./userRouter";
 
 const routes = {
-  authRouter,
-  userRouter,
-  articleRouter
-}
+	authRouter,
+	userRouter,
+};
 
 export default routes;
