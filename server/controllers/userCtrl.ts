@@ -9,14 +9,8 @@ const userCtrl = {
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
-			const { name } = req.body;
-
-			await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					name,
-				}
-			);
+			const userUpdate = req.body;
+			await Users.findOneAndUpdate({ account: req.user.account }, userUpdate);
 
 			res.json({ msg: "Update Success!" });
 		} catch (err: any) {
@@ -28,17 +22,17 @@ const userCtrl = {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
-		if (req.user.type !== "register")
-			return res.status(400).json({
-				msg: `Quick login account with ${req.user.type} can't use this function.`,
-			});
+		// if (req.user.type !== "register")
+		// 	return res.status(400).json({
+		// 		msg: `Quick login account with ${req.user.type} can't use this function.`,
+		// 	});
 
 		try {
 			const { password } = req.body;
 			const passwordHash = await bcrypt.hash(password, 12);
 
 			await Users.findOneAndUpdate(
-				{ _id: req.user._id },
+				{ account: req.user.account },
 				{
 					password: passwordHash,
 				}
@@ -57,35 +51,6 @@ const userCtrl = {
 			);
 			if (!user) return res.status(404).json();
 
-			res.json(user);
-		} catch (err: any) {
-			return res.status(500).json({ msg: err.message });
-		}
-	},
-
-	createUser: async (req: Request, res: Response) => {
-		const userFound = await Users.findOne({
-			account: req.body.account,
-		});
-
-		if (userFound)
-			return res.status(303).json({ message: "The User already exists" });
-
-		const passwordHash = await bcrypt.hash(req.body.password, 12);
-		const newUser = new Users({
-			name: req.body.name,
-			account: req.body.account,
-			password: passwordHash,
-			role: "",
-			type: "",
-			location: req.body.Location,
-			intro: "",
-			Friends: [],
-			Groups: [],
-			// TODO: Add other profile properties
-		});
-		try {
-			const user = await newUser.save();
 			res.json(user);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });

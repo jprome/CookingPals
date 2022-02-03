@@ -1,41 +1,42 @@
-import { Document } from 'mongoose'
-import { Request } from 'express'
+import { Document } from "mongoose";
+import { Request } from "express";
 
-export interface IArticle extends Document{
-  title: string
-  description: string
+export interface IArticle extends Document {
+	title: string;
+	description: string;
 }
-export interface IUser extends Document{
-    name: string
-    account: string
-    password: string
-    avatar: string
-    role: string
-    type: string
-    _doc: object
+export interface IUser extends Document {
+	name: string;
+	account: string;
+	password: string;
+	location: String;
+	intro: String;
+	friends: [String];
+	groups: [String];
+	_doc: Object;
+	// TODO: Add other user properties
 }
-
 
 export interface IReqAuth extends Request {
-    user?: IUser
+	user?: IUser;
 }
-  
+
 export interface IDecodedToken {
-    id?: string
-    newUser?: INewUser
-    iat: number
-    exp: number
+	id?: string;
+	newUser?: INewUser;
+	iat: number;
+	exp: number;
 }
 export interface INewUser {
-    name: string
-    account: string
-    password: string
+	name: string;
+	account: string;
+	password: string;
+	location: String;
 }
 
 export interface IUserParams {
-    name: string 
-    account: string 
-    password: string
-    type: string
-  }
-  
+	name: string;
+	account: string;
+	password: string;
+	type: string;
+}
