@@ -1,97 +1,105 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-
 import { InputChange, FormSubmit } from '../utils/Typescript'
-
-
-
+//import { Stack }  from '@material-ui/core'
+import { Button, TextField, Grid, Box } from "@material-ui/core"
 
 const RegisterForm = () => {
-
-  const initialState = { 
-    name: '', account: '', password: '', cf_password: '' 
-  }
-  const [userRegister, setUserRegister] = useState(initialState)
-  const { name, account, password, cf_password } = userRegister
-
-  const [typePass, setTypePass] = useState(false)
-  const [typeCfPass, setTypeCfPass] = useState(false)
+  const initialState = { first: '', last: '', email: '', location: '',dob:'2000-01-01', password: '' }
+  const [userInfo, setUserInfo] = useState(initialState)
+  const { first, last, email, location, dob, password } = userInfo
 
   const dispatch = useDispatch()
 
   const handleChangeInput = (e: InputChange) => {
     const {value, name} = e.target
-    setUserRegister({...userRegister, [name]:value})
+    setUserInfo({...userInfo, [name]:value})
   }
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
-    //dispatch(register(userRegister))
+    //dispatch(register(userInfo))
+    console.log("Button Pressed", userInfo)
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group mb-3">
-        <label htmlFor="name" className="form-label">Name</label>
-
-        <input type="text" className="form-control" id="name"
-        name="name" value={name} onChange={handleChangeInput}
-        placeholder="Your name is up to 20 chars." />
-      </div>
-
-      <div className="form-group mb-3">
-        <label htmlFor="account" className="form-label">
-          Email / Phone number
-        </label>
-
-        <input type="text" className="form-control" id="account"
-        name="account" value={account} onChange={handleChangeInput}
-        placeholder="Example@gmail.com/+84374481936" />
-      </div>
-
-      <div className="form-group mb-3">
-        <label htmlFor="password" className="form-label">Password</label>
-
-        <div className="pass">
-          <input type={typePass ? "text" : "password"} 
-          className="form-control" 
-          id="password"
-          name="password" value={password} 
-          onChange={handleChangeInput} 
-          placeholder="Password must be at least 6 chars."
-          />
-
-          <small onClick={() => setTypePass(!typePass)}>
-            {typePass ? 'Hide' : 'Show'}
-          </small>
-        </div>
-      </div>
-
-      <div className="form-group mb-3">
-        <label htmlFor="password" className="form-label">
-          Confirm Password
-        </label>
-
-        <div className="pass">
-          <input type={typeCfPass ? "text" : "password"} 
-          className="form-control" 
-          id="cf_password"
-          name="cf_password" value={cf_password} 
-          onChange={handleChangeInput} 
-          placeholder="Your confirm password."
-          />
-
-          <small onClick={() => setTypeCfPass(!typeCfPass)}>
-            {typeCfPass ? 'Hide' : 'Show'}
-          </small>
-        </div>
-      </div>
-
-      <button type="submit" className="btn btn-dark w-100 my-1">
-        Register
-      </button>
-    </form>
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        < Grid container justifyContent="center" alignItems="center">
+          <Grid item xs={6}>
+              <TextField 
+                fullWidth
+                margin="normal"  
+                name="first" 
+                value={first} 
+                type="text" 
+                label="First Name" 
+                variant="outlined" 
+                onChange={handleChangeInput}/>
+          </Grid>
+          <Grid item xs={6}>
+              <TextField 
+                fullWidth
+                margin="normal"  
+                name="last" 
+                value={last} 
+                type="text" 
+                label="Last Name" 
+                variant="outlined" 
+                onChange={handleChangeInput}/>
+          </Grid>
+          <Grid item xs={12}>
+              <TextField 
+                fullWidth
+                margin="normal"  
+                name="email" 
+                value={email} 
+                type="email" 
+                label="Email" 
+                variant="outlined" 
+                onChange={handleChangeInput}/>
+          </Grid>
+          <Grid item xs={12}>
+              <TextField 
+                fullWidth
+                margin="normal"  
+                name="password" 
+                value={password} 
+                type="password" 
+                label="Password" 
+                variant="outlined" 
+                onChange={handleChangeInput}/>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField  
+              fullWidth
+              margin="normal"   
+              name="location" 
+              value={location} 
+              type="location" 
+              label="Location" 
+              variant="outlined" 
+              onChange={handleChangeInput}/>
+            </Grid>
+            <Grid item xs={6}>
+            <TextField  
+              fullWidth
+              margin="normal"   
+              name="dob" 
+              value={dob} 
+              type="date" 
+              label="Date of Birth" 
+              variant="outlined" 
+              onChange={handleChangeInput}/>
+            </Grid>
+          
+          <Button type="submit" variant="text" fullWidth color="primary" 
+            disabled={(first && password) ? false : true} >
+            Register
+          </Button>
+        </Grid>
+    </Box>
   )
 }
 
 export default RegisterForm
+
