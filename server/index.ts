@@ -22,7 +22,6 @@ const http = createServer(app);
 // Routes
 app.use("/api/auth", routes.authRouter);
 app.use("/api/user", routes.userRouter);
-app.use("/api/article", routes.articleRouter);
 
 // Database
 import "./config/database";
