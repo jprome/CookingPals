@@ -1,40 +1,66 @@
 import axios from 'axios'
 
-const base = "http://localhost:5000/"
+const base = "http://localhost:5000/api/"
 
 export const postAPI = async (url: string, post: object, token?:string) => {
-    try{
-        const res = await axios.post(base + url, post)
-        return res;
+  try{
+    const token_ = token ? token : '';
+    const res = await axios.post(base + url, post, {
+      headers: { Authorization: token_ }})
+      return res;
+
     }catch(err){
         throw err
     }
 }
+
 export const getAPI = async (url: string, token?:string) => {
-    try{
-        const res = await axios.get(base + url)
-        return res;
+  try{
+    const token_ = token ? token : '';
+    const res = await axios.get(base + url, {
+      headers: { Authorization: token_ }})
+    return res;
+
     }
     catch(err){
-            throw err
+      throw err
     }
 }
 
 export const patchAPI = async (url: string, post: object, token?:string) => {
-  const res = await axios.patch(base + {url}, post)
+  try{
+    const token_ = token ? token : '';
+    const res = await axios.patch(base + {url}, post, {
+      headers: { Authorization: token_ }})
+    return res;
 
-  return res;
+  }
+  catch(err){
+    throw err
+  }
 }
 
-
 export const putAPI = async (url: string, post: object, token?:string) => {
-  const res = await axios.put(base + {url}, post)
-
-  return res;
+  try{
+    const token_ = token ? token : '';
+    const res = await axios.put(base + {url}, post, {
+      headers: { Authorization: token_ }})
+    return res;
+  }
+  catch(err){
+    throw err
+  }
 }
 
 export const deleteAPI = async (url: string, token?:string) => {
-  const res = await axios.delete(base + {url})
+  try{
+    const token_ = token ? token : '';
+    const res = await axios.delete(base + url, {
+      headers: { Authorization: token_ }})
+    return res;
 
-  return res;
+    }
+    catch(err){
+      throw err
+    }
 }

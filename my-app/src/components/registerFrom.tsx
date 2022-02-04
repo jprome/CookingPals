@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { InputChange, FormSubmit } from '../utils/Typescript'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { InputChange, FormSubmit, RootStore } from '../utils/Typescript'
 //import { Stack }  from '@material-ui/core'
 import { Button, TextField, Grid, Box } from "@material-ui/core"
+import { shallowEqual } from '../utils/Valid'
+import { Navigate } from 'react-router-dom'
+import { register } from '../redux/actions/authAction'
 
 const RegisterForm = () => {
-  const initialState = { first: '', last: '', email: '', location: '',dob:'2000-01-01', password: '' }
+  const initialState = { first: '', last: '', account: '', location: '',dob:'2000-01-01', password: '' }
   const [userInfo, setUserInfo] = useState(initialState)
-  const { first, last, email, location, dob, password } = userInfo
+  const [toProfile, setToProfile] = React.useState(false)
+  const { first, last, account, location, dob, password } = userInfo
 
   const dispatch = useDispatch()
 
@@ -18,8 +22,31 @@ const RegisterForm = () => {
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
-    //dispatch(register(userInfo))
-    console.log("Button Pressed", userInfo)
+    
+    const name = first + " " + last
+    const info = {
+      name: name,
+      account: userInfo.account,
+      location: userInfo.location,
+      dob: userInfo.dob,
+      password: userInfo.password
+    }
+    
+    dispatch(register(info))
+    console.log("Button Pressed", info)
+  }
+
+  const { auth } = useSelector((state: RootStore) => state, shallowEqual)
+
+  useEffect(() =>{
+    if (auth.user) {
+        setToProfile(true)
+    }
+  })
+
+  if (toProfile === true) {
+    const route = `/profile/${auth.user?._id}`
+    return <Navigate to={route}/>
   }
 
   return (
@@ -51,8 +78,8 @@ const RegisterForm = () => {
               <TextField 
                 fullWidth
                 margin="normal"  
-                name="email" 
-                value={email} 
+                name="account" 
+                value={account} 
                 type="email" 
                 label="Email" 
                 variant="outlined" 

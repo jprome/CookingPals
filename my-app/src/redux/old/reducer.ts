@@ -1,7 +1,8 @@
-import * as actionTypes from "./actionTypes"
 
 
-const initialState: ArticleState = {
+
+
+export const initialState = {
   user: {
     id:"61f0cb711b4817db2be3036e",
     name:"Jose Romero",
@@ -25,6 +26,7 @@ const initialState: ArticleState = {
   ],
 }
 
+/*
 const reducer = (state: ArticleState = initialState, action: ArticleAction): ArticleState => {
     switch (action.type) {
       case actionTypes.ADD_ARTICLE:
@@ -60,3 +62,5 @@ const reducer = (state: ArticleState = initialState, action: ArticleAction): Art
 
 
   export default reducer;
+  */
+

@@ -56,6 +56,8 @@ const authCtrl = {
 				await newUser.save();
 				return res.json({ msg: "Success! Please check phone." });
 			}
+
+      // new user is sent to home profile - send response with token 
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
