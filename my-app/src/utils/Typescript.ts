@@ -1,13 +1,11 @@
+import { Mongoose } from 'mongoose'
 import { ChangeEvent, FormEvent } from 'react'
-import reducer from '../redux/reducer'
+import { StringDecoder } from 'string_decoder'
+import reducer from '../redux/reducers'
+
 
 
 export type RootStore = ReturnType<typeof reducer>
-
-export interface IArticle {
-    title: string,
-    description: string
-}
 
 export type InputChange = ChangeEvent<
   | HTMLInputElement 
@@ -17,36 +15,10 @@ export type InputChange = ChangeEvent<
 
 export type FormSubmit = FormEvent<HTMLFormElement>
 
-
 export interface IParams {
   page: string
   slug: string
 }
-
-export interface IUserLogin {
-  account: string
-  password: string
-}
-
-export interface IUserRegister extends IUserLogin {
-  name: string
-  cf_password: string
-}
-
-export interface IUser extends IUserLogin {
-  createdAt: string
-  name: string
-  role: string
-  type: string
-  updatedAt: string
-  _id: string
-}
-
-export interface IUserProfile extends IUserRegister {
-  avatar: string | File
-}
-
-
 
 export interface IAlert {
   loading?: boolean
@@ -55,32 +27,53 @@ export interface IAlert {
 }
 
 
-export interface ICategory {
+// User
+export interface IUserLogin {
+  account: string
+  password: string
+}
+
+export interface IUserRegister extends IUserLogin {
+  name: string
+  account: string
+  location: string
+  dob: string
+}
+
+export interface IUser extends IUserLogin {
   _id: string
   name: string
-  createdAt: string
+  intro?: string
+  location: string
+  profile_pic?: File
   updatedAt: string
+  cookbooks?: Cookbook []
+  validate: boolean
+
 }
 
-export interface IBlog {
-  _id?: string
-  user: string | IUser
-  title: string
-  content: string
+
+// CookingPal Classes
+
+export interface Recipe {
+  id: string
+  name: string
+  description:string
+  pic: File
+}
+export interface Cookbook {
+  id: string
+  diet: string []
+  recipe: Recipe []
+}
+
+
+
+
+
+// Examples
+export interface IArticle {
+  title: string,
   description: string
-  thumbnail: string | File
-  category: string
-  createdAt: string
 }
 
-export interface IComment {
-  _id?: string
-  user: IUser
-  blog_id: string
-  blog_user_id: string
-  content: string
-  replyCM: IComment[]
-  reply_user?: IUser
-  comment_root?: string
-  createdAt: string
-}

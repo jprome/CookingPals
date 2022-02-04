@@ -7,16 +7,19 @@ import { BrowserRouter} from 'react-router-dom'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 import App from "./App"
-import reducer from "./redux/reducer"
+import reducer from "./redux/reducers"
 
-const store = createStore(reducer, applyMiddleware(thunk))
+const store = createStore(
+  reducer, 
+  composeWithDevTools(applyMiddleware(thunk)))
 
 const rootElement = document.getElementById("root")
-render(
-  <Provider store={store}>
-    <BrowserRouter basename="/">
-    <App />
-    </BrowserRouter>
-  </Provider>,
+  render(
+    <Provider store={store}>
+      <BrowserRouter basename="/">
+      <App />
+      </BrowserRouter>
+    </Provider>,
   rootElement
 )
+

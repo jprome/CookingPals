@@ -1,10 +1,11 @@
-import * as actionTypes from "./actionTypes";
-import { configureStore } from '@reduxjs/toolkit'
+// This file is not used: Only for template purposes
+import * as actionTypes from "../actions/actionTypes";
 import { Dispatch } from 'redux'
 import { ALERT, IAlertType} from '../types/alertType'
-import { postAPI, getAPI, putAPI } from '../utils/FetchData'
+import { postAPI, getAPI, putAPI } from '../../utils/FetchData'
+import { IUser } from "../../utils/Typescript";
 
-export const addArticle = (article: IArticle, user: IUser) => 
+/*export const addArticle = (article: IArticle, user: IUser) => 
   async (dispatch: Dispatch< ArticleAction | IAlertType>) => {
     try{
       const action: ArticleAction = {
@@ -29,7 +30,7 @@ export const getArticles = (user: IUser) => (
 
     try {
   
-      const url = "article/user/" + user.id
+      const url = "article/user/" + user._id
       const res = await getAPI(url, "1234")
      
       const action:ArticleAction ={
@@ -62,5 +63,5 @@ export const removeArticle = (article: IArticle) => (
 
     }
   })
-
+*/
 

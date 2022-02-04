@@ -1,4 +1,4 @@
-import { IAlert } from '../utils/Typescript'
+import { IAlert } from '../../utils/Typescript'
 
 export const ALERT = 'ALERT'
 

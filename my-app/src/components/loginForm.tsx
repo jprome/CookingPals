@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { InputChange, FormSubmit } from '../utils/Typescript'
+import { InputChange, FormSubmit, RootStore } from '../utils/Typescript'
 //import { Stack }  from '@material-ui/core'
 import { Button, TextField, Grid, Box } from "@material-ui/core"
 import {Navigate} from "react-router-dom";
+import { IUser } from '../utils/Typescript';
+import { login } from '../redux/actions/authAction';
 
 const LoginPass = () => {
   const initialState = { account: '', password: '', validate:false}
   const [userLogin, setUserLogin] = useState(initialState)
+  const [toProfile, setToProfile] = React.useState(false)
   const { account, password, validate} = userLogin
 
   const dispatch = useDispatch()
@@ -19,24 +22,29 @@ const LoginPass = () => {
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
-    //dispatch(login(userLogin))
+  
     console.log("Button Pressed", userLogin)
     // send login request
-    setUserLogin({...userLogin, validate:true})
+    dispatch(login(userLogin))
   }
 
-  const user:  IUser = useSelector(
-    (state: ArticleState) => state.user,
-    shallowEqual
-  )
+  const { auth } = useSelector((state: RootStore) => state, shallowEqual)
 
-  //useEffect 
-    //if user
-    //if (validate) return <Navigate to="/profile/:id" /> ;
+  useEffect(() =>{
+    if (auth.user) {
+        setToProfile(true)
+    }
+  })
 
-  
+  if (toProfile === true) {
+    const route = `/profile/${auth.user?._id}`
+    return <Navigate to={route}/>
+  }
 
   return (
+
+    <div>
+
     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
         < Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12}>
@@ -68,6 +76,7 @@ const LoginPass = () => {
           </Button>
         </Grid>
     </Box>
+    </div>
   )
 }
 
