@@ -37,8 +37,8 @@ const userSchema = new mongoose.Schema(
 		intro: { type: String },
 		friends: { type: [String] },
 		groups: { type: [String] },
-		Picture: { data: Buffer, contentType: String },
-		References: [
+		picture: { data: Buffer, contentType: String },
+		references: [
 			{
 				reference_author: {
 					type: String,
