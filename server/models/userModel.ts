@@ -26,16 +26,41 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "register", // login
 		},
-		location: { type: String },
+		dob: {
+			type: String,
+			required: [true, "Please add your date of birth"],
+		},
+		location: {
+			type: String,
+			required: [true, "Please add your current location"],
+		},
 		intro: { type: String },
 		friends: { type: [String] },
 		groups: { type: [String] },
+		Picture: { data: Buffer, contentType: String },
+		References: [
+			{
+				reference_author: {
+					type: String,
+					required: true,
+				},
+				rating: {
+					type: Number,
+					max: 5,
+					min: 0,
+					required: true,
+				},
+				comment: {
+					type: String,
+					required: true,
+				},
+			},
+		],
+
 		// TODO: add other profile details
-		// user_pic: [string]?
 		// Chats : [Chats],
 		// Cookbook : [Cookbook],
 		// Request :  [request],
-		// References: [References],
 		// Request_accepted: [requst],
 	},
 	{

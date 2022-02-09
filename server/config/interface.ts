@@ -11,6 +11,7 @@ export interface IUser extends Document {
 	password: string;
 	location: String;
 	intro: String;
+	dob: string;
 	friends: [String];
 	groups: [String];
 	_doc: Object;
