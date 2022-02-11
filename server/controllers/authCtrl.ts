@@ -8,12 +8,7 @@ import {
 	generateRefreshToken,
 } from "../config/generateToken";
 import { validateEmail, validPhone } from "../middleware/valid";
-import { IDecodedToken, IUser, IUserParams } from "../config/interface";
-import User from "../models/userModel";
-import fetch from "node-fetch";
-import { nextTick } from "process";
-
-const CLIENT_URL = `${process.env.BASE_URL}`;
+import { IDecodedToken, IUser } from "../config/interface";
 
 const authCtrl = {
 	register: async (req: Request, res: Response) => {
@@ -35,6 +30,7 @@ const authCtrl = {
 				role: "",
 				type: "",
 				location: req.body.location,
+				dob: req.body.dob,
 				intro: "",
 				Friends: [],
 				Groups: [],
@@ -57,7 +53,7 @@ const authCtrl = {
 				return res.json({ msg: "Success! Please check phone." });
 			}
 
-      // new user is sent to home profile - send response with token 
+			// new user is sent to home profile - send response with token
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
