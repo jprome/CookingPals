@@ -4,7 +4,7 @@ import { ALERT, IAlertType } from '../types/alertType'
 
 import { IUserLogin, IUserRegister } from '../../utils/Typescript'
 import { postAPI, getAPI } from '../../utils/FetchData'
-import { validRegister, validPhone } from '../../utils/Valid'
+import { validRegister } from '../../utils/Valid'
 
 
 export const login = (userLogin: IUserLogin) => 
@@ -21,7 +21,8 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     localStorage.setItem('logged', 'activated') // store activated
     
   } catch (err: any) {
-    dispatch({ type: ALERT, payload: { errors: err.response.data.msg } })
+
+    dispatch({ type: AUTH, payload: { msg:err.response.data.msg } })
   }
 }
 
