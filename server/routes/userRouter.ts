@@ -1,7 +1,6 @@
 import { Router } from "express";
 import auth from "../middleware/auth";
 import userCtrl from "../controllers/userCtrl";
-import { validRegister } from "../middleware/valid";
 
 const user_router: Router = Router();
 user_router.patch("/update", auth, userCtrl.updateUser);

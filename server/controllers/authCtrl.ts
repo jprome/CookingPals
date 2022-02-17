@@ -32,8 +32,12 @@ const authCtrl = {
 				location: req.body.location,
 				dob: req.body.dob,
 				intro: "",
-				Friends: [],
-				Groups: [],
+				friends: [],
+				groups: [],
+				picture: "",
+				references: [],
+				cookbook: [],
+
 				// TODO: Add other profile properties
 			});
 
