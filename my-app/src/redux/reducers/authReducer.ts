@@ -5,13 +5,13 @@ const initialState: IAuth = {
     _id:"61f0cb711b4817db2be3036e",
     name:"Jose Romero",
     password:"This is my password",
-    location:"asdf",
+    location:"United States Florida Miami",
     updatedAt:"asfd",
-    validate: false,
-    account:"jose@gmail.com"
-  }
+    account:"jose@gmail.com",
+  },
+  access_token:"FakeToken"
 }
-const authReducer = (state: IAuth = {}, action: IAuthType): IAuth => {
+const authReducer = (state: IAuth = initialState, action: IAuthType): IAuth => {
   switch (action.type){
     case AUTH:
       return action.payload
@@ -21,3 +21,9 @@ const authReducer = (state: IAuth = {}, action: IAuthType): IAuth => {
 }
 
 export default authReducer;
+
+
+
+
+
+

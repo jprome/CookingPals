@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { InputChange, FormSubmit, RootStore } from '../utils/Typescript'
 //import { Stack }  from '@material-ui/core'
 import { Button, TextField, Grid, Box } from "@material-ui/core"
-import {Navigate} from "react-router-dom";
-import { IUser } from '../utils/Typescript';
 import { login } from '../redux/actions/authAction';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPass = () => {
-  const initialState = { account: '', password: '', validate:false}
+  const initialState = { account: '', password: ''}
   const [userLogin, setUserLogin] = useState(initialState)
-  const [toProfile, setToProfile] = React.useState(false)
-  const { account, password, validate} = userLogin
+  const { account, password} = userLogin
+  const navigate = useNavigate();
 
   const dispatch = useDispatch()
 
@@ -22,25 +21,27 @@ const LoginPass = () => {
 
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
-  
-    console.log("Button Pressed", userLogin)
     // send login request
     dispatch(login(userLogin))
   }
 
   const { auth } = useSelector((state: RootStore) => state, shallowEqual)
 
+  const setToProfile = useCallback(() => {
+    const route = `/profile/${auth.user?._id}`
+    console.log("Navigating to profile")
+    navigate(route)
+
+  },[navigate,auth.user?._id]);
+
   useEffect(() =>{
     if (auth.user) {
-        setToProfile(true)
+      if (auth.user._id && auth.access_token)
+        setToProfile()
     }
-  })
+  },[auth.user,auth.access_token, setToProfile])
 
-  if (toProfile === true) {
-    const route = `/profile/${auth.user?._id}`
-    return <Navigate to={route}/>
-  }
-
+ 
   return (
 
     <div>

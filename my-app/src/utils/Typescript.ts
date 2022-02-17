@@ -1,6 +1,7 @@
 import { Mongoose } from 'mongoose'
 import { ChangeEvent, FormEvent } from 'react'
 import { StringDecoder } from 'string_decoder'
+import { StringMappingType } from 'typescript'
 import reducer from '../redux/reducers'
 
 
@@ -42,16 +43,21 @@ export interface IUserRegister extends IUserLogin {
 
 export interface IUser extends IUserLogin {
   _id: string
-  name: string
-  intro?: string
-  location: string
-  profile_pic?: File
-  updatedAt: string
-  cookbooks?: Cookbook []
-  validate: boolean
-
+  name?: string | null
+  intro?: string | null
+  location?: string | null
+  profile_pic?: File | null
+  updatedAt: string | null
+  cookbooks?: Cookbook [] |  null
+  requests?: [[Request, number, number]] | null  // number describes state -> active,in-process,expired, secondNu
+  friends?: string[] | null
+  groups?: string[] | null
+  references?: Reference[] | null
+  requestsSent?: [string, number] | null // number describes state -> rejected - accepted 
+  friendRequest?: [string, number] | null // number describes whether its individual or group
+  occupation?: string | null
+  gender?: string | null
 }
-
 
 // CookingPal Classes
 
@@ -67,13 +73,39 @@ export interface Cookbook {
   recipe: Recipe []
 }
 
+export interface RequestCP {
+  id: string
+  owner: string
+  title: string
+  description: string
+  give: number[] // experience - 0, ingredients - 1 , dish - 2, money - 2
+  receive: number[]
+  diets: number[] // according to an array called list
+  budget: number
+  location: string
+  calendarRange : Date [] // pair of dates
+  countOfUsersInvolved: number
+  active: Boolean
+  public: Boolean
 
+}
 
+export const diets = ['vegan','vegetarian'] // etc
 
+export interface Reference {
+  id: string
+  author: string
+  comment: string
+  date: Date
+  title: string // retrieve from original request
+  request: string 
+  pictures: File []
+}
+
+export interface Groups {
+  id: string,
+  
+}
 
 // Examples
-export interface IArticle {
-  title: string,
-  description: string
-}
 

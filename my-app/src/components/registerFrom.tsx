@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { InputChange, FormSubmit, RootStore } from '../utils/Typescript'
 //import { Stack }  from '@material-ui/core'
 import { Button, TextField, Grid, Box } from "@material-ui/core"
 import { shallowEqual } from '../utils/Valid'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { register } from '../redux/actions/authAction'
 
 const RegisterForm = () => {
   const initialState = { first: '', last: '', account: '', location: '',dob:'2000-01-01', password: '' }
   const [userInfo, setUserInfo] = useState(initialState)
-  const [toProfile, setToProfile] = React.useState(false)
   const { first, last, account, location, dob, password } = userInfo
+  const navigate = useNavigate();
 
   const dispatch = useDispatch()
 
@@ -38,17 +38,26 @@ const RegisterForm = () => {
 
   const { auth } = useSelector((state: RootStore) => state, shallowEqual)
 
+  const setToProfile = useCallback(() => {
+    const route = `/profile/${auth.user?._id}`
+    console.log("Navigating to profile")
+    navigate(route)
+
+  },[navigate,auth.user?._id]);
+
   useEffect(() =>{
     if (auth.user) {
-        setToProfile(true)
+      if (auth.user._id && auth.access_token)
+        setToProfile()
+      else {
+        console.log(auth.msg)
+      }
     }
-  })
+   
+  },[auth.user,auth.access_token, setToProfile])
 
-  if (toProfile === true) {
-    const route = `/profile/${auth.user?._id}`
-    return <Navigate to={route}/>
-  }
 
+  // add wrong password notification
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
         < Grid container justifyContent="center" alignItems="center">

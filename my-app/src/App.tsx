@@ -6,6 +6,7 @@ import { Link , BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import RegisterForm from "./components/registerFrom"
 import Login from "./pages/login"
 import Register from "./pages/register"
+import Profile from "./pages/profile"
 import { IUser } from "./utils/Typescript"
 
 const App: React.FC = () => {
@@ -38,6 +39,8 @@ const App: React.FC = () => {
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
+            <Route path="/profile/:id" element={<Profile />}/>
+            
         </Routes>
 
       
