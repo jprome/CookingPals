@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
 
-import Cookbook from "../models/cookbookModel";
-import bcrypt from "bcrypt";
-
-const userCtrl = {
+const cookbookCtrl = {
 	updateCookbook: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
@@ -13,7 +10,7 @@ const userCtrl = {
 		try {
 			const { cookbook } = req.body;
 			await Users.updateOne(
-				{ _id: req.user._id },
+				{ _id: req.user._id, "cookbook._id": cookbook._id },
 				{
 					$set: {
 						cookbook: cookbook,
@@ -49,11 +46,11 @@ const userCtrl = {
 
 	getCookbook: async (req: Request, res: Response) => {
 		try {
-			const { filters } = req.body;
-			console.log(filters);
-			const cookbooks = await Users.find({ cookbook: filters });
+			const cookbook = await Users.find({ "cookbook._id": req.body.id }).select(
+				"cookbook"
+			);
 
-			res.json(cookbooks);
+			res.json(cookbook);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -81,4 +78,4 @@ const userCtrl = {
 	},
 };
 
-export default userCtrl;
+export default cookbookCtrl;
