@@ -36,7 +36,7 @@ const authCtrl = {
 				groups: [],
 				picture: "",
 				references: [],
-				cookbook: [],
+				cookbooks: [],
 
 				// TODO: Add other profile properties
 			});

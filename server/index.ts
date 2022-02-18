@@ -23,6 +23,7 @@ const http = createServer(app);
 app.use("/api/auth", routes.authRouter);
 app.use("/api/user", routes.userRouter);
 app.use("/api/cookbook", routes.cookbookRouter);
+app.use("/api/reference", routes.referenceRouter);
 
 // Database
 import "./config/database";
