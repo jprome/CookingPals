@@ -9,7 +9,8 @@ const referenceCtrl = {
 
 		try {
 			const { reference } = req.body;
-			reference.reference_author = req.user._id;
+			reference.reference_author = req.user._id.toString();
+			console.log(reference);
 			await Users.updateOne(
 				{
 					"references._id": reference._id,
@@ -17,7 +18,7 @@ const referenceCtrl = {
 				},
 				{
 					$set: {
-						reference: reference,
+						references: reference,
 					},
 				}
 			);
@@ -65,11 +66,16 @@ const referenceCtrl = {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
+			console.log(req.body.id);
+			console.log(req.user._id.toString());
+
 			await Users.updateOne(
-				{ _id: req.body.id, "references.reference_author": req.user._id },
+				{
+					"references.reference_author": req.user._id.toString(),
+				},
 				{
 					$pull: {
-						reference: {
+						references: {
 							_id: req.body.id,
 						},
 					},
