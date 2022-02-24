@@ -8,12 +8,12 @@ const requestCtrl = {
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
-			const requestUpdate = req.body;
+			const { request } = req.body;
 			await Users.findOneAndUpdate(
 				{ _id: req.user._id },
 				{
 					$set: {
-						request: requestUpdate,
+						request: request,
 					},
 				}
 			);
@@ -36,17 +36,29 @@ const requestCtrl = {
 	},
 	searchRequests: async (req: Request, res: Response) => {
 		try {
-			const cookingFilter = getMatch(req.body.cooking);
-			const ingredientsFilter = getMatch(req.body.ingredient);
-			const experienceFilter = getMatch(req.body.experience);
+			const give_cookingFilter = getMatch(req.body.give_cooking);
+			const give_ingredientsFilter = getMatch(req.body.give_ingredient);
+			const give_experienceFilter = getMatch(req.body.give_experience);
+			const recieve_cookingFilter = getMatch(req.body.recieve_cooking);
+			const recieve_ingredientsFilter = getMatch(req.body.recieve_ingredient);
+			const recieve_experienceFilter = getMatch(req.body.recieve_experience);
 
+			console.log(give_cookingFilter);
+			console.log(give_ingredientsFilter);
+			console.log(give_experienceFilter);
+			console.log(recieve_cookingFilter);
+			console.log(recieve_ingredientsFilter);
+			console.log(recieve_experienceFilter);
 			const request = await Users.find({
-				"request.cooking": { $in: cookingFilter },
-				"request.ingredients": { $in: ingredientsFilter },
-				"request.experience": { $in: experienceFilter },
+				"request.give_cooking": { $in: recieve_cookingFilter },
+				"request.give_ingredient": { $in: recieve_ingredientsFilter },
+				"request.give_experience": { $in: recieve_experienceFilter },
+				"request.recieve_cooking": { $in: give_cookingFilter },
+				"request.recieve_ingredient": { $in: give_ingredientsFilter },
+				"request.recieve_experience": { $in: give_experienceFilter },
 				$and: [
-					{ "request.budget": { $gte: req.body.budgetLow } },
-					{ "request.budget": { $lte: req.body.budgetHigh } },
+					{ "request.weekly_budget": { $gte: req.body.budgetLow } },
+					{ "request.weekly_budget": { $lte: req.body.budgetHigh } },
 				],
 			}).select("request");
 
@@ -57,10 +69,16 @@ const requestCtrl = {
 	},
 };
 const getMatch = (num: Number) => {
-	if (num === 0) return [0, -1, 1];
-	else if (num === 1) return [1, 0];
-	else if (num == -1) return [-1, 0];
-	else return [];
+	if (num === 0) {
+		return [0, -1, 1];
+	}
+	if (num === 1) {
+		return [1, 0];
+	}
+	if (num === -1) {
+		return [-1, 0];
+	}
+	return [];
 };
 
 export default requestCtrl;

@@ -3,15 +3,27 @@ import { food_request } from "../config/interface";
 
 const requestSchema = new mongoose.Schema({
 	// cooking, ingreidents, and experience go from -1 to 1. -1 being no, 0 being maybe, and 1 being yes.
-	cooking: {
+	give_cooking: {
 		type: Number,
 		required: true,
 	},
-	ingredient: {
+	give_ingredient: {
 		type: Number,
 		required: true,
 	},
-	experience: {
+	give_experience: {
+		type: Number,
+		required: true,
+	},
+	recieve_cooking: {
+		type: Number,
+		required: true,
+	},
+	recieve_ingredient: {
+		type: Number,
+		required: true,
+	},
+	recieve_experience: {
 		type: Number,
 		required: true,
 	},
@@ -26,7 +38,7 @@ const requestSchema = new mongoose.Schema({
 		type: Boolean,
 		required: true,
 	},
-	budget: {
+	weekly_budget: {
 		type: Number,
 		required: true,
 	},
