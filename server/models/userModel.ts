@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { IUser } from "../config/interface";
 import Reference from "./referenceModel";
 import Cookbook from "./cookbookModel";
+import Request from "./requestModel";
 
 const userSchema = new mongoose.Schema(
 	{
@@ -48,11 +49,11 @@ const userSchema = new mongoose.Schema(
 		},
 		references: [Reference.schema],
 		cookbook: [Cookbook.schema],
+		request: [Request.schema],
 
 		// TODO: add other profile details
 		// Chats : [Chats],
 		// friendrequest [id, status ]
-		// Request :  [request],
 		// Request_accepted: [requst],
 	},
 	{

@@ -30,7 +30,18 @@ export interface Reference extends Document {
 	comment: string;
 	date: string;
 	picture: string;
-	_doc: Object;
+}
+export interface food_request extends Document {
+	give_ingredients: number;
+	give_cooking: number;
+	give_experience: number;
+	recieve_ingredients: number;
+	recieve_cooking: number;
+	recieve_experience: number;
+	description: string;
+	diets: [string];
+	active: boolean;
+	weekly_budget: number;
 }
 
 export interface Recipe extends Document {

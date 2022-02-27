@@ -24,6 +24,7 @@ app.use("/api/auth", routes.authRouter);
 app.use("/api/user", routes.userRouter);
 app.use("/api/cookbook", routes.cookbookRouter);
 app.use("/api/reference", routes.referenceRouter);
+app.use("/api/request", routes.requestRouter);
 
 // Database
 import "./config/database";
