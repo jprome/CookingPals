@@ -46,3 +46,5 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 Template: https://github.com/devat-youtuber/MERN-Typescript-Blogdev
+
+Postman: https://cookingpal.postman.co/workspace/Team-Workspace~b7e068f1-9509-4ffd-839b-2e44a57d95b9/collection/12959103-54126057-81ac-4b9b-b74b-108b66f2c3e7?ctx=documentation
