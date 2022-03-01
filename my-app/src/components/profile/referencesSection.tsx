@@ -19,9 +19,10 @@ export default function ReferencesSection(props: ReferencesProps) {
 
   return (
     <React.Fragment>
-          <Grid container 
+          <Grid  
+                item
                 xs={12}  
-                sx = {{borderRadius: 4}}
+                sx = {{borderRadius: 4, pt:10}}
                 //sm={8} 
                 //md={5} 
                 component={Paper} 

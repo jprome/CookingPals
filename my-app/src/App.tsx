@@ -8,6 +8,7 @@ import Login from "./pages/login"
 import Register from "./pages/register"
 import Profile from "./pages/profile"
 import { IUser } from "./utils/Typescript"
+import Header from "./components/headerNav"
 
 const App: React.FC = () => {
 
@@ -35,12 +36,12 @@ const App: React.FC = () => {
   */
   return (
     <main>
-      
+        
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
-            <Route path="/profile/:id" element={<Profile />}/>
-            
+            <Route path="/profile/:id" element={<Profile />}></Route>
+
         </Routes>
 
       

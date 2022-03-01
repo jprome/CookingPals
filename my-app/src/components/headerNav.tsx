@@ -17,8 +17,8 @@ interface HeaderProps {
   title: string;
 }
 
-export default function Header(props: HeaderProps) {
-  const { sections, title } = props;
+export default function Header() {
+  const  title  = "CookingPals";
 
   return (
     <React.Fragment>

@@ -13,12 +13,12 @@ import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
 import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
+import { width } from '@mui/system'
 
 const theme = createTheme();
 
 const sections = [
     { title: 'About Me', name: 'about' , index: 0},
-    { title: 'Requests', name: 'requests', index: 1},
     { title: 'References', name: 'references',index:2 },
     { title: 'Friends/Groups', name: 'friends/groups',index:3 },
   ];
@@ -29,7 +29,14 @@ interface SectionProps {
 const SectionComponent = (s:SectionProps) => {
     if (s.section === 0){
         return <React.Fragment>
-                <RecipesSection cookbooks={null}/>
+                <Grid container spacing={0} rowSpacing={0}>
+
+                    <RequestsSection requests={null}/>
+                    
+                    <br></br>
+
+                    <RecipesSection cookbooks={null}/>
+                </Grid>
             </React.Fragment>
     }
     if (s.section === 1){
@@ -74,14 +81,15 @@ const Profile = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
           
-            <Header title="CookingPals" sections={sections} />
+            <Header />
           
             <Grid container spacing={1}  component="main" style={{ height: '30vh' }}>
                 
                 <Grid item 
                     xs={12}
                     component={Paper} 
-                    elevation={2} 
+                    elevation={2}
+                    sx ={{width:'90vh'}} 
                     square >
                         
                     <Box
@@ -114,8 +122,8 @@ const Profile = () => {
                         </Container>
                 </Grid>
                 
-                <Grid  container columnSpacing={2} sx={{backgroundColor: '#EEEEEE33', height: "100vh" }}>
-                    <Container>
+                <Grid  container columnSpacing={2} sx={{backgroundColor: '#EEEEEE33', height: "100vh", width:"100%" }}>
+                    <Container maxWidth="xl">
                         <Grid item xs={12}>
 
                             <Box   sx={{

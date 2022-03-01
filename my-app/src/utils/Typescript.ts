@@ -53,8 +53,8 @@ export interface IUser extends IUserLogin {
   friends?: string[] | null
   groups?: string[] | null
   references?: Reference[] | null
-  requestsSent?: [string, number] | null // number describes state -> rejected - accepted 
-  friendRequest?: [string, number] | null // number describes whether its individual or group
+  requestsSent?: [[string, number]] | null // number describes state -> rejected - accepted 
+  friendRequest?: [[string, number]] | null // number describes whether its individual or group
   occupation?: string | null
   gender?: string | null
 }

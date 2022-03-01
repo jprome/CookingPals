@@ -21,12 +21,13 @@ export default function RecipesSection(props: RecipesProps) {
     <React.Fragment>
           <Grid item 
                 xs={12}  
-                sx = {{borderRadius: 4}}
+                sx = { {borderRadius: 4, mt:5}}
                 //sm={8} 
                 //md={5} 
                 component={Paper} 
                 elevation={5} 
                 square 
+                
                 >
                 <Grid container spacing={2}>
                     {[lightTheme].map((theme, index) => (
