@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { IUser } from "../config/interface";
+import Reference from "./referenceModel";
+import Cookbook from "./cookbookModel";
 
 const userSchema = new mongoose.Schema(
 	{
@@ -26,16 +28,31 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "register", // login
 		},
-		location: { type: String },
+		dob: {
+			type: String,
+			required: [true, "Please add your date of birth"],
+		},
+		location: {
+			type: String,
+			required: [true, "Please add your current location"],
+		},
+
 		intro: { type: String },
 		friends: { type: [String] },
 		groups: { type: [String] },
+		picture: {
+			type: String,
+			default:
+				// TODO: Change this default
+				"https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
+		},
+		references: [Reference.schema],
+		cookbook: [Cookbook.schema],
+
 		// TODO: add other profile details
-		// user_pic: [string]?
 		// Chats : [Chats],
-		// Cookbook : [Cookbook],
+		// friendrequest [id, status ]
 		// Request :  [request],
-		// References: [References],
 		// Request_accepted: [requst],
 	},
 	{

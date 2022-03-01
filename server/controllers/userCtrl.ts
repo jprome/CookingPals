@@ -10,7 +10,7 @@ const userCtrl = {
 
 		try {
 			const userUpdate = req.body;
-			await Users.findOneAndUpdate({ account: req.user.account }, userUpdate);
+			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate);
 
 			res.json({ msg: "Update Success!" });
 		} catch (err: any) {
@@ -22,17 +22,12 @@ const userCtrl = {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
-		// if (req.user.type !== "register")
-		// 	return res.status(400).json({
-		// 		msg: `Quick login account with ${req.user.type} can't use this function.`,
-		// 	});
-
 		try {
 			const { password } = req.body;
 			const passwordHash = await bcrypt.hash(password, 12);
 
 			await Users.findOneAndUpdate(
-				{ account: req.user.account },
+				{ _id: req.user._id },
 				{
 					password: passwordHash,
 				}
@@ -46,9 +41,7 @@ const userCtrl = {
 
 	getUser: async (req: Request, res: Response) => {
 		try {
-			const user = await Users.findOne({ account: req.body.account }).select(
-				"-password"
-			);
+			const user = await Users.findById(req.params.id).select("-password");
 			if (!user) return res.status(404).json();
 
 			res.json(user);
@@ -59,9 +52,7 @@ const userCtrl = {
 
 	deleteUser: async (req: Request, res: Response) => {
 		try {
-			const profileFound = await Users.findOneAndRemove({
-				account: req.body.account,
-			});
+			const profileFound = await Users.findOneAndRemove({ _id: req.body.id });
 			if (!profileFound) return res.status(404).json();
 
 			return res.status(204).json();
