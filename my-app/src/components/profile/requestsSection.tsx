@@ -1,27 +1,32 @@
 import * as React from 'react';
-import Toolbar from '@mui/material/Toolbar';
-import {Link} from 'react-router-dom';
-import { Grid, Container ,Typography, ListItem, Box, Paper} from '@mui/material'
-import { RequestCP } from '../../utils/Typescript';
+import { Grid, Box, Paper} from '@mui/material'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import { Button } from '@material-ui/core';
-import CustomizedDialogs from '../dialog';
+import PopOverUtil from '../PopOverUtil';
+import ingredientIcon from "../../images/ingredient.png";
+import cookingIcon from "../../images/cooking.png";
+import experienceIcon from "../../images/experience.png";
+
 
 interface RequestProps {
-  requests: RequestCP [] | null
+  give: number [],
+  receive: number [],
+  diet: number [],
 }
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
+
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function RequestsSection(props: RequestProps) {
-  //const { sections, title } = props;
+
+  const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
   return (
     <React.Fragment>
           <Grid item 
                 xs={12}  
                 sx = {{borderRadius: 4}}
+                
                 //sm={8} 
                 //md={5} 
                 //component={Paper} 
@@ -29,8 +34,8 @@ export default function RequestsSection(props: RequestProps) {
                 //square 
                 >
                 <Grid container spacing={2}>
-                    {[1].map((n) => (
-                    <Grid item xs={12} key={n} spacing={3} columnSpacing={10}>
+    
+                    <Grid item xs={12} spacing={3} columnSpacing={10} >
                         <ThemeProvider theme={lightTheme}>
                             <Box
                                 sx={{
@@ -39,16 +44,17 @@ export default function RequestsSection(props: RequestProps) {
                                     //display: 'grid',
                                     gridTemplateColumns: { md: '1fr 1fr' },
                                     gap: 2,
-                                    textAlign: 'center'
+                                    textAlign: 'center',
+                                   
                                 }}
                                 >
                                
-                                <MyPaper key={n} elevation={5} >
-                                    {`Request ${n}`}
-                                    <Grid container> 
+                                <MyPaper  elevation={5} >
 
+                                    <Grid container sx={ {pt: 5}}> 
+                                    
                                         <Grid item xs={1}>
-                                            <Grid container rowSpacing={7}>
+                                            <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
                                                 <Grid item xs={12}>
                                                     <Box>
                                                         Give:
@@ -62,165 +68,77 @@ export default function RequestsSection(props: RequestProps) {
                                                 </Grid>
                                  
                                                 <Grid item xs={12}>
-                                                <Box >
+                                                    <Box >
                                                         Diets:
-                                                </Box>
-                                                    
+                                                    </Box>
                                                 </Grid>
-                                            
                                            </Grid>
                                         </Grid>
 
                                         <Grid item xs={3}>
-
                                             <Grid container >
-                                                <Grid item xs={4}> 
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed", 
-                                                        zIndex:10, 
-                                                        padding:2,
-                                                        height:"80px", 
-                                                        width:"80px"}} 
-                                                    className="1" 
-                                                    src={require("../../images/ingredient.png")} 
-                                                    alt={"1"}/>
-                                                </Grid>
+                                                {props.give.map((n,index) =>
 
-                                                <Grid item xs={4}>
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed", 
-                                                        padding:2,
-                                                        zIndex:10, 
-                                                        height:"90px", 
-                                                        width:"90px"}} 
-                                                    className="2" 
-                                                    src={require("../../images/experience.png")} 
-                                                    alt={"2"}/>
-                                                </Grid>
-
-                                                <Grid item xs={4}>
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed",
-                                                        padding:2, 
-                                                        zIndex:10, 
-                                                        height:"90px", 
-                                                        width:"90px"}} 
-                                                    className="3" 
-                                                    src={require("../../images/cooking.png")} 
-                                                    alt={"3"}/>
-                                                </Grid>
-
+                                                 {if (n === 1)
+                                                    return ( <Grid item xs={4}>      
+                                                        <PopOverUtil message="John can contribute with ingredients">
+                                                            <img key={index}
+                                                            style={{ 
+                                                                //position:"fixed", 
+                                                                zIndex:10, 
+                                                                padding:2,
+                                                                height:"80px", 
+                                                                width:"80px"}} 
+                                                            alt="Error"
+                                                            src={pics[index]}
+                                                            
+                                                    /></PopOverUtil></Grid>)
+                                                 else {
+                                                     return <div></div>
+                                                 }})}
                                             </Grid>
 
                                             <Grid container >
-                                                <Grid item xs={4}> 
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed", 
-                                                        zIndex:10, 
-                                                        padding:2,
-                                                        height:"80px", 
-                                                        width:"80px"}} 
-                                                    className="1" 
-                                                    src={require("../../images/ingredient.png")} 
-                                                    alt={"1"}/>
-                                                </Grid>
-
-                                                <Grid item xs={4}>
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed", 
-                                                        padding:2,
-                                                        zIndex:10, 
-                                                        height:"90px", 
-                                                        width:"90px"}} 
-                                                    className="2" 
-                                                    src={require("../../images/experience.png")} 
-                                                    alt={"2"}/>
-                                                </Grid>
-
-                                                <Grid item xs={4}>
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed",
-                                                        padding:2, 
-                                                        zIndex:10, 
-                                                        height:"90px", 
-                                                        width:"90px"}} 
-                                                    className="3" 
-                                                    src={require("../../images/cooking.png")} 
-                                                    alt={"3"}/>
-                                                </Grid>
-
+                                                {props.receive.map((n,index) =>
+                                                {  if (n === 1)
+                                                        return ( <Grid item xs={4}>      
+                                                            <PopOverUtil message="John can contribute with ingredients">
+                                                                <img key={index}
+                                                                style={{ 
+                                                                    //position:"fixed", 
+                                                                    zIndex:10, 
+                                                                    padding:2,
+                                                                    height:"80px", 
+                                                                    width:"80px"}} 
+                                                                alt = "Error"
+                                                                src={pics[index]}/></PopOverUtil></Grid>)
+                                                    else {
+                                                        return <div></div>
+                                                }})}
                                             </Grid>
 
                                             <Grid container >
-                                                <Grid item xs={4}> 
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed", 
-                                                        zIndex:10, 
-                                                        padding:2,
-                                                        height:"80px", 
-                                                        width:"80px"}} 
-                                                    className="1" 
-                                                    src={require("../../images/ingredient.png")} 
-                                                    alt={"1"}/>
-                                                </Grid>
-
-                                                <Grid item xs={4}>
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed", 
-                                                        padding:2,
-                                                        zIndex:10, 
-                                                        height:"90px", 
-                                                        width:"90px"}} 
-                                                    className="2" 
-                                                    src={require("../../images/experience.png")} 
-                                                    alt={"2"}/>
-                                                </Grid>
-
-                                                <Grid item xs={4}>
-                                                <img 
-                                                    style={{ 
-                                                        //position:"fixed",
-                                                        padding:2, 
-                                                        zIndex:10, 
-                                                        height:"90px", 
-                                                        width:"90px"}} 
-                                                    className="3" 
-                                                    src={require("../../images/cooking.png")} 
-                                                    alt={"3"}/>
-                                                </Grid>
-
+                                                Filters here
                                             </Grid>
-
 
                                         </Grid>
 
-
-                                        
-                                         
-
-                                            <Grid item xs={8}>
-                                                <Box sx={{ pr: 5 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left' }}>
+                                        <Grid item xs={8}>
+                                            <Box sx={{ pr: 5 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left' }}>
                                                     Looking for people to partner with that like to eat plant based meals. 
                                                     I am fine with eating meat every once in a while, but would prefer for
                                                     the diet to be mostly meat. Message for more details!
-                                                </Box>
-                                            </Grid>
+                                            </Box>
                                         </Grid>
-                                    
-                                    
-                                    </MyPaper>
+
+                                    </Grid>
+                                
+                                </MyPaper>
                            
                             </Box>
                         </ThemeProvider>
-                    </Grid>))}
+
+                    </Grid>
                 </Grid>
             </Grid>
     </React.Fragment>

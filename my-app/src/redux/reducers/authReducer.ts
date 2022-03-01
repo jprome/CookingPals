@@ -8,6 +8,18 @@ const initialState: IAuth = {
     location:"United States Florida Miami",
     updatedAt:"asfd",
     account:"jose@gmail.com",
+    request: {
+      description:"Lets work together",
+      give_cooking: 1,
+      give_experience: 1,
+      give_ingredient: 1,
+      receive_cooking: 1,
+      receive_experience: 1,
+      receive_ingredient: 1,
+      diets:[0,1,2,3,4,5],
+      weekly_budget:75,
+      active: true,
+    }
   },
   access_token:"FakeToken"
 }

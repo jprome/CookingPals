@@ -1,11 +1,8 @@
 import * as React from 'react';
-import Toolbar from '@mui/material/Toolbar';
-import {Link} from 'react-router-dom';
-import { Grid, Container ,Typography, ListItem, Box, Paper} from '@mui/material'
+import { Grid, Box, Paper} from '@mui/material';
 import { Reference } from '../../utils/Typescript';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import { Button } from '@material-ui/core';
-import CustomizedDialogs from '../dialog';
+
 
 interface ReferencesProps {
   references: Reference [] | null

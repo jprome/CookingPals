@@ -1,11 +1,8 @@
 import React, {MouseEvent , useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import LoginPass from '../components/loginForm'
-import Header from '../components/headerNav'
-import { Grid, Container ,Typography, ListItem, Box, Paper} from '@mui/material'
+import { useSelector } from 'react-redux'
+import { Grid, Container ,Typography, Box, Paper} from '@mui/material'
 import Toolbar from '@mui/material/Toolbar';
-import { Link} from 'react-router-dom'
-import {default as LinkM} from '@mui/material/Link';
+import { useNavigate} from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import BasicMenu from '../components/basicMenu';
@@ -13,7 +10,8 @@ import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
 import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
-import { width } from '@mui/system'
+import { RootStore } from '../utils/Typescript'
+import { shallowEqual } from '../utils/Valid'
 
 const theme = createTheme();
 
@@ -24,25 +22,24 @@ const sections = [
   ];
   
 interface SectionProps {
-    section:number
+    section:number,
+    give: number[],
+    receive: number[],
+    diet: number[],
 }
 const SectionComponent = (s:SectionProps) => {
+
     if (s.section === 0){
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
 
-                    <RequestsSection requests={null}/>
+                    <RequestsSection  give={s.give} receive={s.receive} diet={s.diet}/>
                     
                     <br></br>
 
                     <RecipesSection cookbooks={null}/>
                 </Grid>
             </React.Fragment>
-    }
-    if (s.section === 1){
-        return <React.Fragment>
-                    <RequestsSection requests={null}/>
-                </React.Fragment>
     }
     if (s.section === 2){
         return <React.Fragment>
@@ -63,7 +60,6 @@ const Profile = () => {
     const initialState = { section: 0 }
     const [profileState, setProfileState] = useState(initialState)
     
-
     const clickHandler = (e: MouseEvent<HTMLButtonElement>, index: number): void => {
         e.preventDefault();
         setProfileState({...profileState, section: index})
@@ -72,16 +68,24 @@ const Profile = () => {
     useEffect(() =>{
         console.log(profileState)
 
-    },[profileState.section])
-    
-    
+    },[profileState.section,profileState])
+
+    const { auth } = useSelector((state: RootStore) => state, shallowEqual)
+    const navigate = useNavigate();
+
+    if (!auth.user) {
+        navigate("/login")
+    }
+  
+    const give = [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking]
+    const receive = [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]
 
     return (
      
         <ThemeProvider theme={theme}>
-            <CssBaseline />
+            
           
-            <Header />
+            
           
             <Grid container spacing={1}  component="main" style={{ height: '30vh' }}>
                 
@@ -133,7 +137,7 @@ const Profile = () => {
                                 display: 'flex',
                             }}> 
 
-                            <SectionComponent section={profileState.section}/>
+                            <SectionComponent section={profileState.section} give={give} receive={receive} diet={receive}/>
                     
                             </Box>
 

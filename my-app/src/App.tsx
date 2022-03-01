@@ -1,14 +1,11 @@
 import * as React from "react"
-import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import "./styles.css"
-import { Dispatch } from "redux"
-import { Link , BrowserRouter as Router, Routes, Route} from "react-router-dom"
-import RegisterForm from "./components/registerFrom"
+import { Routes, Route} from "react-router-dom"
 import Login from "./pages/login"
 import Register from "./pages/register"
 import Profile from "./pages/profile"
-import { IUser } from "./utils/Typescript"
 import Header from "./components/headerNav"
+import { useLocation } from "react-router-dom";
+import SearchRequest from "./pages/searchRequest"
 
 const App: React.FC = () => {
 
@@ -34,14 +31,18 @@ const App: React.FC = () => {
   //},[dispatch])
 
   */
+  
+  let location = useLocation();
+  
   return (
     <main>
+        {location.pathname === ('/login' || '/register') ? null : <Header />}
         
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
             <Route path="/profile/:id" element={<Profile />}></Route>
-
+            <Route path="/search" element={<SearchRequest />}></Route>
         </Routes>
 
       
@@ -50,21 +51,3 @@ const App: React.FC = () => {
 }
 
 export default App
-
-
-/*
-
-
-   
-<h1>My Articles</h1>
-      
-<AddArticle saveArticle={saveArticle} />
-{articles.map((article: IArticle) => (
-  <Article
-    key={article.id}
-    article={article}
-    removeArticle={removeArticle}
-  />
-))}
-
-*/

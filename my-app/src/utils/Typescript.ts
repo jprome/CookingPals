@@ -49,7 +49,7 @@ export interface IUser extends IUserLogin {
   profile_pic?: File | null
   updatedAt: string | null
   cookbooks?: Cookbook [] |  null
-  requests?: [[Request, number, number]] | null  // number describes state -> active,in-process,expired, secondNu
+  request?: RequestCP | null  // number describes state -> active,in-process,expired, secondNu
   friends?: string[] | null
   groups?: string[] | null
   references?: Reference[] | null
@@ -74,20 +74,31 @@ export interface Cookbook {
 }
 
 export interface RequestCP {
-  id: string
-  owner: string
-  title: string
   description: string
-  give: number[] // experience - 0, ingredients - 1 , dish - 2, money - 2
-  receive: number[]
-  diets: number[] // according to an array called list
-  budget: number
-  location: string
-  calendarRange : Date [] // pair of dates
-  countOfUsersInvolved: number
-  active: Boolean
-  public: Boolean
 
+  give_cooking: number,
+  give_ingredient: number,
+  give_experience: number,
+  receive_cooking: number,
+  receive_ingredient: number,
+  receive_experience: number,
+
+  diets?: number[] // according to an array called list
+  weekly_budget: number
+  calendarRange?: Date [] // pair of dates
+  active: Boolean
+}
+
+export interface RequestSearch {
+  give_cooking: number,
+  give_ingredient: number,
+  give_experience: number,
+  receive_cooking: number,
+  receive_ingredient: number,
+  receive_experience: number,
+
+  budgetLow: number,
+  budgetHigh: number
 }
 
 export const diets = ['vegan','vegetarian'] // etc
