@@ -39,23 +39,23 @@ const requestCtrl = {
 			const give_cookingFilter = getMatch(req.body.give_cooking);
 			const give_ingredientsFilter = getMatch(req.body.give_ingredient);
 			const give_experienceFilter = getMatch(req.body.give_experience);
-			const recieve_cookingFilter = getMatch(req.body.recieve_cooking);
-			const recieve_ingredientsFilter = getMatch(req.body.recieve_ingredient);
-			const recieve_experienceFilter = getMatch(req.body.recieve_experience);
+			const receive_cookingFilter = getMatch(req.body.receive_cooking);
+			const receive_ingredientsFilter = getMatch(req.body.receive_ingredient);
+			const receive_experienceFilter = getMatch(req.body.receive_experience);
 
 			console.log(give_cookingFilter);
 			console.log(give_ingredientsFilter);
 			console.log(give_experienceFilter);
-			console.log(recieve_cookingFilter);
-			console.log(recieve_ingredientsFilter);
-			console.log(recieve_experienceFilter);
+			console.log(receive_cookingFilter);
+			console.log(receive_ingredientsFilter);
+			console.log(receive_experienceFilter);
 			const request = await Users.find({
-				"request.give_cooking": { $in: recieve_cookingFilter },
-				"request.give_ingredient": { $in: recieve_ingredientsFilter },
-				"request.give_experience": { $in: recieve_experienceFilter },
-				"request.recieve_cooking": { $in: give_cookingFilter },
-				"request.recieve_ingredient": { $in: give_ingredientsFilter },
-				"request.recieve_experience": { $in: give_experienceFilter },
+				"request.give_cooking": { $in: receive_cookingFilter },
+				"request.give_ingredient": { $in: receive_ingredientsFilter },
+				"request.give_experience": { $in: receive_experienceFilter },
+				"request.receive_cooking": { $in: give_cookingFilter },
+				"request.receive_ingredient": { $in: give_ingredientsFilter },
+				"request.receive_experience": { $in: give_experienceFilter },
 				$and: [
 					{ "request.weekly_budget": { $gte: req.body.budgetLow } },
 					{ "request.weekly_budget": { $lte: req.body.budgetHigh } },

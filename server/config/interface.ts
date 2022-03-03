@@ -35,9 +35,9 @@ export interface food_request extends Document {
 	give_ingredients: number;
 	give_cooking: number;
 	give_experience: number;
-	recieve_ingredients: number;
-	recieve_cooking: number;
-	recieve_experience: number;
+	receive_ingredients: number;
+	receive_cooking: number;
+	receive_experience: number;
 	description: string;
 	diets: [string];
 	active: boolean;
