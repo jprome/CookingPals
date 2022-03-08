@@ -36,12 +36,13 @@ const requestCtrl = {
 	},
 	searchRequests: async (req: Request, res: Response) => {
 		try {
-			const give_cookingFilter = getMatch(req.body.give_cooking);
-			const give_ingredientsFilter = getMatch(req.body.give_ingredient);
-			const give_experienceFilter = getMatch(req.body.give_experience);
-			const receive_cookingFilter = getMatch(req.body.receive_cooking);
-			const receive_ingredientsFilter = getMatch(req.body.receive_ingredient);
-			const receive_experienceFilter = getMatch(req.body.receive_experience);
+
+			const give_cookingFilter = getMatch(Number(req.query.give_cooking));
+			const give_ingredientsFilter = getMatch(Number(req.query.give_ingredient));
+			const give_experienceFilter = getMatch(Number(req.query.give_experience));
+			const receive_cookingFilter = getMatch(Number(req.query.receive_cooking));
+			const receive_ingredientsFilter = getMatch(Number(req.query.receive_ingredient));
+			const receive_experienceFilter = getMatch(Number(req.query.receive_experience));
 
 			console.log(give_cookingFilter);
 			console.log(give_ingredientsFilter);
@@ -49,6 +50,7 @@ const requestCtrl = {
 			console.log(receive_cookingFilter);
 			console.log(receive_ingredientsFilter);
 			console.log(receive_experienceFilter);
+
 			const request = await Users.find({
 				"request.give_cooking": { $in: receive_cookingFilter },
 				"request.give_ingredient": { $in: receive_ingredientsFilter },
@@ -60,9 +62,9 @@ const requestCtrl = {
 					{ "request.weekly_budget": { $gte: req.body.budgetLow } },
 					{ "request.weekly_budget": { $lte: req.body.budgetHigh } },
 				],
-			}).select("request");
+			}).select("request");			
 
-			return res.status(204).json(request);
+			return res.status(200).json(res);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
