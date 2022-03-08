@@ -28,7 +28,7 @@ export default function RecipesSection(props: RecipesProps) {
                 >
                 <Grid container spacing={2}>
                     {[lightTheme].map((theme, index) => (
-                    <Grid item xs={12} key={index} spacing={3} columnSpacing={10}>
+                    <Grid item xs={12} key={index} columnSpacing={10}>
                         <ThemeProvider theme={theme}>
                             <Box
                                 sx={{

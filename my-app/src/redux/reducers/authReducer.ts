@@ -16,7 +16,7 @@ const initialState: IAuth = {
       receive_cooking: 1,
       receive_experience: 1,
       receive_ingredient: 1,
-      diets:["Vegan","Vegetarian"],
+      diet:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true,
     }

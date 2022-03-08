@@ -39,7 +39,7 @@ export default function PopOverUtil(props: PopProps) {
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'top',
-        horizontal: 'center',
+        horizontal: 'right',
       }}
       transformOrigin={{
         vertical: 'top',

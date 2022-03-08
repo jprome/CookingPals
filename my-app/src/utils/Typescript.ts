@@ -83,10 +83,10 @@ export interface RequestCP {
   receive_ingredient: number,
   receive_experience: number,
 
-  diets: string[] 
+  diet: string[] 
   weekly_budget: number
   calendarRange?: Date [] // pair of dates
-  active: Boolean
+  active: boolean
 }
 
 export interface RequestSearch {
@@ -118,6 +118,3 @@ export interface Groups {
   id: string,
   
 }
-
-// Examples
-

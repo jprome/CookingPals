@@ -4,7 +4,7 @@ import { Grid, Container ,Typography, Box, Paper} from '@mui/material'
 import Toolbar from '@mui/material/Toolbar';
 import { useNavigate} from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+//import CssBaseline from '@mui/material/CssBaseline';
 import BasicMenu from '../components/basicMenu';
 import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
@@ -12,6 +12,7 @@ import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
 import { RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
+import EditRequestsSection from '../components/edit-profile/editRequestSection';
 
 const theme = createTheme();
 
@@ -25,8 +26,12 @@ interface SectionProps {
     section:number,
     give: number[],
     receive: number[],
-    diet: number[],
-    description: string
+    diet: string[],
+    description: string,
+    budget: number,
+    active:boolean,
+    st(): void,
+    se(): void
 }
 const SectionComponent = (s:SectionProps) => {
 
@@ -34,9 +39,14 @@ const SectionComponent = (s:SectionProps) => {
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
 
-                    <RequestsSection  give={s.give} receive={s.receive} diet={s.diet} description={s.description} />
-                    
-                    <br></br>
+                    <RequestsSection  
+                        give={s.give} 
+                        receive={s.receive} 
+                        diet={s.diet} 
+                        description={s.description} 
+                        budget={s.budget} 
+                        active={s.active}
+                        changeSection={s.st}/>
 
                     <RecipesSection cookbooks={null}/>
                 </Grid>
@@ -50,6 +60,22 @@ const SectionComponent = (s:SectionProps) => {
     }
     if (s.section === 3){
         return <Typography variant="h4">Friends/Groups</Typography>
+    }
+    if (s.section === 4 ){
+        return <Grid container spacing={0} rowSpacing={0}>
+
+                <EditRequestsSection  
+                    give={s.give} 
+                    receive={s.receive} 
+                    diets={s.diet} 
+                    description={s.description} 
+                    budget={s.budget}
+                    active={s.active}
+                    changeSection={s.se}
+                />
+                <br></br>
+                <RecipesSection cookbooks={null}/>
+            </Grid>
     }
     else {
         return <Typography> Error</Typography>
@@ -65,13 +91,13 @@ const Profile = () => {
         e.preventDefault();
         setProfileState({...profileState, section: index})
     }
-    
-    useEffect(() =>{
-        console.log(profileState)
-
-    },[profileState.section,profileState])
 
     const { auth } = useSelector((state: RootStore) => state, shallowEqual)
+    useEffect(() =>{
+        console.log(profileState)
+        
+    },[profileState.section,profileState])
+   
     const navigate = useNavigate();
 
     if (!auth.user) {
@@ -84,9 +110,6 @@ const Profile = () => {
     return (
      
         <ThemeProvider theme={theme}>
-            
-          
-            
           
             <Grid container spacing={1}  component="main" style={{ height: '30vh' }}>
                 
@@ -138,11 +161,18 @@ const Profile = () => {
                                 display: 'flex',
                             }}> 
 
-                            <SectionComponent description={auth.user!.request!.description} section={profileState.section} give={give} receive={receive} diet={receive}/>
-                    
+                            <SectionComponent 
+                                description={auth.user!.request!.description} 
+                                section={profileState.section} 
+                                give={give} 
+                                receive={receive} 
+                                diet={auth.user!.request!.diet}
+                                budget={auth.user!.request!.weekly_budget}
+                                active={auth.user!.request!.active}
+                                st={() => setProfileState({ section: 4 })}
+                                se={() => setProfileState({ section: 0 })}
+                                />
                             </Box>
-
-
                         </Grid>
                     </Container>
                 </Grid>
