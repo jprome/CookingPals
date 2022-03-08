@@ -8,7 +8,7 @@ const requestCtrl = {
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
-			const { request } = req.body;
+			const request = req.body;
 			await Users.findOneAndUpdate(
 				{ _id: req.user._id },
 				{
