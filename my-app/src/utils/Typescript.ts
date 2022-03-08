@@ -83,7 +83,7 @@ export interface RequestCP {
   receive_ingredient: number,
   receive_experience: number,
 
-  diets?: number[] // according to an array called list
+  diets: string[] 
   weekly_budget: number
   calendarRange?: Date [] // pair of dates
   active: Boolean
@@ -97,6 +97,7 @@ export interface RequestSearch {
   receive_ingredient: number,
   receive_experience: number,
 
+  diets: string[]
   budgetLow: number,
   budgetHigh: number
 }

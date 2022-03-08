@@ -8,10 +8,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import BasicMenu from '../components/basicMenu';
 import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
-import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
 import { RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
+import EditRequestsSection from '../components/edit-profile/editRequestSection';
 
 const theme = createTheme();
 
@@ -25,8 +25,9 @@ interface SectionProps {
     section:number,
     give: number[],
     receive: number[],
-    diet: number[],
-    description: string
+    diets: string[],
+    description: string,
+    budget: number
 }
 const SectionComponent = (s:SectionProps) => {
 
@@ -34,10 +35,14 @@ const SectionComponent = (s:SectionProps) => {
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
 
-                    <RequestsSection  give={s.give} receive={s.receive} diet={s.diet} description={s.description} />
-                    
+                    <EditRequestsSection  
+                        give={s.give} 
+                        receive={s.receive} 
+                        diets={s.diets} 
+                        description={s.description} 
+                        budget={s.budget}
+                    />
                     <br></br>
-
                     <RecipesSection cookbooks={null}/>
                 </Grid>
             </React.Fragment>
@@ -56,7 +61,7 @@ const SectionComponent = (s:SectionProps) => {
     }
 }
 
-const Profile = () => {
+const EditProfile = () => {
 
     const initialState = { section: 0 }
     const [profileState, setProfileState] = useState(initialState)
@@ -84,9 +89,6 @@ const Profile = () => {
     return (
      
         <ThemeProvider theme={theme}>
-            
-          
-            
           
             <Grid container spacing={1}  component="main" style={{ height: '30vh' }}>
                 
@@ -138,8 +140,13 @@ const Profile = () => {
                                 display: 'flex',
                             }}> 
 
-                            <SectionComponent description={auth.user!.request!.description} section={profileState.section} give={give} receive={receive} diet={receive}/>
-                    
+                            <SectionComponent 
+                                description={auth.user!.request!.description} 
+                                budget={auth.user!.request!.weekly_budget}
+                                section={profileState.section} 
+                                give={give} 
+                                receive={receive} 
+                                diets={auth.user!.request!.diets}/>
                             </Box>
 
 
@@ -152,4 +159,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default EditProfile

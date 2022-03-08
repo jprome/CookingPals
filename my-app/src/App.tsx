@@ -6,6 +6,7 @@ import Profile from "./pages/profile"
 import Header from "./components/headerNav"
 import { useLocation } from "react-router-dom";
 import SearchRequest from "./pages/searchRequest"
+import EditProfile from "./pages/edit-profile"
 
 const App: React.FC = () => {
 
@@ -33,19 +34,20 @@ const App: React.FC = () => {
   */
   
   let location = useLocation();
+
+  console.log(location.pathname)
   
   return (
     <main>
-        {location.pathname === ('/login' || '/register') ? null : <Header />}
-        
+        {[ "/register" , "/login"].indexOf(location.pathname) > -1  ? null : <Header />}
+
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
             <Route path="/profile/:id" element={<Profile />}></Route>
+            <Route path="/edit-profile" element={<EditProfile />}></Route>
             <Route path="/search" element={<SearchRequest />}></Route>
         </Routes>
-
-      
     </main>
   )
 }

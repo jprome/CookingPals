@@ -87,9 +87,11 @@ export default function Header() {
                     display: 'flex',
                     alignItems: 'right',
                     justifyContent: 'right'}}>
+                        <Link to='/edit-profile'> 
                         <IconButton>
                             <AccountCircleOutlinedIcon />
                         </IconButton>
+                        </Link>
                 </Box>
             </Grid>
 

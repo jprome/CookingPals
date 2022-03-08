@@ -11,15 +11,22 @@ interface RequestProps {
   give: number [],
   receive: number [],
   diet: number [],
+  description: string
 }
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
+
 
 
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function RequestsSection(props: RequestProps) {
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
+
+  const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
+
+  
+  
 
   return (
     <React.Fragment>
@@ -125,9 +132,8 @@ export default function RequestsSection(props: RequestProps) {
 
                                         <Grid item xs={8}>
                                             <Box sx={{ pr: 5 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left' }}>
-                                                    Looking for people to partner with that like to eat plant based meals. 
-                                                    I am fine with eating meat every once in a while, but would prefer for
-                                                    the diet to be mostly meat. Message for more details!
+                                                    
+                                                    {props.description}
                                             </Box>
                                         </Grid>
 
