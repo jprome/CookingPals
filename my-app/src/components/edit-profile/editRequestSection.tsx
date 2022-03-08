@@ -1,33 +1,110 @@
 import * as React from 'react';
-import { Grid, Box, Paper} from '@mui/material'
+import { Grid, Box, Paper, TextField} from '@mui/material'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import PopOverUtil from '../PopOverUtil';
 import ingredientIcon from "../../images/ingredient.png";
 import cookingIcon from "../../images/cooking.png";
 import experienceIcon from "../../images/experience.png";
 import { Button } from '@material-ui/core';
+import NumberFormat from 'react-number-format';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '../../utils/Typescript';
 
+import { RequestCP } from '../../utils/Typescript';
+import { updateRequest } from '../../redux/actions/userAction';
 
 interface RequestProps {
   give: number [],
   receive: number [],
-  diet: string [],
+  diets: string [],
   description: string,
   budget: number,
   active: boolean,
   changeSection(): void
-  // will add a true / false prop to distiguish own account against others to have changing privileges
 }
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 
-export default function RequestsSection(props: RequestProps) {
+const dietsList = ["Vegan",
+     "Paleo",
+     "Low-Carb/Keto",
+     "Vegetarian",
+     "Mediterranean",
+     "Pescetarian",
+     "Plant-based raw food",
+     "Carnivore diet",
+     "Lactose Intolerant",
+     "Gluten-free",
+     "Religion",
+     "Allergies",
+     "Diabetic"]
+
+const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
+export default function EditRequestsSection(props: RequestProps) {
+
+  const [desc, setDesc] = React.useState(props.description);
+  const [giveS, setGive] = React.useState(props.give);
+  const [receiveS, setReceive] = React.useState(props.receive);
+  const [budget, setBudget] = React.useState(props.budget)
+  const [diets, setDiets] = React.useState(props.diets)
+  const [active, setActive] = React.useState(props.active)
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
   const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDesc(event.target.value);
+  };
+
+  const handleGiveChange = ( index: number) =>{
+    const c = [...giveS]
+    c[index] = giveS[index] ? 0 : 1
+    setGive(c)
+  }
+
+  const handleReceiveChange = ( index: number) =>{
+    const c = [...receiveS]
+    c[index] = receiveS[index] ? 0 : 1
+    setReceive(c)
+  }
+
+  const handleDietChange = (diet: string) => {
+    if (diets.indexOf(diet) > -1 ){
+        setDiets(diets.filter(item => item !== diet))
+    }
+    else {
+        setDiets([...diets,diet])
+    }
+  }
+  
+  const { auth } = useSelector((state: RootStore) => state, shallowEqual)
+
+  const dispatch = useDispatch()
+  
+  const handleSubmitRequest = () => {
+    // send request
+
+    const request : RequestCP = {
+            description: desc,
+            give_cooking: giveS[2],
+            give_experience: giveS[1],
+            give_ingredient: giveS[0],
+            receive_cooking:  receiveS[2],
+            receive_experience: receiveS[1],
+            receive_ingredient: receiveS[0],
+            diet: diets,
+            weekly_budget:budget,
+            active: active,
+    }
+    
+    dispatch(updateRequest(auth,request))
+  }
+
+  const handleBudgetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBudget(Number(event.target.value))
+  };
 
   return (
     <React.Fragment>
@@ -42,7 +119,7 @@ export default function RequestsSection(props: RequestProps) {
                 >
                 <Grid container spacing={2}>
     
-                    <Grid item xs={12}  columnSpacing={10} >
+                    <Grid item xs={12} spacing={3} columnSpacing={10} >
                         <ThemeProvider theme={lightTheme}>
                             <Box
                                 sx={{
@@ -81,11 +158,15 @@ export default function RequestsSection(props: RequestProps) {
                                         <Grid item xs={3} sx={ {pt: 5}} >
 
                                             <Grid container >
-                                                {props.give.map((n,index) =>
+                                                {giveS.map((n,index) =>
                                                 {  
                                                     return ( 
                                                         <Grid item xs={4}>      
-                                                           
+                                                            <Button
+                                                            onClick={() => {
+                                                                handleGiveChange(index);
+                                                            }}
+                                                            >
                                                                 <PopOverUtil message={`John will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
                                                                     <img key={index}
                                                                     style={{ 
@@ -99,17 +180,19 @@ export default function RequestsSection(props: RequestProps) {
                                                                     src={pics[index]}
                                                                     
                                                                 /></PopOverUtil>
-                                                          
+                                                            </Button>
                                                         </Grid>)
                                                  })}
                                             </Grid>
 
                                             <Grid container >
-                                                {props.receive.map((n,index) =>
+                                                {receiveS.map((n,index) =>
                                                 {
                                                     return (
                                                         <Grid item xs={4}>      
-                                                            
+                                                            <Button
+                                                            onClick={() => {
+                                                                handleReceiveChange(index);}}>
                                                                 <PopOverUtil message="John can contribute with ingredients">
                                                                     <img key={index}
                                                                     style={{ 
@@ -122,9 +205,8 @@ export default function RequestsSection(props: RequestProps) {
                                                                     alt="Error"
                                                                     src={pics[index]}
                                                                 /></PopOverUtil>
-                                                        </Grid>
-                                                      )
-                                                })}
+                                                            </Button>
+                                                        </Grid>)})}
                                             </Grid>
                                                                             
                                         </Grid>
@@ -133,47 +215,86 @@ export default function RequestsSection(props: RequestProps) {
                                             <Grid container   direction="row" spacing={10}>
                                                 <Grid item xs={12}>
                                                     <Box sx={{ display:'flex', pr: 5 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                                        {props.description}
+                                                    <TextField fullWidth
+                                                            id="outlined-multiline-flexible"
+                                                            label="Description"
+                                                            multiline
+                                                            maxRows={4}
+                                                            value={desc}
+                                                            onChange={handleChange}
+                                                            />
                                                     </Box>
                                                     
                                                     <Grid item xs={12}>
-                                                    <Box sx={{ pt: 3 , typography: 'body1' , textAlign: 'left' , fontSize: 20 , fontWeight: 'bold'}}>
+                                                    <Box sx={{ pt: 3 , typography: 'body1' , textAlign: 'left'}}>
                                                     {"Diets: "}
-                                                            {props.diet.map((n,index) =>
+                                                            {dietsList.map((n,index) =>
                                                             {  
+                                                                
+                                                                if (diets.indexOf(n) === -1)
+                                                                    return ( 
+                                                            
+                                                                        <Button variant="outlined"  color="secondary"
+                                                                        onClick={() => {
+                                                                            handleDietChange(n)
+                                                                        }}
+                                                                        >
+                                                                            {n}
+                                                                        </Button>)
+                                                                else {
                                                                     return (
-                                                                        <Button variant="contained" key={n} color="primary">
-                                                                            
+                                                                        <Button variant="contained" color="primary"
+                                                                        onClick={() => {
+                                                                            handleDietChange(n)
+                                                                        }}
+                                                                        >
                                                                             {n}
                                                                         </Button>
                                                                     )
-                                                            })}
+                                                            }})}
                                                     </Box>
                                                     </Grid>
 
                                                     
                                                     <Grid item xs={3}>
                                                         <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                                           Budget: {props.budget}
+                                                            <TextField
+                                                                label="Weekly Budget ($)"
+                                                                value={budget}
+                                                                onChange={handleBudgetChange}
+                                                                InputLabelProps={{ shrink: true }}
+                                                                name="numberformat"
+                                                                id="formatted-numberformat-input"
+                                                                InputProps={{
+                                                                inputComponent: NumberFormat as any,
+                                                                }}
+                                                                prefix="$"
+                                                                
+                                                            />
                                                         </Box>
                                                     </Grid>
                                                     <Grid item xs={12}>
                                                         <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'right'}}>
                                                         <PopOverUtil message="If active your request can be seen by other users">
-                                                        <Button variant="contained">{ props.active ? "Active" : "Inactive"}</Button>
+                                                        <Button  onClick={() => { setActive(!active)} }variant="contained">{ active ? "Active" : "Inactive"}</Button>
                                                         </PopOverUtil>
                                                         </Box>
                                                     </Grid>
+
+
 
                                                     <Grid item xs={12}>
                                                         <Box sx={{ display:'flex', pr: 5 , pt:3, pb:5, typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
 
                                                             <Grid container justifyContent="flex-end" alignItems="flex-end">
                                                                 <Grid item >
+
                                                                 <Button   onClick={() => {
+                                                                    handleSubmitRequest()
                                                                     props.changeSection()
-                                                                }}variant="contained">Change Request</Button>
+                                                                }}variant="contained">Submit Request Change</Button>
                                                                 </Grid>
+
                                                             </Grid>
                                                         </Box>
                                                     </Grid>

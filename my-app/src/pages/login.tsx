@@ -50,12 +50,11 @@ const Login = () => {
                         justifyContent: 'center',
                         height: "90vh"
                         }}>
-                        <Grid  item><Typography variant="h4">Login to your account</Typography></Grid> 
-                        <Grid  item><LoginPass /></Grid> 
-                        <Grid  item><Typography variant="h6">Dont have an account? <Link to='/register'> Join free today </Link></Typography></Grid>   
-                    </Box> 
+                        <Grid item><Typography variant="h4">Login to your account</Typography></Grid> 
+                        <Grid item><LoginPass /></Grid> 
+                        <Grid item><Typography variant="h6">Dont have an account? <Link to='/register'> Join free today </Link></Typography></Grid>   
+                    </Box>
                 </Grid>
-
             </Grid>
         </ThemeProvider>
     )

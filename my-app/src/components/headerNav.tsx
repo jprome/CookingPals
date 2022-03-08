@@ -1,24 +1,17 @@
 import * as React from 'react';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import {Link} from 'react-router-dom';
-import { Grid, Container ,Typography, ListItem, Box, Paper} from '@mui/material'
+import { Grid ,Typography, Box} from '@mui/material'
 
-interface HeaderProps {
-  sections: ReadonlyArray<{
-    title: string;
-    name: string;
-  }>;
-  title: string;
-}
 
-export default function Header(props: HeaderProps) {
-  const { sections, title } = props;
+
+export default function Header() {
+  const  title  = "CookingPals";
 
   return (
     <React.Fragment>
@@ -78,9 +71,11 @@ export default function Header(props: HeaderProps) {
                         alignItems: 'left',
                         justifyContent: 'left'
                         }}>
+                            <Link to='/search'> 
                             <IconButton>
                                 <SearchIcon />
                             </IconButton>
+                            </Link>
                     </Box>
                     </Grid>
                 </Grid>
@@ -92,9 +87,11 @@ export default function Header(props: HeaderProps) {
                     display: 'flex',
                     alignItems: 'right',
                     justifyContent: 'right'}}>
+                        <Link to='/profile'> 
                         <IconButton>
                             <AccountCircleOutlinedIcon />
                         </IconButton>
+                        </Link>
                 </Box>
             </Grid>
 

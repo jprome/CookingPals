@@ -10,13 +10,14 @@ import {
   GET_OTHER_INFO,
   IGetOtherInfoType
 } from '../types/profileType'
+import { RequestCP } from '../../utils/Typescript'
 
 
 export const updateUser = (avatar: File, name: string, auth: IAuth
 ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
   if(!auth.access_token || !auth.user) return;
 
-  let url = '';
+  // let url = '';
   try {
 
     dispatch({ type: ALERT, payload: {loading: true}})
@@ -50,6 +51,35 @@ export const updateUser = (avatar: File, name: string, auth: IAuth
   }
 }
 
+export const updateRequest = (auth: IAuth, request: RequestCP
+  ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
+    if(!auth.access_token || !auth.user) return;
+  
+    try {
+  
+      dispatch({ type: ALERT, payload: {loading: true}})
+  
+      dispatch({ 
+        type: AUTH,
+        payload: {
+          access_token: auth.access_token,
+          user: {
+            ...auth.user, request: request
+          },
+        } 
+      })
+  
+     // const res = await patchAPI('auth/login', {
+     //  ...auth.user
+     // }, auth.access_token)
+  
+    //dispatch({ type: ALERT, payload: {success: res.data.msg}})
+  
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
+    }
+  }
+  
 
 export const resetPassword = (
   password: string, cf_password: string, token: string
