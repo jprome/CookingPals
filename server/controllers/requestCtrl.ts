@@ -64,7 +64,7 @@ const requestCtrl = {
 				],
 			}).select("request");			
 
-			return res.status(200).json(res);
+			return res.status(200).json(request);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
