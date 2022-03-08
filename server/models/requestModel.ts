@@ -15,15 +15,15 @@ const requestSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
-	recieve_cooking: {
+	receive_cooking: {
 		type: Number,
 		required: true,
 	},
-	recieve_ingredient: {
+	receive_ingredient: {
 		type: Number,
 		required: true,
 	},
-	recieve_experience: {
+	receive_experience: {
 		type: Number,
 		required: true,
 	},
