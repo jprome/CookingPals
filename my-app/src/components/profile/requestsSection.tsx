@@ -85,7 +85,7 @@ export default function RequestsSection(props: RequestProps) {
                                                 {  
                                                     return ( 
                                                         <Grid item xs={4}>      
-                                                           
+                                                                <Button>
                                                                 <PopOverUtil message={`John will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
                                                                     <img key={index}
                                                                     style={{ 
@@ -99,7 +99,7 @@ export default function RequestsSection(props: RequestProps) {
                                                                     src={pics[index]}
                                                                     
                                                                 /></PopOverUtil>
-                                                          
+                                                                </Button>
                                                         </Grid>)
                                                  })}
                                             </Grid>
@@ -109,8 +109,8 @@ export default function RequestsSection(props: RequestProps) {
                                                 {
                                                     return (
                                                         <Grid item xs={4}>      
-                                                            
-                                                                <PopOverUtil message="John can contribute with ingredients">
+                                                                <Button>
+                                                                <PopOverUtil message={`John is ${n ? "":"not"} looking for someone that can contribute by ${textIcon[index]}`}>
                                                                     <img key={index}
                                                                     style={{ 
                                                                         //position:"fixed", 
@@ -122,6 +122,7 @@ export default function RequestsSection(props: RequestProps) {
                                                                     alt="Error"
                                                                     src={pics[index]}
                                                                 /></PopOverUtil>
+                                                                </Button>
                                                         </Grid>
                                                       )
                                                 })}

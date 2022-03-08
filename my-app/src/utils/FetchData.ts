@@ -27,6 +27,19 @@ export const getAPI = async (url: string, token?:string) => {
     }
 }
 
+export const getAPISendInfo = async (url: string,payload: object, token?:string, ) => {
+  try{
+    const res = await axios.get(base + url, {params:   payload} )
+    console.log(res)
+    return res;
+
+    }
+    catch(err){
+      console.log(err)
+      throw err
+    }
+}
+
 export const patchAPI = async (url: string, post: object, token?:string) => {
   try{
     const token_ = token ? token : '';

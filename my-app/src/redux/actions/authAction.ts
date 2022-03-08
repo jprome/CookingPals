@@ -22,7 +22,7 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     
   } catch (err: any) {
 
-    dispatch({ type: AUTH, payload: { msg:err.response.data.msg } })
+    dispatch({ type: AUTH, payload: { access_token:"", msg:err.response.data.msg } })
   }
 }
 
@@ -38,7 +38,7 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     dispatch({ type: ALERT, payload: { loading: true } }) // loading
     
     const res = await postAPI('auth/register', userRegister) // send new account info
-
+    
     dispatch({ type: ALERT, payload: { success: res.data.msg } }) // save account info on auth state
   } catch (err: any) {
     dispatch({ type: ALERT, payload: { errors: err.response.data.msg } }) 
@@ -72,7 +72,7 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
 
     localStorage.removeItem('logged')
     
-    dispatch({ type: AUTH, payload: { } })
+   // dispatch({ type: AUTH, payload: { } })
 
     await getAPI('logout')
 
