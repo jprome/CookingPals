@@ -1,10 +1,7 @@
 import * as React from 'react';
-import Toolbar from '@mui/material/Toolbar';
-import {Link} from 'react-router-dom';
-import { Grid, Container ,Typography, ListItem, Box, Paper} from '@mui/material'
+import { Grid, Box, Paper} from '@mui/material'
 import { Cookbook } from '../../utils/Typescript';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import { Button } from '@material-ui/core';
 import CustomizedDialogs from '../dialog';
 
 interface RecipesProps {
@@ -21,16 +18,17 @@ export default function RecipesSection(props: RecipesProps) {
     <React.Fragment>
           <Grid item 
                 xs={12}  
-                sx = {{borderRadius: 4}}
+                sx = { {borderRadius: 4, mt:5}}
                 //sm={8} 
                 //md={5} 
                 component={Paper} 
                 elevation={5} 
                 square 
+                
                 >
                 <Grid container spacing={2}>
                     {[lightTheme].map((theme, index) => (
-                    <Grid item xs={12} key={index} spacing={3} columnSpacing={10}>
+                    <Grid item xs={12} key={index} columnSpacing={10}>
                         <ThemeProvider theme={theme}>
                             <Box
                                 sx={{

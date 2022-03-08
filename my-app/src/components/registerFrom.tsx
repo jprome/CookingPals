@@ -54,7 +54,7 @@ const RegisterForm = () => {
       }
     }
    
-  },[auth.user,auth.access_token, setToProfile])
+  },[auth.user,auth.access_token, setToProfile,auth.msg])
 
 
   // add wrong password notification
