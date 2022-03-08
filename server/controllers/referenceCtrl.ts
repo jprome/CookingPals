@@ -23,7 +23,7 @@ const referenceCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "Update Success!" });
+			return res.status(200).json({ msg: "Update Success!" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -44,7 +44,7 @@ const referenceCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "reference added" });
+			return res.status(200).json({ msg: "reference added" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -56,7 +56,7 @@ const referenceCtrl = {
 				"references._id": req.body.id,
 			}).select("references");
 
-			return res.status(204).json(reference);
+			return res.status(200).json(reference);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -82,7 +82,7 @@ const referenceCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "reference deleted" });
+			return res.status(200).json({ msg: "reference deleted" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
