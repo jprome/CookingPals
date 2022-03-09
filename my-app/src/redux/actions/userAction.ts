@@ -69,9 +69,9 @@ export const updateRequest = (auth: IAuth, request: RequestCP
         } 
       })
   
-     // const res = await patchAPI('auth/login', {
-     //  ...auth.user
-     // }, auth.access_token)
+     const res = await patchAPI('request/update', {
+      request
+      }, auth.access_token)
   
     //dispatch({ type: ALERT, payload: {success: res.data.msg}})
   

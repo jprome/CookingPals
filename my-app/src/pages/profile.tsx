@@ -101,7 +101,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
     if (!auth.user) {
-        navigate("/login")
+        navigate("login")
     }
   
     const give = [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking]

@@ -87,7 +87,7 @@ export default function Header() {
                     display: 'flex',
                     alignItems: 'right',
                     justifyContent: 'right'}}>
-                        <Link to='/profile'> 
+                        <Link to='/profile/sd'> 
                         <IconButton>
                             <AccountCircleOutlinedIcon />
                         </IconButton>

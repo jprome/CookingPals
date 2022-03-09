@@ -1,26 +1,19 @@
 import * as React from 'react';
 import { Grid, Box, Paper, TextField} from '@mui/material'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import PopOverUtil from '../PopOverUtil';
-import ingredientIcon from "../../images/ingredient.png";
-import cookingIcon from "../../images/cooking.png";
-import experienceIcon from "../../images/experience.png";
+import PopOverUtil from './PopOverUtil';
+import ingredientIcon from "../images/ingredient.png";
+import cookingIcon from "../images/cooking.png";
+import experienceIcon from "../images/experience.png";
 import { Button } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { RootStore } from '../../utils/Typescript';
-
-import { RequestCP } from '../../utils/Typescript';
-import { updateRequest } from '../../redux/actions/userAction';
+import { RootStore } from '../utils/Typescript';
+import { findRequests } from '../redux/actions/searchAction';
+//import { updateRequest } from '../../redux/actions/userAction';
 
 interface RequestProps {
-  give: number [],
-  receive: number [],
-  diets: string [],
-  description: string,
-  budget: number,
-  active: boolean,
-  changeSection(): void
+
 }
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
@@ -40,22 +33,19 @@ const dietsList = ["Vegan",
      "Diabetic"]
 
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
-export default function EditRequestsSection(props: RequestProps) {
+export default function RequestFormSearch() {
 
-  const [desc, setDesc] = React.useState(props.description);
-  const [giveS, setGive] = React.useState(props.give);
-  const [receiveS, setReceive] = React.useState(props.receive);
-  const [budget, setBudget] = React.useState(props.budget)
-  const [diets, setDiets] = React.useState(props.diets)
-  const [active, setActive] = React.useState(props.active)
+  const [giveS, setGive] = React.useState([1,1,1]);
+  const [receiveS, setReceive] = React.useState([1,1,1]);
+  const [budgetHigh, setBudgetHigh] = React.useState(0)
+  const [budgetLow, setBudgetLow] = React.useState(0)
+  const [diets, setDiets] = React.useState(["Paleo"])
+  const [location, setLocation] = React.useState("")
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
-  const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
+  const textIcon = ["buying ingredients", "sharing experience/expertise", "giving cooking time"]
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDesc(event.target.value);
-  };
 
   const handleGiveChange = ( index: number) =>{
     const c = [...giveS]
@@ -78,35 +68,42 @@ export default function EditRequestsSection(props: RequestProps) {
     }
   }
   
+  const handleBudgetChangeHigh = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBudgetHigh(Number(event.target.value))
+  };
+
+  const handleBudgetChangeLow = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBudgetLow(Number(event.target.value))
+  };
+
+
   const { auth } = useSelector((state: RootStore) => state, shallowEqual)
 
   const dispatch = useDispatch()
   
-  const handleSubmitRequest = () => {
+  const handleSearchRequest = () => {
     // send request
 
-    const request : RequestCP = {
-            description: desc,
+    const request = {
+            description: "",
             give_cooking: giveS[2],
             give_experience: giveS[1],
             give_ingredient: giveS[0],
             receive_cooking:  receiveS[2],
             receive_experience: receiveS[1],
             receive_ingredient: receiveS[0],
-            diet: diets,
-            weekly_budget:budget,
-            active: active,
+            //diet: diets,
+            budgetLow:budgetLow,
+            budgetHigh:budgetHigh,
     }
-    
-    dispatch(updateRequest(auth,request))
+
+    dispatch(findRequests("Fake Token",request))
   }
 
-  const handleBudgetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBudget(Number(event.target.value))
-  };
 
   return (
     <React.Fragment>
+          
         <Grid item 
                 xs={12}  
                 sx = {{borderRadius: 4}}
@@ -118,13 +115,13 @@ export default function EditRequestsSection(props: RequestProps) {
                 >
                 <Grid container spacing={2}>
     
-                    <Grid item xs={12} spacing={3} columnSpacing={10} >
+                    <Grid item xs={12}  columnSpacing={10} >
                         <ThemeProvider theme={lightTheme}>
                             <Box
                                 sx={{
                                     p: 2,
                                     bgcolor: 'background.default',
-                                    //display: 'grid',
+                                  
                                     gridTemplateColumns: { md: '1fr 1fr' },
                                     gap: 2,
                                     textAlign: 'center',
@@ -132,10 +129,12 @@ export default function EditRequestsSection(props: RequestProps) {
                                 }}
                                 >
                                
-                                <MyPaper  elevation={5} >
-
-                                    <Grid container sx={ {pt: 3}}> 
-                                    
+                            
+                                    <Box sx={{ display:'flex', pt: 3, pl:3 , typography: 'header1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
+                                        Search Request
+                                    </Box>
+                                    <Grid container sx={ {pt: 0, pl:5}}> 
+                                        
                                         <Grid item xs={1}  sx={ {pt: 8}} >
                                             <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
                                                 <Grid item xs={12}>
@@ -154,20 +153,20 @@ export default function EditRequestsSection(props: RequestProps) {
                                            </Grid>
                                         </Grid>
 
-                                        <Grid item xs={3} sx={ {pt: 5}} >
+                                        <Grid item xs={11} sx={ {pt: 5}} >
 
                                             <Grid container >
                                                 {giveS.map((n,index) =>
                                                 {  
                                                     return ( 
-                                                        <Grid item xs={4}>      
+                                                        <Grid key={`${index}${n}Grid1`} item xs={4}>      
                                                             <Button
                                                             onClick={() => {
                                                                 handleGiveChange(index);
                                                             }}
                                                             >
-                                                                <PopOverUtil message={`John will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
-                                                                    <img key={index}
+                                                                <PopOverUtil message={`You will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
+                                                                    <img
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
@@ -188,12 +187,12 @@ export default function EditRequestsSection(props: RequestProps) {
                                                 {receiveS.map((n,index) =>
                                                 {
                                                     return (
-                                                        <Grid item xs={4}>      
+                                                        <Grid key={`${index}${n}Grid2`}  item xs={4}>      
                                                             <Button
                                                             onClick={() => {
                                                                 handleReceiveChange(index);}}>
-                                                                <PopOverUtil message="John can contribute with ingredients">
-                                                                    <img key={index}
+                                                                <PopOverUtil message={`${n ? "":"Not"} looking for someone that can contribute by ${textIcon[index]}`}>
+                                                                    <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
@@ -210,20 +209,9 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                             
                                         </Grid>
 
-                                        <Grid item xs={8}>
+                                        <Grid item xs={12}>
                                             <Grid container   direction="row" spacing={10}>
                                                 <Grid item xs={12}>
-                                                    <Box sx={{ display:'flex', pr: 5 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                                    <TextField fullWidth
-                                                            id="outlined-multiline-flexible"
-                                                            label="Description"
-                                                            multiline
-                                                            maxRows={4}
-                                                            value={desc}
-                                                            onChange={handleChange}
-                                                            />
-                                                    </Box>
-                                                    
                                                     <Grid item xs={12}>
                                                     <Box sx={{ pt: 3 , typography: 'body1' , textAlign: 'left'}}>
                                                     {"Diets: "}
@@ -233,7 +221,7 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                 if (diets.indexOf(n) === -1)
                                                                     return ( 
                                                             
-                                                                        <Button variant="outlined"  color="secondary"
+                                                                        <Button key={`${n}Button1`} variant="outlined"  color="secondary"
                                                                         onClick={() => {
                                                                             handleDietChange(n)
                                                                         }}
@@ -242,7 +230,7 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                         </Button>)
                                                                 else {
                                                                     return (
-                                                                        <Button variant="contained" color="primary"
+                                                                        <Button key={`${n}Button2`} variant="contained" color="primary"
                                                                         onClick={() => {
                                                                             handleDietChange(n)
                                                                         }}
@@ -258,9 +246,9 @@ export default function EditRequestsSection(props: RequestProps) {
                                                     <Grid item xs={3}>
                                                         <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
                                                             <TextField
-                                                                label="Weekly Budget ($)"
-                                                                value={budget}
-                                                                onChange={handleBudgetChange}
+                                                                label="Weekly Budget High($)"
+                                                                value={budgetHigh}
+                                                                onChange={handleBudgetChangeHigh}
                                                                 InputLabelProps={{ shrink: true }}
                                                                 name="numberformat"
                                                                 id="formatted-numberformat-input"
@@ -272,13 +260,25 @@ export default function EditRequestsSection(props: RequestProps) {
                                                             />
                                                         </Box>
                                                     </Grid>
-                                                    <Grid item xs={12}>
-                                                        <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'right'}}>
-                                                        <PopOverUtil message="If active your request can be seen by other users">
-                                                        <Button  onClick={() => { setActive(!active)} }variant="contained">{ active ? "Active" : "Inactive"}</Button>
-                                                        </PopOverUtil>
+
+                                                    <Grid item xs={3}>
+                                                        <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
+                                                            <TextField
+                                                                label="Weekly Budget Low ($)"
+                                                                value={budgetLow}
+                                                                onChange={handleBudgetChangeLow}
+                                                                InputLabelProps={{ shrink: true }}
+                                                                name="numberformat"
+                                                                id="formatted-numberformat-input"
+                                                                InputProps={{
+                                                                inputComponent: NumberFormat as any,
+                                                                }}
+                                                                prefix="$"
+                                                                
+                                                            />
                                                         </Box>
                                                     </Grid>
+                                                   
 
 
 
@@ -289,8 +289,8 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                 <Grid item >
 
                                                                 <Button   onClick={() => {
-                                                                    handleSubmitRequest()
-                                                                    props.changeSection()
+                                                                 
+                                                                    handleSearchRequest()
                                                                 }}variant="contained">Submit Request Change</Button>
                                                                 </Grid>
 
@@ -304,7 +304,7 @@ export default function EditRequestsSection(props: RequestProps) {
 
                                     </Grid>
 
-                                </MyPaper>
+                               
 
                             </Box>
                         </ThemeProvider>
