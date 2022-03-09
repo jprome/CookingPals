@@ -18,7 +18,7 @@ const cookbookCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "Update Success!" });
+			return res.status(200).json({ msg: "Update Success!" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -38,7 +38,7 @@ const cookbookCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "cookbook added" });
+			return res.status(200).json({ msg: "cookbook added" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -50,7 +50,7 @@ const cookbookCtrl = {
 				"cookbook"
 			);
 
-			return res.status(204).json(cookbook);
+			return res.status(200).json(cookbook);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -71,7 +71,7 @@ const cookbookCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "cookbook deleted" });
+			return res.status(200).json({ msg: "cookbook deleted" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}

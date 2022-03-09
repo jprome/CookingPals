@@ -49,14 +49,14 @@ const authCtrl = {
 				// TODO: Later we will save this user n an activate route
 				await newUser.save();
 				return res
-					.status(204)
+					.status(200)
 					.json({ msg: "Success! Please check your email." });
 			} else if (validPhone(req.body.account)) {
 				// TODO: Send a confirmation phone
 				// sendSms(account, url, "Verify your phone number");
 				// TODO: Later we will save this user n an activate route
 				await newUser.save();
-				return res.status(204).json({ msg: "Success! Please check phone." });
+				return res.status(200).json({ msg: "Success! Please check phone." });
 			}
 
 			// new user is sent to home profile - send response with token
@@ -82,7 +82,7 @@ const authCtrl = {
 	logout: async (req: Request, res: Response) => {
 		try {
 			res.clearCookie("refreshtoken", { path: `/api/auth/refresh_token` });
-			return res.status(204).json({ msg: "Logged out!" });
+			return res.status(200).json({ msg: "Logged out!" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -104,7 +104,7 @@ const authCtrl = {
 
 			const access_token = generateAccessToken({ id: user._id });
 
-			return res.status(204).json({ access_token, user });
+			return res.status(200).json({ access_token, user });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
