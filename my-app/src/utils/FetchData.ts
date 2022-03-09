@@ -29,7 +29,7 @@ export const getAPI = async (url: string, token?:string) => {
 
 export const getAPISendInfo = async (url: string,payload: object, token?:string, ) => {
   try{
-    const res = await axios.get(base + url, {params:   payload} )
+    const res = await axios.get(base + url, {params: payload} )
     return res;
 
     }

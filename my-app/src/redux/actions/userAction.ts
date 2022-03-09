@@ -6,11 +6,8 @@ import { IAlertType, ALERT } from '../types/alertType'
 import { patchAPI, getAPI } from '../../utils/FetchData'
 import { checkPassword } from '../../utils/Valid'
 
-import { 
-  GET_OTHER_INFO,
-  IGetOtherInfoType
-} from '../types/profileType'
 import { RequestCP } from '../../utils/Typescript'
+import { GET_CURRENT_PROFILE, ICurrentProfileView } from '../types/profileType'
 
 
 export const updateUser = (avatar: File, name: string, auth: IAuth
@@ -102,18 +99,18 @@ export const resetPassword = (
 
 
 export const getOtherInfo = (id: string) => 
-async (dispatch: Dispatch<IAlertType | IGetOtherInfoType>) => {
+async (dispatch: Dispatch<IAlertType | ICurrentProfileView>) => {
   try {
     dispatch({ type: ALERT, payload: {loading: true}})
 
-    const res = await getAPI(`user/${id}`)
+    const res = await getAPI(`user/get/${id}`)
 
     dispatch({
-      type: GET_OTHER_INFO,
+      type: GET_CURRENT_PROFILE,
       payload: res.data
     })
 
-    dispatch({ type: ALERT, payload: { }})
+    dispatch({ type: ALERT, payload: {loading: false}})
 
   } catch (err: any) {
     dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})

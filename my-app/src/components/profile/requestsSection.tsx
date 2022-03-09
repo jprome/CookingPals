@@ -16,7 +16,8 @@ interface RequestProps {
   description: string,
   budget: number,
   active: boolean,
-  changeSection?(): void
+  changeSection?(): void,
+  own: boolean
   // will add a true / false prop to distiguish own account against others to have changing privileges
 }
 
@@ -28,8 +29,10 @@ export default function RequestsSection(props: RequestProps) {
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
+
   const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
 
+  console.log(props.own)
   return (
     <React.Fragment>
         <Grid item 
@@ -172,15 +175,15 @@ export default function RequestsSection(props: RequestProps) {
 
                                                             <Grid container justifyContent="flex-end" alignItems="flex-end">
                                                                 <Grid item >
-                                                                {props.changeSection ?  
+                                                                {(props.changeSection && props.own )?  
                                                                 
                                                                     <Button   onClick={() => {
                                                                         if (props.changeSection){
                                                                             props.changeSection()
                                                                         }
                                                                     }}variant="contained">Change Request</Button>
-                                                                    : {}}
-                                                              
+                                                                    : <div></div>}
+                                                          
                                                                 </Grid>
                                                             </Grid>
                                                         </Box>

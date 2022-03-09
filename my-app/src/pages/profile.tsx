@@ -1,8 +1,8 @@
 import React, {MouseEvent , useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Container ,Typography, Box, Paper} from '@mui/material'
 import Toolbar from '@mui/material/Toolbar';
-import { useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate} from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 //import CssBaseline from '@mui/material/CssBaseline';
 import BasicMenu from '../components/basicMenu';
@@ -13,6 +13,7 @@ import ReferencesSection from '../components/profile/referencesSection'
 import { RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
 import EditRequestsSection from '../components/edit-profile/editRequestSection';
+import { getOtherInfo } from '../redux/actions/userAction';
 
 const theme = createTheme();
 
@@ -31,8 +32,10 @@ interface SectionProps {
     budget: number,
     active:boolean,
     st(): void,
-    se(): void
+    se(): void,
+    own: boolean
 }
+
 const SectionComponent = (s:SectionProps) => {
 
     if (s.section === 0){
@@ -46,7 +49,9 @@ const SectionComponent = (s:SectionProps) => {
                         description={s.description} 
                         budget={s.budget} 
                         active={s.active}
-                        changeSection={s.st}/>
+                        changeSection={s.st}
+                        own={s.own}
+                        />
 
                     <RecipesSection cookbooks={null}/>
                 </Grid>
@@ -61,7 +66,7 @@ const SectionComponent = (s:SectionProps) => {
     if (s.section === 3){
         return <Typography variant="h4">Friends/Groups</Typography>
     }
-    if (s.section === 4 ){
+    if (s.section === 4 && !s.own){
         return <Grid container spacing={0} rowSpacing={0}>
 
                 <EditRequestsSection  
@@ -84,28 +89,49 @@ const SectionComponent = (s:SectionProps) => {
 
 const Profile = () => {
 
-    const initialState = { section: 0 }
+    const initialState = { section: 0 , own: false, give: [0,0,0], receive:[0,0,0]}
     const [profileState, setProfileState] = useState(initialState)
+
+    const { auth } = useSelector((state: RootStore) => state, shallowEqual)
+    const { profile } = useSelector((state: RootStore) => state, shallowEqual)
+
+
+    useEffect(() => {
+        if (location.pathname.substring(9) == auth.user?._id){
+            setProfileState({...profileState, own: true,
+            give : [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking],
+            receive : [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]})
+        }
+        else if (profile._id == "") {
+            dispatch(getOtherInfo(location.pathname.substring(9)))
+            setProfileState({...profileState, own: false})
+        }
+        else {
+            setProfileState({...profileState, own: false,
+            give : [profile.request!.give_ingredient,profile.request!.give_experience,profile.request!.give_cooking],
+            receive : [profile.request!.receive_ingredient,profile.request!.receive_experience,profile.request!.receive_cooking]})
+            
+        }
+
+    },[profile]);
     
+   
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    if (!auth.user) {
+        navigate("login")
+    }
+
+    let location = useLocation();
+
+   
     const clickHandler = (e: MouseEvent<HTMLButtonElement>, index: number): void => {
         e.preventDefault();
         setProfileState({...profileState, section: index})
     }
 
-    const { auth } = useSelector((state: RootStore) => state, shallowEqual)
-    useEffect(() =>{
-        console.log(profileState)
-        
-    },[profileState.section,profileState])
-   
-    const navigate = useNavigate();
-
-    if (!auth.user) {
-        navigate("login")
-    }
-  
-    const give = [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking]
-    const receive = [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]
+    
 
     return (
      
@@ -162,15 +188,16 @@ const Profile = () => {
                             }}> 
 
                             <SectionComponent 
-                                description={auth.user!.request!.description} 
+                                description={profileState.own ? auth.user!.request!.description : profile.request!.description} 
                                 section={profileState.section} 
-                                give={give} 
-                                receive={receive} 
-                                diet={auth.user!.request!.diet}
-                                budget={auth.user!.request!.weekly_budget}
-                                active={auth.user!.request!.active}
-                                st={() => setProfileState({ section: 4 })}
-                                se={() => setProfileState({ section: 0 })}
+                                give={profileState.give} 
+                                receive={profileState.receive} 
+                                diet={profileState.own ? auth.user!.request!.diet :  profile.request!.diet}
+                                budget={profileState.own ? auth.user!.request!.weekly_budget: profile.request!.weekly_budget}
+                                active={profileState.own ? auth.user!.request!.active : profile.request!.active}
+                                st={() => setProfileState({ ...profileState, section: 4 , own: profileState.own })}
+                                se={() => setProfileState({ ...profileState, section: 0 , own: profileState.own })}
+                                own={profileState.own}
                                 />
                             </Box>
                         </Grid>
@@ -179,7 +206,21 @@ const Profile = () => {
 
             </Grid>
         </ThemeProvider>
+   
     )
 }
 
 export default Profile
+
+
+
+
+/*
+
+
+
+
+
+
+
+*/
