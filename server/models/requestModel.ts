@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 import { food_request } from "../config/interface";
 
 const requestSchema = new mongoose.Schema({
-	// cooking, ingreidents, and experience go from -1 to 1. -1 being no, 0 being maybe, and 1 being yes.
+	// cooking, ingreidents, and experience go from -1 to 1.
+	// -1 being no, 0 being maybe, and 1 being yes.
 	give_cooking: {
 		type: Number,
 		required: true,
@@ -40,6 +41,10 @@ const requestSchema = new mongoose.Schema({
 	},
 	weekly_budget: {
 		type: Number,
+		required: true,
+	},
+	location: {
+		type: String,
 		required: true,
 	},
 });
