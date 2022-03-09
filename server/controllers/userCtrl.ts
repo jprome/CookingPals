@@ -12,7 +12,7 @@ const userCtrl = {
 			const userUpdate = req.body;
 			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate);
 
-			return res.status(204).json(userUpdate);
+			return res.status(200).json(userUpdate);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -33,7 +33,7 @@ const userCtrl = {
 				}
 			);
 
-			res.status(204).json({ msg: "Reset Password Success!" });
+			res.status(200).json({ msg: "Reset Password Success!" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -44,7 +44,7 @@ const userCtrl = {
 			const user = await Users.findById(req.params.id).select("-password");
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
-			return res.status(204).json(user);
+			return res.status(200).json(user);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -55,7 +55,7 @@ const userCtrl = {
 			const profileFound = await Users.findOneAndRemove({ _id: req.body.id });
 			if (!profileFound) return res.status(404).json({ msg: "User not found" });
 
-			return res.status(204).json({ msg: "User deleted" });
+			return res.status(200).json({ msg: "User deleted" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}

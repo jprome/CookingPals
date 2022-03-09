@@ -18,7 +18,7 @@ const requestCtrl = {
 				}
 			);
 
-			return res.status(204).json({ msg: "Update Success!" });
+			return res.status(200).json({ msg: "Update Success!" });
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -29,7 +29,7 @@ const requestCtrl = {
 				"request._id": req.body.id,
 			}).select("request");
 
-			return res.status(204).json(request);
+			return res.status(200).json(request);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
