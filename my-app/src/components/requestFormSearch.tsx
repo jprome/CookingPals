@@ -97,7 +97,7 @@ export default function RequestFormSearch() {
             budgetHigh:budgetHigh,
     }
 
-    dispatch(findRequests(auth.access_token,request))
+    dispatch(findRequests("Fake Token",request))
   }
 
 
@@ -115,13 +115,13 @@ export default function RequestFormSearch() {
                 >
                 <Grid container spacing={2}>
     
-                    <Grid item xs={12} spacing={3} columnSpacing={10} >
+                    <Grid item xs={12}  columnSpacing={10} >
                         <ThemeProvider theme={lightTheme}>
                             <Box
                                 sx={{
                                     p: 2,
                                     bgcolor: 'background.default',
-                                    //display: 'grid',
+                                  
                                     gridTemplateColumns: { md: '1fr 1fr' },
                                     gap: 2,
                                     textAlign: 'center',
@@ -129,7 +129,7 @@ export default function RequestFormSearch() {
                                 }}
                                 >
                                
-                                <MyPaper  elevation={5} >
+                            
                                     <Box sx={{ display:'flex', pt: 3, pl:3 , typography: 'header1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
                                         Search Request
                                     </Box>
@@ -159,14 +159,14 @@ export default function RequestFormSearch() {
                                                 {giveS.map((n,index) =>
                                                 {  
                                                     return ( 
-                                                        <Grid item xs={4}>      
+                                                        <Grid key={`${index}${n}Grid1`} item xs={4}>      
                                                             <Button
                                                             onClick={() => {
                                                                 handleGiveChange(index);
                                                             }}
                                                             >
                                                                 <PopOverUtil message={`You will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
-                                                                    <img key={index}
+                                                                    <img
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
@@ -187,12 +187,12 @@ export default function RequestFormSearch() {
                                                 {receiveS.map((n,index) =>
                                                 {
                                                     return (
-                                                        <Grid item xs={4}>      
+                                                        <Grid key={`${index}${n}Grid2`}  item xs={4}>      
                                                             <Button
                                                             onClick={() => {
                                                                 handleReceiveChange(index);}}>
                                                                 <PopOverUtil message={`${n ? "":"Not"} looking for someone that can contribute by ${textIcon[index]}`}>
-                                                                    <img key={index}
+                                                                    <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
@@ -221,7 +221,7 @@ export default function RequestFormSearch() {
                                                                 if (diets.indexOf(n) === -1)
                                                                     return ( 
                                                             
-                                                                        <Button variant="outlined"  color="secondary"
+                                                                        <Button key={`${n}Button1`} variant="outlined"  color="secondary"
                                                                         onClick={() => {
                                                                             handleDietChange(n)
                                                                         }}
@@ -230,7 +230,7 @@ export default function RequestFormSearch() {
                                                                         </Button>)
                                                                 else {
                                                                     return (
-                                                                        <Button variant="contained" color="primary"
+                                                                        <Button key={`${n}Button2`} variant="contained" color="primary"
                                                                         onClick={() => {
                                                                             handleDietChange(n)
                                                                         }}
@@ -304,7 +304,7 @@ export default function RequestFormSearch() {
 
                                     </Grid>
 
-                                </MyPaper>
+                               
 
                             </Box>
                         </ThemeProvider>

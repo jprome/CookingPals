@@ -5,7 +5,7 @@ export const GET_REQUEST_SEARCH_RESULTS = "GET_REQUEST_SEARCH_RESULTS "
 export interface IGet_Search_Results {
   msg?: string
   access_token: string
-  user?: IUser [] 
+  users?: IUser [] 
 }
 
 export interface IGet_Search_ResultsType{

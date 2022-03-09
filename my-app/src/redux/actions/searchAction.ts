@@ -15,20 +15,17 @@ export const findRequests = (token: string, request: any
 
         const res = await getAPISendInfo('request/search', request)
       
+        console.log(res.data)
         dispatch({ 
         type: GET_REQUEST_SEARCH_RESULTS,
         payload: {
           access_token: token,
-          users: {
-            
-          },
+          users: [
+                
+          ],
         } 
       })
-        
-     // const res = await patchAPI('auth/login', {
-     //  ...auth.user
-     // }, auth.access_token)
-  
+    
     //dispatch({ type: ALERT, payload: {success: res.data.msg}})
   
     } catch (err: any) {

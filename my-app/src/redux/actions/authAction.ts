@@ -36,9 +36,11 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
 
   try {
     dispatch({ type: ALERT, payload: { loading: true } }) // loading
-    
+   
     const res = await postAPI('auth/register', userRegister) // send new account info
     
+    dispatch({ type: AUTH, payload: res.data })
+
     dispatch({ type: ALERT, payload: { success: res.data.msg } }) // save account info on auth state
   } catch (err: any) {
     dispatch({ type: ALERT, payload: { errors: err.response.data.msg } }) 
