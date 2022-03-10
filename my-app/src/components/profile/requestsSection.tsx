@@ -16,7 +16,8 @@ interface RequestProps {
   description: string,
   budget: number,
   active: boolean,
-  changeSection?(): void
+  changeSection?(): void,
+  own: boolean
   // will add a true / false prop to distiguish own account against others to have changing privileges
 }
 
@@ -28,8 +29,10 @@ export default function RequestsSection(props: RequestProps) {
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
+
   const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
 
+  console.log(props.own)
   return (
     <React.Fragment>
         <Grid item 
@@ -85,10 +88,10 @@ export default function RequestsSection(props: RequestProps) {
                                                 {props.give.map((n,index) =>
                                                 {  
                                                     return ( 
-                                                        <Grid item xs={4}>      
+                                                        <Grid key={`${index}Grid5`} item xs={4}>      
                                                                 <Button>
                                                                 <PopOverUtil message={`John will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
-                                                                    <img key={index}
+                                                                    <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
@@ -109,10 +112,10 @@ export default function RequestsSection(props: RequestProps) {
                                                 {props.receive.map((n,index) =>
                                                 {
                                                     return (
-                                                        <Grid item xs={4}>      
+                                                        <Grid key={`${index}Grid6`} item xs={4}>      
                                                                 <Button>
                                                                 <PopOverUtil message={`John is ${n ? "":"not"} looking for someone that can contribute by ${textIcon[index]}`}>
-                                                                    <img key={index}
+                                                                    <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
@@ -144,7 +147,7 @@ export default function RequestsSection(props: RequestProps) {
                                                             {props.diet.map((n,index) =>
                                                             {  
                                                                     return (
-                                                                        <Button variant="contained" key={n} color="primary">
+                                                                        <Button variant="contained" key={`${index}Button5`} color="primary">
                                                                             
                                                                             {n}
                                                                         </Button>
@@ -172,15 +175,15 @@ export default function RequestsSection(props: RequestProps) {
 
                                                             <Grid container justifyContent="flex-end" alignItems="flex-end">
                                                                 <Grid item >
-                                                                {props.changeSection ?  
+                                                                {(props.changeSection && props.own )?  
                                                                 
                                                                     <Button   onClick={() => {
                                                                         if (props.changeSection){
                                                                             props.changeSection()
                                                                         }
                                                                     }}variant="contained">Change Request</Button>
-                                                                    : {}}
-                                                              
+                                                                    : <div></div>}
+                                                          
                                                                 </Grid>
                                                             </Grid>
                                                         </Box>

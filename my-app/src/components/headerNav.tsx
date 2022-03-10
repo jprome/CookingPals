@@ -7,12 +7,17 @@ import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import {Link} from 'react-router-dom';
 import { Grid ,Typography, Box} from '@mui/material'
+import { shallowEqual, useSelector } from 'react-redux';
+import { RootStore } from '../utils/Typescript';
 
 
 
 export default function Header() {
   const  title  = "CookingPals";
 
+  const { auth } = useSelector((state: RootStore) => state, shallowEqual)
+
+  
   return (
     <React.Fragment>
       <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -87,7 +92,7 @@ export default function Header() {
                     display: 'flex',
                     alignItems: 'right',
                     justifyContent: 'right'}}>
-                        <Link to='/profile/sd'> 
+                        <Link to={`/profile/${auth.user?._id}`}> 
                         <IconButton>
                             <AccountCircleOutlinedIcon />
                         </IconButton>
