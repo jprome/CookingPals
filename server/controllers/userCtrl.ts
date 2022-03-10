@@ -41,7 +41,7 @@ const userCtrl = {
 
 	getUser: async (req: Request, res: Response) => {
 		try {
-			const user = await Users.findById(req.params.id).select("-password");
+			const user = await Users.findById(req.query.id).select("-password");
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json(user);

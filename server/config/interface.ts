@@ -42,6 +42,7 @@ export interface food_request extends Document {
 	diets: [string];
 	active: boolean;
 	weekly_budget: number;
+	location: string;
 }
 
 export interface Recipe extends Document {
