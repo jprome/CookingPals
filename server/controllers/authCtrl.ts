@@ -27,8 +27,6 @@ const authCtrl = {
 				name: req.body.name,
 				account: req.body.account,
 				password: passwordHash,
-				role: "",
-				type: "",
 				location: req.body.location,
 				dob: req.body.dob,
 				intro: "",
@@ -37,6 +35,19 @@ const authCtrl = {
 				picture: "",
 				references: [],
 				cookbooks: [],
+				request: {
+					description: "",
+					give_cooking: 0,
+					give_experience: 0,
+					give_ingredient: 0,
+					receive_cooking: 0,
+					receive_experience: 0,
+					receive_ingredient: 0,
+					diets: [],
+					weekly_budget: 0,
+					active: false,
+					location: "",
+				},
 
 				// TODO: Add other profile properties
 			});

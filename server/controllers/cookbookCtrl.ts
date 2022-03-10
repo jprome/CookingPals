@@ -46,9 +46,9 @@ const cookbookCtrl = {
 
 	getCookbook: async (req: Request, res: Response) => {
 		try {
-			const cookbook = await Users.find({ "cookbook._id": req.body.id }).select(
-				"cookbook"
-			);
+			const cookbook = await Users.find({
+				"cookbook._id": req.query.id,
+			}).select("cookbook");
 
 			return res.status(200).json(cookbook);
 		} catch (err: any) {
