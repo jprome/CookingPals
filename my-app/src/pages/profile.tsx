@@ -66,7 +66,7 @@ const SectionComponent = (s:SectionProps) => {
     if (s.section === 3){
         return <Typography variant="h4">Friends/Groups</Typography>
     }
-    if (s.section === 4 && !s.own){
+    if (s.section === 4 && s.own){
         return <Grid container spacing={0} rowSpacing={0}>
 
                 <EditRequestsSection  
