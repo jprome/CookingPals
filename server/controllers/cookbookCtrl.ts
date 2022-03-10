@@ -34,7 +34,7 @@ const cookbookCtrl = {
 			await Users.findOneAndUpdate(
 				{ _id: req.user._id },
 				{
-					$push: { cookbooks: cookbook },
+					$push: { cookbook: cookbook },
 				}
 			);
 
