@@ -3,6 +3,7 @@ import { Request } from "express";
 import Reference from "../models/referenceModel";
 import Recipe from "../models/recipeModel";
 import Cookbook from "../models/cookbookModel";
+import mongoose from "mongoose";
 
 export interface IArticle extends Document {
 	title: string;
@@ -22,6 +23,19 @@ export interface IUser extends Document {
 	cookbook: [Cookbook];
 	_doc: Object;
 	// TODO: Add other user properties
+}
+export interface chat extends Document {
+	chatName: string;
+	isGroupChat: boolean;
+	users: [mongoose.Schema.Types.ObjectId];
+	latestMessage: [mongoose.Schema.Types.ObjectId];
+	groupAdmin: mongoose.Schema.Types.ObjectId;
+}
+export interface message extends Document {
+	sender: mongoose.Schema.Types.ObjectId;
+	contetn: string;
+	chat: mongoose.Schema.Types.ObjectId;
+	readBy: [mongoose.Schema.Types.ObjectId];
 }
 
 export interface Reference extends Document {
