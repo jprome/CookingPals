@@ -3,7 +3,8 @@ import { Reference } from "../config/interface";
 
 const referenceSchema = new mongoose.Schema({
 	reference_author: {
-		type: String,
+		type: [mongoose.Schema.Types.ObjectId],
+		ref: "user",
 		required: true,
 	},
 	rating: {
