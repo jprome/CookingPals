@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Message from "../models/messageModel";
+import User from "../models/userModel";
+
 import Chat from "../models/chatModel";
 
 import mongoose from "mongoose";
@@ -35,22 +37,35 @@ const messageCtrl = {
 		}
 
 		const newMessage = {
-			sender: req.user._id,
+			sender: ObjectId(req.user._id),
 			content: content,
-			chat: chatId,
+			chat: ObjectId(chatId),
 		};
 
 		try {
+			// var message = await Message.create(newMessage);
+
+			// message = await message.populate("sender", "name pic").execPopulate();
+			// message = await message.populate("chat").execPopulate();
+			// message = await User.populate(message, {
+			// 	path: "chat.users",
+			// 	select: "name pic email",
+			// });
 			var message = await Message.create(newMessage);
 
-			message = await message.populate("sender", "name picture").execPopulate();
-			message = await message.populate({
-				path: "chat",
-				populate: { path: "users", select: "name picture account" },
+			message = await message
+				.populate("sender", "name account picture")
+				.execPopulate();
+			message = await message
+				.populate({
+					path: "chat",
+					populate: { path: "users", select: "name picture account" },
+				})
+				.execPopulate();
+
+			await Chat.findByIdAndUpdate(req.body.chatId, {
+				latestMessage: message._id,
 			});
-
-			await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
-
 			res.json(message);
 		} catch (err: any) {
 			return res.status(400).json({ msg: err.message });

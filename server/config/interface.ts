@@ -33,7 +33,7 @@ export interface chat extends Document {
 }
 export interface message extends Document {
 	sender: mongoose.Schema.Types.ObjectId;
-	contetn: string;
+	content: string;
 	chat: mongoose.Schema.Types.ObjectId;
 	readBy: [mongoose.Schema.Types.ObjectId];
 }

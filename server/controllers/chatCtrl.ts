@@ -21,7 +21,7 @@ const chatCtrl = {
 				{ users: { $elemMatch: { $eq: userId } } },
 			],
 		})
-			.populate("users", "-password")
+			.populate("users", "_id name account picture")
 			.populate({
 				path: "latestMessage",
 				populate: { path: "sender", select: "name picture account" },
@@ -39,7 +39,7 @@ const chatCtrl = {
 				const createdChat = await Chat.create(chatData);
 				const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
 					"users",
-					"-password"
+					"_id name account picture"
 				);
 				res.status(200).json(FullChat);
 			} catch (err: any) {
