@@ -21,14 +21,6 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Please add your password"],
 		},
-		role: {
-			type: String,
-			default: "user", // admin
-		},
-		type: {
-			type: String,
-			default: "register", // login
-		},
 		dob: {
 			type: String,
 			required: [true, "Please add your date of birth"],
@@ -39,7 +31,7 @@ const userSchema = new mongoose.Schema(
 		},
 
 		intro: { type: String },
-		friends: { type: [String] },
+		friends: { type: [mongoose.Schema.Types.ObjectId], ref: "user" },
 		groups: { type: [String] },
 		picture: {
 			type: String,

@@ -54,7 +54,9 @@ const referenceCtrl = {
 		try {
 			const reference = await Users.find({
 				"references._id": req.query.id,
-			}).select("references");
+			})
+				.select("references")
+				.populate("reference_author");
 
 			return res.status(200).json(reference);
 		} catch (err: any) {
