@@ -21,6 +21,7 @@ export interface IUser extends Document {
 	groups: [String];
 	references: [Reference];
 	cookbook: [Cookbook];
+	request: food_request;
 	_doc: Object;
 	// TODO: Add other user properties
 }
