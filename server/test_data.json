@@ -1,0 +1,319 @@
+[
+	{
+		"_id": { "$oid": "622913fda8745d1a30fcad56" },
+		"role": "",
+		"type": "",
+		"friends": [],
+		"groups": [],
+		"picture": "",
+		"name": "Jose romero",
+		"account": "joseromero@gmail.com",
+		"password": "$2b$12$gueAku0GGceJXU3lviasI.f3TUY3Qk/Ze1mly.aYSkNXCPNhtk04u",
+		"location": "Gainesville, FL, USA",
+		"dob": "07/11/1999",
+		"intro": "",
+		"references": [
+			{
+				"_id": { "$oid": "622a464e426d624d94b67d0d" },
+				"reference_author": "6229148ca8745d1a30fcad60",
+				"rating": { "$numberInt": "5" },
+				"comment": "Been with Jose for over 4 years cooking. Cannot complain as we have been through thick and thing together. We started knowing how to barely cook a chicken to now cooking delicous that we are produ to show to others",
+				"date": "03/10/2022"
+			}
+		],
+		"cookbook": [
+			{
+				"diet_filters": ["omnivore"],
+				"_id": { "$oid": "622a4162426d624d94b67cf0" },
+				"name": "My favorite meals to cook for my venezuela family",
+				"recipes": [
+					{
+						"ingredients": ["rice", "butter", "chicken", "soy sauce"],
+						"_id": { "$oid": "622a4162426d624d94b67cf1" },
+						"name": "Venezuelan Fried Rice",
+						"description": "a classic asian fried rice with a venezuelan twist"
+					},
+					{
+						"ingredients": ["lasagna", "onions", "peppers", "romano cheese"],
+						"_id": { "$oid": "622a4162426d624d94b67cf2" },
+						"name": "lasagna",
+						"description": "big lasagna with mayn different types of cheese"
+					}
+				]
+			}
+		],
+		"request": {
+			"diets": ["vegan", "vegetarian", "omnivore"],
+			"_id": { "$oid": "622917e5a8745d1a30fcad70" },
+			"give_cooking": { "$numberInt": "0" },
+			"give_ingredient": { "$numberInt": "0" },
+			"give_experience": { "$numberInt": "-1" },
+			"receive_cooking": { "$numberInt": "1" },
+			"receive_ingredient": { "$numberInt": "0" },
+			"receive_experience": { "$numberInt": "1" },
+			"description": "I want to eat a good healthy diet that accomplishes all my daily nutritions. I want my food to taste good and I want to enjoy the process of cooking. I do not want to waste much time on the meal plan so an efficient option is perferred.",
+			"weekly_budget": { "$numberInt": "200" },
+			"active": true,
+			"location": "Gainesville, FL, USA"
+		},
+		"createdAt": { "$date": { "$numberLong": "1646859261194" } },
+		"updatedAt": { "$date": { "$numberLong": "1646937678007" } },
+		"__v": { "$numberInt": "0" }
+	},
+	{
+		"_id": { "$oid": "6229148ca8745d1a30fcad60" },
+		"role": "",
+		"type": "",
+		"friends": [],
+		"groups": [],
+		"picture": "",
+		"name": "Giovanni Ferioli",
+		"account": "giovanniferioli@gmail.com",
+		"password": "$2b$12$cF5lr.pXboMbeBERe9VjGuhgWR8hBr/jnOQiTr/QN1ioghlPDrGp.",
+		"location": "Gainesville, FL, USA",
+		"dob": "04/18/2000",
+		"intro": "",
+		"references": [
+			{
+				"_id": { "$oid": "622a46ab426d624d94b67d11" },
+				"reference_author": "622913fda8745d1a30fcad56",
+				"rating": { "$numberInt": "3" },
+				"comment": "He is good. no complains. He is a twat",
+				"date": "03/10/2022"
+			},
+			{
+				"_id": { "$oid": "622a478e426d624d94b67d19" },
+				"reference_author": "62291513a8745d1a30fcad69",
+				"rating": { "$numberInt": "5" },
+				"comment": "Gio is good a cooking. He really shows his creativity through the art of cooking.",
+				"date": "03/10/2022"
+			}
+		],
+		"cookbook": [
+			{
+				"diet_filters": ["vegan", "vegeterian"],
+				"_id": { "$oid": "622a40b1426d624d94b67cea" },
+				"name": "My favorite vegan soups",
+				"recipes": [
+					{
+						"ingredients": ["broccoli", "spinach", "yeast flakes", "cashews"],
+						"_id": { "$oid": "622a40b1426d624d94b67ceb" },
+						"name": "broccoli cheddar",
+						"description": "a classic broccoli chedder soup but with a vegan twist"
+					},
+					{
+						"ingredients": ["lentils", "onions", "peppers", "squash"],
+						"_id": { "$oid": "622a40b1426d624d94b67cec" },
+						"name": "lentil soup",
+						"description": "homemade soup that is very noutritious and earthy"
+					}
+				]
+			}
+		],
+		"request": {
+			"diets": ["vegan", "vegetarian", "omnivore", "clean eating"],
+			"_id": { "$oid": "622918e0a8745d1a30fcad74" },
+			"give_cooking": { "$numberInt": "0" },
+			"give_ingredient": { "$numberInt": "0" },
+			"give_experience": { "$numberInt": "-1" },
+			"receive_cooking": { "$numberInt": "0" },
+			"receive_ingredient": { "$numberInt": "0" },
+			"receive_experience": { "$numberInt": "1" },
+			"description": "I want a diet that finds a good balance between eating healthy and eating good. I prefer if half of our meals have meat vs all of them. I would also like to loose healthy weight",
+			"weekly_budget": { "$numberInt": "200" },
+			"active": true,
+			"location": "Gainesville, FL, USA"
+		},
+		"createdAt": { "$date": { "$numberLong": "1646859404031" } },
+		"updatedAt": { "$date": { "$numberLong": "1646937998640" } },
+		"__v": { "$numberInt": "0" }
+	},
+	{
+		"_id": { "$oid": "622914c0a8745d1a30fcad63" },
+		"role": "",
+		"type": "",
+		"friends": [],
+		"groups": [],
+		"picture": "",
+		"name": "Carlos Estrada",
+		"account": "carlosestrada@gmail.com",
+		"password": "$2b$12$6CyGOtEeV.J9Jshvm/ZrmOE6E/gqnpIk6o5Fvx0/.tKIJ33YDZUu2",
+		"location": "Gainesville, FL, USA",
+		"dob": "01/20/2000",
+		"intro": "",
+		"references": [
+			{
+				"_id": { "$oid": "622a4591426d624d94b67d06" },
+				"reference_author": "622914dea8745d1a30fcad66",
+				"rating": { "$numberInt": "4" },
+				"comment": "Meals that are cook are good. We had a good communication and understanding of our agreement. He would occasionally not have time to cook but he would amke it up after by cooking more.",
+				"date": "03/10/2022"
+			}
+		],
+		"cookbook": [
+			{
+				"diet_filters": ["omnivore"],
+				"_id": { "$oid": "622a42ce426d624d94b67cfc" },
+				"name": "dishes I like to make",
+				"recipes": [
+					{
+						"ingredients": ["bread", "egg", "ham", "cheese"],
+						"_id": { "$oid": "622a42ce426d624d94b67cfd" },
+						"name": "breakfast sandwhich",
+						"description": "a good hearty sanwhich to start the day right"
+					},
+					{
+						"ingredients": ["penne pasta", "red sauce"],
+						"_id": { "$oid": "622a42ce426d624d94b67cfe" },
+						"name": "penne pasta",
+						"description": "a good meal that serves many people at once"
+					}
+				]
+			}
+		],
+		"request": {
+			"diets": ["omnivore"],
+			"_id": { "$oid": "6229258ba8745d1a30fcad78" },
+			"give_cooking": { "$numberInt": "-1" },
+			"give_ingredient": { "$numberInt": "0" },
+			"give_experience": { "$numberInt": "-1" },
+			"receive_cooking": { "$numberInt": "0" },
+			"receive_ingredient": { "$numberInt": "0" },
+			"receive_experience": { "$numberInt": "-1" },
+			"description": "I want a diet that is quick and easy. I am mainly looking to save money and eat good meals",
+			"weekly_budget": { "$numberInt": "100" },
+			"active": true,
+			"location": "Gainesville, FL, USA"
+		},
+		"createdAt": { "$date": { "$numberLong": "1646859456291" } },
+		"updatedAt": { "$date": { "$numberLong": "1646937489056" } },
+		"__v": { "$numberInt": "0" }
+	},
+	{
+		"_id": { "$oid": "622914dea8745d1a30fcad66" },
+		"role": "",
+		"type": "",
+		"friends": [],
+		"groups": [],
+		"picture": "",
+		"name": "Sam Paris",
+		"account": "samparis@gmail.com",
+		"password": "$2b$12$/BPkdbHLwGJCkbJIdqUvrOQnRC3/VTFr9Q3PzNxY7en7FBcSplTGG",
+		"location": "Gainesville, FL, USA",
+		"dob": "01/27/2000",
+		"intro": "",
+		"references": [
+			{
+				"_id": { "$oid": "622a4460426d624d94b67d02" },
+				"reference_author": "622914c0a8745d1a30fcad63",
+				"rating": { "$numberInt": "4" },
+				"comment": "Easy person to cook food with. Very understanding wheneve things do not work out. Does not expect the dishes to come out super good. ",
+				"date": "03/10/2022"
+			}
+		],
+		"cookbook": [
+			{
+				"diet_filters": ["omnivore"],
+				"_id": { "$oid": "622a423a426d624d94b67cf6" },
+				"name": "easy to cook college meals",
+				"recipes": [
+					{
+						"ingredients": [
+							"taco shell",
+							"cheese",
+							"ground beef",
+							"taco bell seasoning"
+						],
+						"_id": { "$oid": "622a423a426d624d94b67cf7" },
+						"name": "Taco bell Tacos",
+						"description": "Tacos from taco bell made easy"
+					},
+					{
+						"ingredients": ["cookies", "meatballs"],
+						"_id": { "$oid": "622a423a426d624d94b67cf8" },
+						"name": "meatballs and cookies",
+						"description": "simple two ingredient meal"
+					}
+				]
+			}
+		],
+		"request": {
+			"diets": ["omnivore"],
+			"_id": { "$oid": "62292619a8745d1a30fcad7c" },
+			"give_cooking": { "$numberInt": "-1" },
+			"give_ingredient": { "$numberInt": "0" },
+			"give_experience": { "$numberInt": "-1" },
+			"receive_cooking": { "$numberInt": "0" },
+			"receive_ingredient": { "$numberInt": "-1" },
+			"receive_experience": { "$numberInt": "-1" },
+			"description": "I am looking for a cheap diet. I do not eat much but would still like to share some meals with someone.",
+			"weekly_budget": { "$numberInt": "80" },
+			"active": true,
+			"location": "Gainesville, FL, USA"
+		},
+		"createdAt": { "$date": { "$numberLong": "1646859486229" } },
+		"updatedAt": { "$date": { "$numberLong": "1646937184406" } },
+		"__v": { "$numberInt": "0" }
+	},
+	{
+		"_id": { "$oid": "62291513a8745d1a30fcad69" },
+		"role": "",
+		"type": "",
+		"friends": [],
+		"groups": [],
+		"picture": "",
+		"name": "Daniela Hernandex",
+		"account": "danielahernandez@gmail.com",
+		"password": "$2b$12$k/mVo8xqidfXTpn3Pod/ROYph1n.zV8iUBJH5vhkFxxrXQgVnfACy",
+		"location": "Miami, FL, USA",
+		"dob": "02/22/2000",
+		"intro": "",
+		"references": [
+			{
+				"_id": { "$oid": "622a472b426d624d94b67d15" },
+				"reference_author": "6229148ca8745d1a30fcad60",
+				"rating": { "$numberInt": "5" },
+				"comment": "Daniela is a great partner. She gets excited when we cook special dishes and shows her enthusiam for learning and teaching about cooking",
+				"date": "03/10/2022"
+			}
+		],
+		"cookbook": [
+			{
+				"diet_filters": ["omnivore"],
+				"_id": { "$oid": "622a3f8f426d624d94b67ce3" },
+				"name": "My favorite pastas",
+				"recipes": [
+					{
+						"ingredients": ["spaghetti", "meatballs", "sugar", "red sauce"],
+						"_id": { "$oid": "622a3f8f426d624d94b67ce4" },
+						"name": "meatball spaghetti",
+						"description": "A classic spaghetti and meatballs with a hispanic sugary twist"
+					},
+					{
+						"ingredients": ["spaghetti", "chicken", "butter", "white sauce"],
+						"_id": { "$oid": "622a3f8f426d624d94b67ce5" },
+						"name": "chicken alfredo",
+						"description": "white sauce chicken alfredo that taste smooth and buttery"
+					}
+				]
+			}
+		],
+		"request": {
+			"diets": ["omnivore", "vegeterian", "clean eating"],
+			"_id": { "$oid": "622926dca8745d1a30fcad80" },
+			"give_cooking": { "$numberInt": "0" },
+			"give_ingredient": { "$numberInt": "0" },
+			"give_experience": { "$numberInt": "0" },
+			"receive_cooking": { "$numberInt": "0" },
+			"receive_ingredient": { "$numberInt": "0" },
+			"receive_experience": { "$numberInt": "0" },
+			"description": "I am looking for a regular diet to save money and time with someone. I do not have any restrictions except to have a average balanced diet. I am open with eating plant based but I would like for it to be a slow transition.",
+			"weekly_budget": { "$numberInt": "120" },
+			"active": true,
+			"location": "Miami, FL, USA"
+		},
+		"createdAt": { "$date": { "$numberLong": "1646859539680" } },
+		"updatedAt": { "$date": { "$numberLong": "1646937899173" } },
+		"__v": { "$numberInt": "0" }
+	}
+]
