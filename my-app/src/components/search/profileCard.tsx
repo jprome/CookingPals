@@ -24,7 +24,7 @@ const ProfileCards = () => {
 
     return (
         <div>
-            {searchRequestReducer.users == [] ? <div>Complete Search Request</div> : 
+            {searchRequestReducer.users?.length == 0 ? <div><Button>Complete Search Request</Button></div> : 
             <div>
                 <Grid container>
                 {searchRequestReducer.users!.map((user) =>
@@ -64,11 +64,11 @@ const ProfileCard = (props: profileCardProps) => {
                     <MyPaper elevation={5}>
                             <Box
                                 sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                pt: 5
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    pt: 5
                                 }}>
                                 
                                 <Grid  item><Typography variant="h4">Picture</Typography></Grid> 
