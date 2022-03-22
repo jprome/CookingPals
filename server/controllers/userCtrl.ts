@@ -17,6 +17,43 @@ const userCtrl = {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
+	addFriend: async (req: IReqAuth, res: Response) => {
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
+
+		try {
+			const friend_Id = req.body;
+			const userUpdate = await Users.findOneAndUpdate(
+				{ _id: req.user._id },
+				{
+					$push: { friends: friend_Id },
+				}
+			);
+
+			return res.status(200).json(userUpdate);
+		} catch (err: any) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
+
+	removeFriend: async (req: IReqAuth, res: Response) => {
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
+
+		try {
+			const friend_Id = req.body;
+			const userUpdate = await Users.findOneAndUpdate(
+				{ _id: req.user._id },
+				{
+					$pull: { friends: friend_Id },
+				}
+			);
+
+			return res.status(200).json(userUpdate);
+		} catch (err: any) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
 
 	resetPassword: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
