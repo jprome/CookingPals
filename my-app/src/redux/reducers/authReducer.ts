@@ -16,14 +16,14 @@ const initialState: IAuth = {
       receive_cooking: 1,
       receive_experience: 1,
       receive_ingredient: 1,
-      diet:["Vegan","Vegetarian"],
+      diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true,
     }
   },
   access_token:"FakeToken"
 }
-const authReducer = (state: IAuth = initialState, action: IAuthType): IAuth => {
+const authReducer = (state: IAuth = {}, action: IAuthType): IAuth => {
   switch (action.type){
     case AUTH:
       return action.payload

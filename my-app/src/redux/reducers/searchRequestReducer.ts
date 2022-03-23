@@ -17,7 +17,7 @@ const initialState: IGet_Search_Results = {
       receive_cooking: 1,
       receive_experience: 1,
       receive_ingredient: 1,
-      diet:["Vegan","Vegetarian"],
+      diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true
     }}],

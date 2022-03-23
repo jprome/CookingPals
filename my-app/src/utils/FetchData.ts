@@ -19,6 +19,7 @@ export const getAPI = async (url: string, token?:string) => {
     const token_ = token ? token : '';
     const res = await axios.get(base + url, {
       headers: { Authorization: token_ }})
+      
     return res;
 
     }
@@ -31,7 +32,7 @@ export const getAPISendInfo = async (url: string,payload: object, token?:string,
   try{
     const res = await axios.get(base + url, {params: payload} )
     return res;
-
+    console.log(res)
     }
     catch(err){
       throw err

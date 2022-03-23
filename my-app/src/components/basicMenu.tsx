@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { ArrowDropDownCircleOutlined } from '@material-ui/icons';
 import Grid from '@material-ui/core/Grid';
 
-export default function BasicMenu() {
+export default function BasicMenu(props: {own:boolean}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -14,6 +14,7 @@ export default function BasicMenu() {
   const handleClose = (a:number|null) => {
     setAnchorEl(null);
     console.log(a)
+    console.log(props.own)
   };
 
   return (
@@ -51,6 +52,11 @@ export default function BasicMenu() {
           <Grid item>
           <MenuItem onClick={() => handleClose(4)}>Send Group Invite</MenuItem>
           </Grid>
+          {(!props.own )?  
+             <Grid item>
+             <MenuItem onClick={() => handleClose(4)}>Write Reference</MenuItem>
+             </Grid>
+                                                                : <div></div>}
         </Grid>
 
       </Menu>

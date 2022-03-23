@@ -13,7 +13,7 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     dispatch({ type: ALERT, payload: { loading: true } }) // loading
 
     const res = await postAPI('auth/login', userLogin) // login - activate receive token
-    
+    console.log(res.data)
     dispatch({ type: AUTH,payload: res.data }) // save login data on auth state 
 
     dispatch({ type: ALERT, payload: { success: res.data.msg } }) // success message

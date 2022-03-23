@@ -16,7 +16,7 @@ const initialState: IUser = {
       receive_cooking: 0,
       receive_experience: 1,
       receive_ingredient: 0,
-      diet:[],
+      diets:[],
       weekly_budget:75,
       active: true,
     }

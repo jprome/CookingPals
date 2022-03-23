@@ -88,7 +88,7 @@ const ProfileCard = (props: profileCardProps) => {
                                         description={props.user.request!.description} 
                                         give={[props.user.request!.give_ingredient,props.user.request!.give_experience,props.user.request!.give_cooking]}
                                         receive={ [props.user.request!.receive_ingredient,props.user.request!.receive_experience,props.user.request!.receive_cooking]} 
-                                        diet={props.user.request!.diet}
+                                        diets={props.user.request!.diets}
                                         budget={props.user.request!.weekly_budget}
                                         active={props.user.request!.active}
                                         />

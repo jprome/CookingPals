@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
 		},
 		references: [Reference.schema],
 		cookbook: [Cookbook.schema],
-		request: [Request.schema],
+		request: Request.schema,
 
 		// TODO: add other profile details
 		// Chats : [Chats],

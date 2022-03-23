@@ -18,19 +18,20 @@ interface RequestProps {
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const dietsList = ["Vegan",
-     "Paleo",
-     "Low-Carb/Keto",
-     "Vegetarian",
-     "Mediterranean",
-     "Pescetarian",
-     "Plant-based raw food",
-     "Carnivore diet",
-     "Lactose Intolerant",
-     "Gluten-free",
-     "Religion",
-     "Allergies",
-     "Diabetic"]
+const dietsList = ["vegan",
+     "paleo",
+     "low-Carb/keto",
+     "vegetarian",
+     "mediterranean",
+     "pescetarian",
+     "omnivore",
+     "plant-based raw food",
+     "carnivore diet",
+     "lactose Intolerant",
+     "gluten-free",
+     "religion",
+     "allergies",
+     "diabetic"]
 
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function RequestFormSearch() {
@@ -49,13 +50,13 @@ export default function RequestFormSearch() {
 
   const handleGiveChange = ( index: number) =>{
     const c = [...giveS]
-    c[index] = giveS[index] ? 0 : 1
+    c[index] = ((giveS[index] + 2) % 3) -1
     setGive(c)
   }
 
   const handleReceiveChange = ( index: number) =>{
     const c = [...receiveS]
-    c[index] = receiveS[index] ? 0 : 1
+    c[index] = ((receiveS[index] + 2)% 3) - 1
     setReceive(c)
   }
 
@@ -92,7 +93,7 @@ export default function RequestFormSearch() {
             receive_cooking:  receiveS[2],
             receive_experience: receiveS[1],
             receive_ingredient: receiveS[0],
-            //diet: diets,
+            diet: diets,
             budgetLow:budgetLow,
             budgetHigh:budgetHigh,
     }
@@ -171,7 +172,7 @@ export default function RequestFormSearch() {
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
@@ -197,7 +198,7 @@ export default function RequestFormSearch() {
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"

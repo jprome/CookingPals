@@ -27,7 +27,7 @@ interface SectionProps {
     section:number,
     give: number[],
     receive: number[],
-    diet: string[],
+    diets: string[],
     description: string,
     budget: number,
     active:boolean,
@@ -37,7 +37,6 @@ interface SectionProps {
 }
 
 const SectionComponent = (s:SectionProps) => {
-
     if (s.section === 0){
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
@@ -45,7 +44,7 @@ const SectionComponent = (s:SectionProps) => {
                     <RequestsSection  
                         give={s.give} 
                         receive={s.receive} 
-                        diet={s.diet} 
+                        diets={s.diets} 
                         description={s.description} 
                         budget={s.budget} 
                         active={s.active}
@@ -72,7 +71,7 @@ const SectionComponent = (s:SectionProps) => {
                 <EditRequestsSection  
                     give={s.give} 
                     receive={s.receive} 
-                    diets={s.diet} 
+                    diets={s.diets} 
                     description={s.description} 
                     budget={s.budget}
                     active={s.active}
@@ -83,7 +82,7 @@ const SectionComponent = (s:SectionProps) => {
             </Grid>
     }
     else {
-        return <Typography> Error</Typography>
+        return <Typography>Error</Typography>
     }
 }
 
@@ -95,43 +94,39 @@ const Profile = () => {
     const { auth } = useSelector((state: RootStore) => state, shallowEqual)
     const { profile } = useSelector((state: RootStore) => state, shallowEqual)
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    let location = useLocation();
 
     useEffect(() => {
+
+        if (!auth.user) {
+            navigate("/login")
+        }
         if (location.pathname.substring(9) == auth.user?._id){
             setProfileState({...profileState, own: true,
             give : [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking],
             receive : [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]})
         }
-        else if (profile._id == "") {
+        else if (profile._id == "asdfadsf") {
             dispatch(getOtherInfo(location.pathname.substring(9)))
-            setProfileState({...profileState, own: false})
+            setProfileState({...profileState, own: false}) // Need to add error - wrong id
+            
         }
         else {
             setProfileState({...profileState, own: false,
             give : [profile.request!.give_ingredient,profile.request!.give_experience,profile.request!.give_cooking],
             receive : [profile.request!.receive_ingredient,profile.request!.receive_experience,profile.request!.receive_cooking]})
-            
         }
 
-    },[profile]);
-    
-   
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    if (!auth.user) {
-        navigate("login")
-    }
-
-    let location = useLocation();
+    },[location.pathname]);
 
    
+
     const clickHandler = (e: MouseEvent<HTMLButtonElement>, index: number): void => {
         e.preventDefault();
         setProfileState({...profileState, section: index})
     }
-
-    
 
     return (
      
@@ -170,12 +165,12 @@ const Profile = () => {
                                 {sections.map((section) => (
                                     <Button key={section.name} onClick={(event) => clickHandler(event,section.index)} > {section.title}</Button>
                                 ))}
-
-                                <BasicMenu />
+                                {(!profileState.own ? <BasicMenu own={profileState.own} /> : <div></div>)}
+                                
                             </Toolbar>
                         </Container>
                 </Grid>
-                
+                <Button  onClick={() => navigate('/profile/622918e0a8745d1a30fcad74')}>Go to Gio's Profile</Button>
                 <Grid  container columnSpacing={2} sx={{backgroundColor: '#EEEEEE33', height: "100vh", width:"100%" }}>
                     <Container maxWidth="xl">
                         <Grid item xs={12}>
@@ -192,7 +187,7 @@ const Profile = () => {
                                 section={profileState.section} 
                                 give={profileState.give} 
                                 receive={profileState.receive} 
-                                diet={profileState.own ? auth.user!.request!.diet :  profile.request!.diet}
+                                diets={profileState.own ? auth.user!.request!.diets :  profile.request!.diets}
                                 budget={profileState.own ? auth.user!.request!.weekly_budget: profile.request!.weekly_budget}
                                 active={profileState.own ? auth.user!.request!.active : profile.request!.active}
                                 st={() => setProfileState({ ...profileState, section: 4 , own: profileState.own })}
@@ -203,24 +198,9 @@ const Profile = () => {
                         </Grid>
                     </Container>
                 </Grid>
-
             </Grid>
         </ThemeProvider>
-   
     )
 }
 
 export default Profile
-
-
-
-
-/*
-
-
-
-
-
-
-
-*/

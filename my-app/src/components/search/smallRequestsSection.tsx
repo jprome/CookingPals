@@ -12,7 +12,7 @@ import { preProcessFile } from 'typescript';
 interface RequestProps {
   give: number [],
   receive: number [],
-  diet: string [],
+  diets: string [],
   description: string,
   budget: number,
   active: boolean,
@@ -121,7 +121,7 @@ export default function SmallRequestsSection(props: RequestProps) {
                                                     <Grid item xs={12}>
                                                     <Box sx={{ pt: 3 , typography: 'body1' , textAlign: 'left' , fontSize: 20 , fontWeight: 'bold'}}>
                                                     {"Diets: "}
-                                                            {props.diet.map((n,index) =>
+                                                            {props.diets.map((n,index) =>
                                                             {  
                                                                     return (
                                                                         <Button variant="contained" key={`${index}${n}Button3`} color="primary">
