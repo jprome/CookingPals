@@ -87,18 +87,12 @@ const userCtrl = {
 			if (req.user.friends.includes(ObjectId(friendReq.userRequest)))
 				return res.status(400).json({ msg: "Already a friend with this user" });
 
-			const updatedFriendRequest = await friendRequest.findByIdAndUpdate(
-				friendRequest_id,
-				{
-					status: response,
-				}
-			);
 			if (response == 2) {
 				const userRequestUpdate = await Users.findOneAndUpdate(
 					{ _id: req.user._id },
 					{
 						$pull: { friendRequestReceived: friendRequest_id },
-						$push: { friends: updatedFriendRequest?.userRequest },
+						$push: { friends: friendReq.userRequest },
 					},
 					{ new: true }
 				).populate({
@@ -110,17 +104,19 @@ const userCtrl = {
 				});
 
 				await Users.findOneAndUpdate(
-					{ _id: updatedFriendRequest?.userRequest },
+					{ _id: friendReq.userRequest },
 					{
 						$pull: { friendRequestGiven: friendRequest_id },
-						$push: { friends: updatedFriendRequest?.userRecipient },
+						$push: { friends: friendReq.userRecipient },
 					},
 					{ new: true }
 				);
+				await friendRequest.findByIdAndDelete(friendRequest_id);
 
 				return res.status(200).json(userRequestUpdate);
 			} else if (response == 3) {
-				return res.status(200).json(updatedFriendRequest);
+				await friendRequest.findByIdAndDelete(friendRequest_id);
+				return res.status(200).json({ msg: "friend request rejectedr" });
 			}
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
