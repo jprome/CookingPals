@@ -27,7 +27,13 @@ const requestCtrl = {
 		try {
 			const request = await Users.find({
 				"request._id": req.query.id,
-			}).select("request");
+			}).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
 
 			return res.status(200).json(request);
 		} catch (err: any) {
@@ -70,7 +76,13 @@ const requestCtrl = {
 					{ "request.weekly_budget": { $gte: req.query.budgetLow } },
 					{ "request.weekly_budget": { $lte: req.query.budgetHigh } },
 				],
-			}).select("request");
+			}).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
 
 			return res.status(200).json(request);
 		} catch (err: any) {
