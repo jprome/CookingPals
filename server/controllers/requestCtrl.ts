@@ -27,7 +27,7 @@ const requestCtrl = {
 	getRequest: async (req: Request, res: Response) => {
 		try {
 			const request = await Users.find({
-				"request._id": req.query.id,
+				"request._id": req.body.id,
 			}).populate({
 				path: "references",
 				populate: {
@@ -43,41 +43,34 @@ const requestCtrl = {
 	},
 	searchRequests: async (req: Request, res: Response) => {
 		try {
-			const give_cookingFilter = getMatch(Number(req.query.give_cooking));
-			const give_ingredientsFilter = getMatch(
-				Number(req.query.give_ingredient)
-			);
-			const give_experienceFilter = getMatch(Number(req.query.give_experience));
-			const receive_cookingFilter = getMatch(Number(req.query.receive_cooking));
+			const give_cookingFilter = getMatch(Number(req.body.give_cooking));
+			const give_ingredientsFilter = getMatch(Number(req.body.give_ingredient));
+			const give_experienceFilter = getMatch(Number(req.body.give_experience));
+			const receive_cookingFilter = getMatch(Number(req.body.receive_cooking));
 			const receive_ingredientsFilter = getMatch(
-				Number(req.query.receive_ingredient)
+				Number(req.body.receive_ingredient)
 			);
 			const receive_experienceFilter = getMatch(
-				Number(req.query.receive_experience)
+				Number(req.body.receive_experience)
 			);
 
-			console.log(give_cookingFilter);
-			console.log(give_ingredientsFilter);
-			console.log(give_experienceFilter);
-			console.log(receive_cookingFilter);
-			console.log(receive_ingredientsFilter);
-			console.log(receive_experienceFilter);
-
-			const request = await Users.find({
+			var filter = {
 				"request.give_cooking": { $in: receive_cookingFilter },
 				"request.give_ingredient": { $in: receive_ingredientsFilter },
 				"request.give_experience": { $in: receive_experienceFilter },
 				"request.receive_cooking": { $in: give_cookingFilter },
 				"request.receive_ingredient": { $in: give_ingredientsFilter },
 				"request.receive_experience": { $in: give_experienceFilter },
-				"request.location": req.query.location,
-				"request.diets": { $in: req.query.diets },
+				"request.location": req.body.location,
+				"request.diets": { $in: req.body.diets },
 				"request.active": true,
 				$and: [
-					{ "request.weekly_budget": { $gte: req.query.budgetLow } },
-					{ "request.weekly_budget": { $lte: req.query.budgetHigh } },
+					{ "request.weekly_budget": { $gte: req.body.budgetLow } },
+					{ "request.weekly_budget": { $lte: req.body.budgetHigh } },
 				],
-			}).populate({
+			};
+
+			const request = await Users.find(filter).populate({
 				path: "references",
 				populate: {
 					path: "reference_author",
