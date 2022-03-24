@@ -10,50 +10,62 @@ const userCtrl = {
 
 		try {
 			const userUpdate = req.body;
-			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate);
+			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
 
 			return res.status(200).json(userUpdate);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
-	addFriend: async (req: IReqAuth, res: Response) => {
-		if (!req.user)
-			return res.status(400).json({ msg: "Invalid Authentication." });
+	// addFriend: async (req: IReqAuth, res: Response) => {
+	// 	if (!req.user)
+	// 		return res.status(400).json({ msg: "Invalid Authentication." });
 
-		try {
-			const friend_Id = req.body;
-			const userUpdate = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$push: { friends: friend_Id },
-				}
-			);
+	// 	try {
+	// 		const friend_Id = req.body;
+	// 		const userUpdate = await Users.findOneAndUpdate(
+	// 			{ _id: req.user._id },
+	// 			{
+	// 				$push: { friends: friend_Id },
+	// 			}
+	// 		);
 
-			return res.status(200).json(userUpdate);
-		} catch (err: any) {
-			return res.status(500).json({ msg: err.message });
-		}
-	},
+	// 		return res.status(200).json(userUpdate);
+	// 	} catch (err: any) {
+	// 		return res.status(500).json({ msg: err.message });
+	// 	}
+	// },
 
-	removeFriend: async (req: IReqAuth, res: Response) => {
-		if (!req.user)
-			return res.status(400).json({ msg: "Invalid Authentication." });
+	// removeFriend: async (req: IReqAuth, res: Response) => {
+	// 	if (!req.user)
+	// 		return res.status(400).json({ msg: "Invalid Authentication." });
 
-		try {
-			const friend_Id = req.body;
-			const userUpdate = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$pull: { friends: friend_Id },
-				}
-			);
+	// 	try {
+	// 		const friend_Id = req.body;
+	// 		const userUpdate = await Users.findOneAndUpdate(
+	// 			{ _id: req.user._id },
+	// 			{
+	// 				$pull: { friends: friend_Id },
+	// 			}
+	// 		).populate({
+	// 			path: "references",
+	// 			populate: {
+	// 				path: "reference_author",
+	// 				select: "name picture account",
+	// 			},
+	// 		});
 
-			return res.status(200).json(userUpdate);
-		} catch (err: any) {
-			return res.status(500).json({ msg: err.message });
-		}
-	},
+	// 		return res.status(200).json(userUpdate);
+	// 	} catch (err: any) {
+	// 		return res.status(500).json({ msg: err.message });
+	// 	}
+	// },
 
 	resetPassword: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
@@ -78,7 +90,15 @@ const userCtrl = {
 
 	getUser: async (req: Request, res: Response) => {
 		try {
-			const user = await Users.findById(req.query.id).select("-password");
+			const user = await Users.findById(req.query.id)
+				.select("-password")
+				.populate({
+					path: "references",
+					populate: {
+						path: "reference_author",
+						select: "name picture account",
+					},
+				});
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json(user);
