@@ -6,6 +6,8 @@ import Profile from "./pages/profile"
 import Header from "./components/headerNav"
 import { useLocation } from "react-router-dom";
 import SearchRequest from "./pages/searchRequest"
+import Reference from "./pages/reference"
+import HomePage from "./pages/homePage"
 
 
 const App: React.FC = () => {
@@ -42,8 +44,10 @@ const App: React.FC = () => {
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
+            <Route path="/home" element={<HomePage />}></Route>
             <Route path="/profile/:id" element={<Profile />}></Route>
             <Route path="/search" element={<SearchRequest />}></Route>
+            <Route path="/profile/:id/reference" element={<Reference />}></Route>
         </Routes>
     </main>
   )

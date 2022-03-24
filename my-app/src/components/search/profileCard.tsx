@@ -24,7 +24,7 @@ const ProfileCards = () => {
 
     return (
         <div>
-            {searchRequestReducer.users?.length == 0 ? <div><Button>Complete Search Request</Button></div> : 
+            {(searchRequestReducer.msg != 'successfull') ? <div><Button>Complete Search Request {searchRequestReducer.msg}</Button></div> : 
             <div>
                 <Grid container>
                 {searchRequestReducer.users!.map((user) =>
@@ -50,7 +50,7 @@ const ProfileCard = (props: profileCardProps) => {
     return (
     <ThemeProvider theme={theme}>
 
-            <Grid container spacing={1}  >         
+            <Grid container spacing={1} sx={{pt:3}}  >         
                 <Grid item  xs={12}>
                     <Box   
                             sx={{

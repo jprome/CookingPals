@@ -105,13 +105,14 @@ export interface RequestSearch {
 export const diets = ['vegan','vegetarian'] // etc
 
 export interface Reference {
-  id: string
-  author: string
+  _id: string
+  rating: number
   comment: string
   date: Date
-  title: string // retrieve from original request
-  request: string 
   pictures: File []
+  reference_author?: any
+  reference_author_name?: string
+  reference_author_pic?: string
 }
 
 export interface Groups {

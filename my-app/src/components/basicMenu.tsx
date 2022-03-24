@@ -4,17 +4,23 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { ArrowDropDownCircleOutlined } from '@material-ui/icons';
 import Grid from '@material-ui/core/Grid';
+import { useNavigate } from 'react-router-dom';
 
 export default function BasicMenu(props: {own:boolean}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (a:number|null) => {
     setAnchorEl(null);
     console.log(a)
-    console.log(props.own)
+
+    if (a == 4){
+      navigate('reference')
+    }
+    
   };
 
   return (
@@ -63,3 +69,4 @@ export default function BasicMenu(props: {own:boolean}) {
     </div>
   );
 }
+

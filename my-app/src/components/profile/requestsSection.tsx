@@ -89,7 +89,7 @@ export default function RequestsSection(props: RequestProps) {
                                                     return ( 
                                                         <Grid key={`${index}Grid5`} item xs={4}>      
                                                                 <Button>
-                                                                <PopOverUtil message={`John will  ${iconState[n+1]} contribute with ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`John ${iconState[n+1]} contribute with ${textIcon[index]}`}>
                                                                     <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
@@ -113,7 +113,7 @@ export default function RequestsSection(props: RequestProps) {
                                                     return (
                                                         <Grid key={`${index}Grid6`} item xs={4}>      
                                                                 <Button>
-                                                                <PopOverUtil message={`John is ${n ? "":"not"} looking for someone that can contribute by ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`John is ${iconState[n+1]} looking for someone that can contribute by ${textIcon[index]}`}>
                                                                     <img 
                                                                     style={{ 
                                                                         //position:"fixed", 

@@ -47,9 +47,11 @@ export default function Header() {
                         alignItems: 'right',
                         justifyContent: 'right'
                         }}>
+                            <Link to='/home'> 
                             <IconButton>
                                 <HomeOutlinedIcon />
                             </IconButton>
+                            </Link>
                     </Box>
                     </Grid>
 

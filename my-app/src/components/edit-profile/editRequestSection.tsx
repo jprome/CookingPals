@@ -101,6 +101,8 @@ export default function EditRequestsSection(props: RequestProps) {
             active: active,
     }
     
+    console.log(request)
+    
     dispatch(updateRequest(auth,request))
   }
 

@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
 import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
-import { RootStore } from '../utils/Typescript'
+import { Reference, RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
 import EditRequestsSection from '../components/edit-profile/editRequestSection';
 import { getOtherInfo } from '../redux/actions/userAction';
@@ -33,7 +33,8 @@ interface SectionProps {
     active:boolean,
     st(): void,
     se(): void,
-    own: boolean
+    own: boolean,
+    references: Reference []
 }
 
 const SectionComponent = (s:SectionProps) => {
@@ -58,7 +59,7 @@ const SectionComponent = (s:SectionProps) => {
     }
     if (s.section === 2){
         return <React.Fragment>
-                    <ReferencesSection references={null}/>
+                    <ReferencesSection references={s.references}/>
                 </React.Fragment>
         
     }
@@ -109,7 +110,7 @@ const Profile = () => {
             receive : [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]})
         }
         else if (profile._id == "asdfadsf") {
-            dispatch(getOtherInfo(location.pathname.substring(9)))
+            dispatch(getOtherInfo(location.pathname.substring(9),auth.access_token!))
             setProfileState({...profileState, own: false}) // Need to add error - wrong id
             
         }
@@ -152,7 +153,7 @@ const Profile = () => {
                         }}>
                         
                         <Grid  item><Typography variant="h4">Picture</Typography></Grid> 
-                        <Grid  item><Typography variant="h4">Name</Typography></Grid> 
+                        <Grid  item><Typography variant="h4">{profileState.own ? auth.user!.name : profile!.name}</Typography></Grid> 
                         
                     </Box> 
                    
@@ -170,7 +171,7 @@ const Profile = () => {
                             </Toolbar>
                         </Container>
                 </Grid>
-                <Button  onClick={() => navigate('/profile/622918e0a8745d1a30fcad74')}>Go to Gio's Profile</Button>
+                <Button  onClick={() => navigate('/profile/6229148ca8745d1a30fcad60')}>Go to Gio's Profile</Button>
                 <Grid  container columnSpacing={2} sx={{backgroundColor: '#EEEEEE33', height: "100vh", width:"100%" }}>
                     <Container maxWidth="xl">
                         <Grid item xs={12}>
@@ -193,6 +194,7 @@ const Profile = () => {
                                 st={() => setProfileState({ ...profileState, section: 4 , own: profileState.own })}
                                 se={() => setProfileState({ ...profileState, section: 0 , own: profileState.own })}
                                 own={profileState.own}
+                                references={profileState.own ? auth.user!.references! :  profile.references!}
                                 />
                             </Box>
                         </Grid>
