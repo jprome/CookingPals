@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
+import friendRequest from "../models/friendRequestModel";
+var ObjectId = require("mongodb").ObjectId;
+
 import bcrypt from "bcrypt";
 
 const userCtrl = {
@@ -23,49 +26,90 @@ const userCtrl = {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
-	// addFriend: async (req: IReqAuth, res: Response) => {
-	// 	if (!req.user)
-	// 		return res.status(400).json({ msg: "Invalid Authentication." });
+	requestFriend: async (req: IReqAuth, res: Response) => {
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
 
-	// 	try {
-	// 		const friend_Id = req.body;
-	// 		const userUpdate = await Users.findOneAndUpdate(
-	// 			{ _id: req.user._id },
-	// 			{
-	// 				$push: { friends: friend_Id },
-	// 			}
-	// 		);
+		try {
+			const createdRequest = await friendRequest.create({
+				userRequest: ObjectId(req.user.id),
+				userRecipient: ObjectId(req.body.friend_ID),
+				status: 1,
+			});
 
-	// 		return res.status(200).json(userUpdate);
-	// 	} catch (err: any) {
-	// 		return res.status(500).json({ msg: err.message });
-	// 	}
-	// },
+			const userRequestUpdate = await Users.findOneAndUpdate(
+				{ _id: req.user._id },
+				{
+					$push: { friendRequestGiven: createdRequest._id },
+				}
+			).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
 
-	// removeFriend: async (req: IReqAuth, res: Response) => {
-	// 	if (!req.user)
-	// 		return res.status(400).json({ msg: "Invalid Authentication." });
+			await Users.findOneAndUpdate(
+				{ _id: req.body.friend_ID },
+				{
+					$push: { friendRequestReceived: createdRequest._id },
+				}
+			);
 
-	// 	try {
-	// 		const friend_Id = req.body;
-	// 		const userUpdate = await Users.findOneAndUpdate(
-	// 			{ _id: req.user._id },
-	// 			{
-	// 				$pull: { friends: friend_Id },
-	// 			}
-	// 		).populate({
-	// 			path: "references",
-	// 			populate: {
-	// 				path: "reference_author",
-	// 				select: "name picture account",
-	// 			},
-	// 		});
+			return res.status(200).json(userRequestUpdate);
+		} catch (err: any) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
 
-	// 		return res.status(200).json(userUpdate);
-	// 	} catch (err: any) {
-	// 		return res.status(500).json({ msg: err.message });
-	// 	}
-	// },
+	respondFriend: async (req: IReqAuth, res: Response) => {
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
+
+		try {
+			const response = req.body.status;
+			const friendRequest_id = req.body.friendRequest_id;
+
+			const friendReq = await friendRequest.findById(friendRequest_id);
+
+			if (!friendReq)
+				return res.status(400).json({ msg: "Invalid friendRequest." });
+
+			const updatedFriendRequest = await friendRequest.findByIdAndUpdate(
+				friendRequest_id,
+				{
+					status: response,
+				}
+			);
+
+			const userRequestUpdate = await Users.findOneAndUpdate(
+				{ _id: req.user._id },
+				{
+					$pull: { friendRequestReceived: friendRequest_id },
+					$push: { friends: updatedFriendRequest?.userRequest },
+				}
+			).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
+
+			await Users.findOneAndUpdate(
+				{ _id: req.body.friend_ID },
+				{
+					$pull: { friendRequestGiven: friendRequest_id },
+					$push: { friends: updatedFriendRequest?.userRecipient },
+				}
+			);
+
+			return res.status(200).json(userRequestUpdate);
+		} catch (err: any) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
 
 	resetPassword: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
