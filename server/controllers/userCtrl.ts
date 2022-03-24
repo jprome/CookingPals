@@ -13,7 +13,9 @@ const userCtrl = {
 
 		try {
 			const userUpdate = req.body;
-			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate).populate({
+			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate, {
+				new: true,
+			}).populate({
 				path: "references",
 				populate: {
 					path: "reference_author",
@@ -30,10 +32,13 @@ const userCtrl = {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
+		if (req.user.friends.includes(ObjectId(req.body.friend_id)))
+			return res.status(400).json({ msg: "Already a friend with this user" });
+
 		try {
 			const createdRequest = await friendRequest.create({
 				userRequest: ObjectId(req.user.id),
-				userRecipient: ObjectId(req.body.friend_ID),
+				userRecipient: ObjectId(req.body.friend_id),
 				status: 1,
 			});
 
@@ -41,7 +46,8 @@ const userCtrl = {
 				{ _id: req.user._id },
 				{
 					$push: { friendRequestGiven: createdRequest._id },
-				}
+				},
+				{ new: true }
 			).populate({
 				path: "references",
 				populate: {
@@ -51,10 +57,11 @@ const userCtrl = {
 			});
 
 			await Users.findOneAndUpdate(
-				{ _id: req.body.friend_ID },
+				{ _id: req.body.friend_id },
 				{
 					$push: { friendRequestReceived: createdRequest._id },
-				}
+				},
+				{ new: true }
 			);
 
 			return res.status(200).json(userRequestUpdate);
@@ -66,7 +73,8 @@ const userCtrl = {
 	respondFriend: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
-
+		if (req.user.friends.includes(ObjectId(req.body.friend_id)))
+			return res.status(400).json({ msg: "Already a friend with this user" });
 		try {
 			const response = req.body.status;
 			const friendRequest_id = req.body.friendRequest_id;
@@ -76,36 +84,44 @@ const userCtrl = {
 			if (!friendReq)
 				return res.status(400).json({ msg: "Invalid friendRequest." });
 
+			if (req.user.friends.includes(ObjectId(friendReq.userRequest)))
+				return res.status(400).json({ msg: "Already a friend with this user" });
+
 			const updatedFriendRequest = await friendRequest.findByIdAndUpdate(
 				friendRequest_id,
 				{
 					status: response,
 				}
 			);
+			if (response == 2) {
+				const userRequestUpdate = await Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{
+						$pull: { friendRequestReceived: friendRequest_id },
+						$push: { friends: updatedFriendRequest?.userRequest },
+					},
+					{ new: true }
+				).populate({
+					path: "references",
+					populate: {
+						path: "reference_author",
+						select: "name picture account",
+					},
+				});
 
-			const userRequestUpdate = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$pull: { friendRequestReceived: friendRequest_id },
-					$push: { friends: updatedFriendRequest?.userRequest },
-				}
-			).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+				await Users.findOneAndUpdate(
+					{ _id: updatedFriendRequest?.userRequest },
+					{
+						$pull: { friendRequestGiven: friendRequest_id },
+						$push: { friends: updatedFriendRequest?.userRecipient },
+					},
+					{ new: true }
+				);
 
-			await Users.findOneAndUpdate(
-				{ _id: req.body.friend_ID },
-				{
-					$pull: { friendRequestGiven: friendRequest_id },
-					$push: { friends: updatedFriendRequest?.userRecipient },
-				}
-			);
-
-			return res.status(200).json(userRequestUpdate);
+				return res.status(200).json(userRequestUpdate);
+			} else if (response == 3) {
+				return res.status(200).json(updatedFriendRequest);
+			}
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -123,7 +139,8 @@ const userCtrl = {
 				{ _id: req.user._id },
 				{
 					password: passwordHash,
-				}
+				},
+				{ new: true }
 			);
 
 			res.status(200).json({ msg: "Reset Password Success!" });

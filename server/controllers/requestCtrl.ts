@@ -15,7 +15,8 @@ const requestCtrl = {
 					$set: {
 						request: request,
 					},
-				}
+				},
+				{ new: true }
 			);
 
 			return res.status(200).json({ msg: "Update Success!" });

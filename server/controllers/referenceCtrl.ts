@@ -41,7 +41,8 @@ const referenceCtrl = {
 				{ _id: to_id },
 				{
 					$push: { references: reference },
-				}
+				},
+				{ new: true }
 			);
 
 			return res.status(200).json({ msg: "reference added" });
