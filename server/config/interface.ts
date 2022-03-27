@@ -17,11 +17,14 @@ export interface IUser extends Document {
 	intro: String;
 	dob: string;
 	picture: string;
-	friends: [String];
+	friends: [mongoose.Schema.Types.ObjectId];
 	groups: [String];
 	references: [Reference];
 	cookbook: [Cookbook];
 	request: food_request;
+	friendRequestReceived: [mongoose.Schema.Types.ObjectId];
+	friendRequestGiven: [mongoose.Schema.Types.ObjectId];
+
 	_doc: Object;
 	// TODO: Add other user properties
 }
@@ -29,9 +32,16 @@ export interface chat extends Document {
 	chatName: string;
 	isGroupChat: boolean;
 	users: [mongoose.Schema.Types.ObjectId];
-	latestMessage: [mongoose.Schema.Types.ObjectId];
+	latestMessage: mongoose.Schema.Types.ObjectId;
 	groupAdmin: mongoose.Schema.Types.ObjectId;
 }
+
+export interface friendRequest extends Document {
+	userRequest: mongoose.Schema.Types.ObjectId;
+	userRecipient: mongoose.Schema.Types.ObjectId;
+	status: number;
+}
+
 export interface message extends Document {
 	sender: mongoose.Schema.Types.ObjectId;
 	content: string;
@@ -40,7 +50,7 @@ export interface message extends Document {
 }
 
 export interface Reference extends Document {
-	reference_author: string;
+	reference_author: mongoose.Schema.Types.ObjectId;
 	rating: number;
 	comment: string;
 	date: string;

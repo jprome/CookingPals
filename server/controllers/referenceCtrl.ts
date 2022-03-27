@@ -41,7 +41,8 @@ const referenceCtrl = {
 				{ _id: to_id },
 				{
 					$push: { references: reference },
-				}
+				},
+				{ new: true }
 			);
 
 			return res.status(200).json({ msg: "reference added" });
@@ -56,7 +57,7 @@ const referenceCtrl = {
 				"references._id": req.query.id,
 			})
 				.select("references")
-				.populate("reference_author");
+				.populate("reference_author", "name picture account");
 
 			return res.status(200).json(reference);
 		} catch (err: any) {
