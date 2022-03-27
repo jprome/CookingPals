@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
+import friendRequest from "../models/friendRequestModel";
+var ObjectId = require("mongodb").ObjectId;
+
 import bcrypt from "bcrypt";
 
 const userCtrl = {
@@ -10,46 +13,111 @@ const userCtrl = {
 
 		try {
 			const userUpdate = req.body;
-			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate);
+			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate, {
+				new: true,
+			}).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
 
 			return res.status(200).json(userUpdate);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
-	addFriend: async (req: IReqAuth, res: Response) => {
+	requestFriend: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
+		if (req.user.friends.includes(ObjectId(req.body.friend_id)))
+			return res.status(400).json({ msg: "Already a friend with this user" });
+
 		try {
-			const friend_Id = req.body;
-			const userUpdate = await Users.findOneAndUpdate(
+			const createdRequest = await friendRequest.create({
+				userRequest: ObjectId(req.user.id),
+				userRecipient: ObjectId(req.body.friend_id),
+				status: 1,
+			});
+
+			const userRequestUpdate = await Users.findOneAndUpdate(
 				{ _id: req.user._id },
 				{
-					$push: { friends: friend_Id },
-				}
+					$push: { friendRequestGiven: createdRequest._id },
+				},
+				{ new: true }
+			).populate({
+				path: "references",
+				populate: {
+					path: "reference_author",
+					select: "name picture account",
+				},
+			});
+
+			await Users.findOneAndUpdate(
+				{ _id: req.body.friend_id },
+				{
+					$push: { friendRequestReceived: createdRequest._id },
+				},
+				{ new: true }
 			);
 
-			return res.status(200).json(userUpdate);
+			return res.status(200).json(userRequestUpdate);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
 
-	removeFriend: async (req: IReqAuth, res: Response) => {
+	respondFriend: async (req: IReqAuth, res: Response) => {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
-
+		if (req.user.friends.includes(ObjectId(req.body.friend_id)))
+			return res.status(400).json({ msg: "Already a friend with this user" });
 		try {
-			const friend_Id = req.body;
-			const userUpdate = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$pull: { friends: friend_Id },
-				}
-			);
+			const response = req.body.status;
+			const friendRequest_id = req.body.friendRequest_id;
 
-			return res.status(200).json(userUpdate);
+			const friendReq = await friendRequest.findById(friendRequest_id);
+
+			if (!friendReq)
+				return res.status(400).json({ msg: "Invalid friendRequest." });
+
+			if (req.user.friends.includes(ObjectId(friendReq.userRequest)))
+				return res.status(400).json({ msg: "Already a friend with this user" });
+
+			if (response == 2) {
+				const userRequestUpdate = await Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{
+						$pull: { friendRequestReceived: friendRequest_id },
+						$push: { friends: friendReq.userRequest },
+					},
+					{ new: true }
+				).populate({
+					path: "references",
+					populate: {
+						path: "reference_author",
+						select: "name picture account",
+					},
+				});
+
+				await Users.findOneAndUpdate(
+					{ _id: friendReq.userRequest },
+					{
+						$pull: { friendRequestGiven: friendRequest_id },
+						$push: { friends: friendReq.userRecipient },
+					},
+					{ new: true }
+				);
+				await friendRequest.findByIdAndDelete(friendRequest_id);
+
+				return res.status(200).json(userRequestUpdate);
+			} else if (response == 3) {
+				await friendRequest.findByIdAndDelete(friendRequest_id);
+				return res.status(200).json({ msg: "friend request rejectedr" });
+			}
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -67,7 +135,8 @@ const userCtrl = {
 				{ _id: req.user._id },
 				{
 					password: passwordHash,
-				}
+				},
+				{ new: true }
 			);
 
 			res.status(200).json({ msg: "Reset Password Success!" });
@@ -78,7 +147,15 @@ const userCtrl = {
 
 	getUser: async (req: Request, res: Response) => {
 		try {
-			const user = await Users.findById(req.query.id).select("-password");
+			const user = await Users.findById(req.query.id)
+				.select("-password")
+				.populate({
+					path: "references",
+					populate: {
+						path: "reference_author",
+						select: "name picture account",
+					},
+				});
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json(user);

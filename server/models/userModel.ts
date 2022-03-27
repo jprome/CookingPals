@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema(
 
 		intro: { type: String },
 		friends: { type: [mongoose.Schema.Types.ObjectId], ref: "user" },
+		friendRequestReceived: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: "friendRequest",
+		},
+		friendRequestGiven: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: "friendRequest",
+		},
 		groups: { type: [String] },
 		picture: {
 			type: String,

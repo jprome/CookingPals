@@ -35,7 +35,8 @@ const cookbookCtrl = {
 				{ _id: req.user._id },
 				{
 					$push: { cookbook: cookbook },
-				}
+				},
+				{ new: true }
 			);
 
 			return res.status(200).json({ msg: "cookbook added" });

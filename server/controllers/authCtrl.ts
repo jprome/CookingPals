@@ -31,6 +31,8 @@ const authCtrl = {
 				dob: req.body.dob,
 				intro: "",
 				friends: [],
+				friendRequestReceived: [],
+				friendRequestGiven: [],
 				groups: [],
 				picture: "",
 				references: [],
