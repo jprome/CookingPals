@@ -2,6 +2,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 
 const URI = process.env.MONGODB_URL;
 
+// Connection to Mongoose
 mongoose.connect(
 	`${URI}`,
 	{

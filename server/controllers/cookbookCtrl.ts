@@ -4,10 +4,12 @@ import Users from "../models/userModel";
 
 const cookbookCtrl = {
 	updateCookbook: async (req: IReqAuth, res: Response) => {
+		// Validate user
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
+			// Update Cookbook
 			const { cookbook } = req.body;
 			await Users.updateOne(
 				{ _id: req.user._id, "cookbook._id": cookbook._id },
@@ -25,12 +27,13 @@ const cookbookCtrl = {
 	},
 
 	createCookbook: async (req: IReqAuth, res: Response) => {
+		// Validate user
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
+			// Add cookbook
 			const { cookbook } = req.body;
-
 			await Users.findOneAndUpdate(
 				{ _id: req.user._id },
 				{
@@ -47,6 +50,7 @@ const cookbookCtrl = {
 
 	getCookbook: async (req: Request, res: Response) => {
 		try {
+			// Find cookbook
 			const cookbook = await Users.find({
 				"cookbook._id": req.query.id,
 			}).select("cookbook");

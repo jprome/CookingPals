@@ -5,10 +5,6 @@ import Recipe from "../models/recipeModel";
 import Cookbook from "../models/cookbookModel";
 import mongoose from "mongoose";
 
-export interface IArticle extends Document {
-	title: string;
-	description: string;
-}
 export interface IUser extends Document {
 	name: string;
 	account: string;
@@ -99,11 +95,4 @@ export interface INewUser {
 	account: string;
 	password: string;
 	location: String;
-}
-
-export interface IUserParams {
-	name: string;
-	account: string;
-	password: string;
-	type: string;
 }

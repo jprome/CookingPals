@@ -4,13 +4,16 @@ import Users from "../models/userModel";
 
 const referenceCtrl = {
 	updateReference: async (req: IReqAuth, res: Response) => {
+		// Validaate user
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
 			const { reference } = req.body;
-			reference.reference_author = req.user._id.toString();
-			console.log(reference);
+			// Updated reference_author
+			reference.reference_author = req.user._id;
+
+			// Update user
 			await Users.updateOne(
 				{
 					"references._id": reference._id,
@@ -30,6 +33,7 @@ const referenceCtrl = {
 	},
 
 	createReference: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
@@ -37,6 +41,7 @@ const referenceCtrl = {
 			const { reference, to_id } = req.body;
 			reference.reference_author = req.user._id;
 
+			// Update User
 			await Users.findOneAndUpdate(
 				{ _id: to_id },
 				{
@@ -53,6 +58,7 @@ const referenceCtrl = {
 
 	getReference: async (req: Request, res: Response) => {
 		try {
+			// Get Reference
 			const reference = await Users.find({
 				"references._id": req.query.id,
 			})
@@ -66,12 +72,11 @@ const referenceCtrl = {
 	},
 
 	deleteReference: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
-			console.log(req.body.id);
-			console.log(req.user._id.toString());
-
+			// Delete reference
 			await Users.updateOne(
 				{
 					"references.reference_author": req.user._id.toString(),
