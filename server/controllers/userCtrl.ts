@@ -13,9 +13,13 @@ const userCtrl = {
 
 		try {
 			const userUpdate = req.body;
-			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate, {
-				new: true,
-			}).populate({
+			const newUser = await Users.findOneAndUpdate(
+				{ _id: req.user._id },
+				userUpdate,
+				{
+					new: true,
+				}
+			).populate({
 				path: "references",
 				populate: {
 					path: "reference_author",
@@ -23,7 +27,7 @@ const userCtrl = {
 				},
 			});
 
-			return res.status(200).json(userUpdate);
+			return res.status(200).json(newUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
