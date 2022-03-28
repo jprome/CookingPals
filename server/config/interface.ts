@@ -22,8 +22,8 @@ export interface IUser extends Document {
 	references: [Reference];
 	cookbook: [Cookbook];
 	request: food_request;
-	friendRequestReceived: [mongoose.Schema.Types.ObjectId];
-	friendRequestGiven: [mongoose.Schema.Types.ObjectId];
+	friendRequestReceived: [friendRequest];
+	friendRequestGiven: [friendRequest];
 
 	_doc: Object;
 	// TODO: Add other user properties
@@ -79,7 +79,8 @@ export interface Recipe extends Document {
 
 export interface Cookbook extends Document {
 	diet_filters: [string];
-	name: string;
+	title: string;
+	description: string;
 	recipes: [Recipe];
 }
 
