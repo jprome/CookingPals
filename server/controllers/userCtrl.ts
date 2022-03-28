@@ -19,13 +19,16 @@ const userCtrl = {
 				{
 					new: true,
 				}
-			).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+			)
+				.select("-password")
+				.populate({
+					path: "references",
+					populate: {
+						path: "reference_author",
+						select: "name picture account",
+					},
+				})
+				.populate("friends", "name");
 
 			return res.status(200).json(newUser);
 		} catch (err: any) {
@@ -52,13 +55,16 @@ const userCtrl = {
 					$push: { friendRequestGiven: createdRequest._id },
 				},
 				{ new: true }
-			).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+			)
+				.select("-password")
+				.populate({
+					path: "references",
+					populate: {
+						path: "reference_author",
+						select: "name picture account",
+					},
+				})
+				.populate("friends", "name");
 
 			await Users.findOneAndUpdate(
 				{ _id: req.body.friend_id },
@@ -99,13 +105,16 @@ const userCtrl = {
 						$push: { friends: friendReq.userRequest },
 					},
 					{ new: true }
-				).populate({
-					path: "references",
-					populate: {
-						path: "reference_author",
-						select: "name picture account",
-					},
-				});
+				)
+					.select("-password")
+					.populate({
+						path: "references",
+						populate: {
+							path: "reference_author",
+							select: "name picture account",
+						},
+					})
+					.populate("friends", "name");
 
 				await Users.findOneAndUpdate(
 					{ _id: friendReq.userRequest },
@@ -159,7 +168,8 @@ const userCtrl = {
 						path: "reference_author",
 						select: "name picture account",
 					},
-				});
+				})
+				.populate("friends", "name");
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json(user);
