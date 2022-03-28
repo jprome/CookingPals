@@ -179,3 +179,37 @@ export const sendFriendRequest = (auth: IAuth, request: {friend_id: string}
     }
   }
   
+  export const answerRequest = (auth: IAuth, id:string, answer:number
+    ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
+      if(!auth.access_token || !auth.user) return;
+    
+      //const res = await patchAPI('request/update', {request}, auth.access_token)
+      
+      try {
+        
+        const res = await patchAPI('user/respond_friend', {status:answer,friendRequest_id:id}, auth.access_token)
+
+        
+
+        dispatch({ type: ALERT, payload: {loading: true}})
+    
+        dispatch({ 
+          type: AUTH,
+          payload: {
+            access_token: auth.access_token,
+            user:  res.data,
+          } 
+        })
+    
+       //const res = await patchAPI('request/update', {
+       // request
+       // }, auth.access_token)
+    
+      //dispatch({ type: ALERT, payload: {success: res.data.msg}})
+    
+      } catch (err: any) {
+        dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
+        console.log(err.response.data.msg)
+  
+      }
+    }

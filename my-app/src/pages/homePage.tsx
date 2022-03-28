@@ -13,6 +13,7 @@ import { pink } from '@mui/material/colors';
 import { findRequests } from '../redux/actions/searchAction';
 import { ProfileCard } from '../components/search/profileCard';
 import ButtonBases from '../components/recipeBasesHomePage';
+import { answerRequest } from '../redux/actions/userAction';
 
 
 const theme = createTheme({ palette: { mode: 'light' } });
@@ -49,6 +50,10 @@ const Profile = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const answerFriendRequest = (id:string, answer:number) => {
+        //dispatch()
+        dispatch(answerRequest(auth,id,answer))
+    }
     useEffect(() => {
 
         const request = {
@@ -132,9 +137,9 @@ const Profile = () => {
                         
                         </Grid>
                     
-                            <Grid item xs={1} sx={{pt:3}}><Button><CheckCircle color="success" fontSize="large"></CheckCircle></Button></Grid>
+                            <Grid item xs={1} sx={{pt:3}}><Button onClick={()=> {answerFriendRequest(n,2)}}><CheckCircle color="success" fontSize="large"></CheckCircle></Button></Grid>
 
-                            <Grid item xs={1} sx={{pt:3}}><Button><RemoveCircle sx={{ color: pink[500] }} fontSize="large"></RemoveCircle></Button></Grid>
+                            <Grid item xs={1} sx={{pt:3}}><Button  onClick={()=> {answerFriendRequest(n,3)}}><RemoveCircle sx={{ color: pink[500] }} fontSize="large"></RemoveCircle></Button></Grid>
                         
                         </Grid>
 
