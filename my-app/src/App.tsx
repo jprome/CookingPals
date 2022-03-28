@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import SearchRequest from "./pages/searchRequest"
 import Reference from "./pages/reference"
 import HomePage from "./pages/homePage"
+import SendFriendRequest from "./pages/sendFriendRequest"
 
 
 const App: React.FC = () => {
@@ -48,6 +49,7 @@ const App: React.FC = () => {
             <Route path="/profile/:id" element={<Profile />}></Route>
             <Route path="/search" element={<SearchRequest />}></Route>
             <Route path="/profile/:id/reference" element={<Reference />}></Route>
+            <Route path="/profile/:id/sendFriendRequest" element={<SendFriendRequest />}></Route>
         </Routes>
     </main>
   )

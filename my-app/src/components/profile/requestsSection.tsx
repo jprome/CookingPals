@@ -30,6 +30,7 @@ export default function RequestsSection(props: RequestProps) {
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
   const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
   const iconState = ["will not", "may", "will"]
+  const iconStateR = ["will not", "may be", "will"]
 
 
   return (
@@ -113,7 +114,7 @@ export default function RequestsSection(props: RequestProps) {
                                                     return (
                                                         <Grid key={`${index}Grid6`} item xs={4}>      
                                                                 <Button>
-                                                                <PopOverUtil message={`John is ${iconState[n+1]} looking for someone that can contribute by ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`John ${iconStateR[n+1]} looking for someone that can contribute by ${textIcon[index]}`}>
                                                                     <img 
                                                                     style={{ 
                                                                         //position:"fixed", 

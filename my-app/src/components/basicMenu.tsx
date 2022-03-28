@@ -15,9 +15,12 @@ export default function BasicMenu(props: {own:boolean}) {
   };
   const handleClose = (a:number|null) => {
     setAnchorEl(null);
-    console.log(a)
 
-    if (a == 4){
+    if(a == 3){
+      navigate('sendFriendRequest')
+
+    }
+    else if (a == 4){
       navigate('reference')
     }
     
@@ -62,7 +65,7 @@ export default function BasicMenu(props: {own:boolean}) {
              <Grid item>
              <MenuItem onClick={() => handleClose(4)}>Write Reference</MenuItem>
              </Grid>
-                                                                : <div></div>}
+              : <div></div>}
         </Grid>
 
       </Menu>

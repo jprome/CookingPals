@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CustomizedDialogs from '../dialog';
 
 interface RecipesProps {
-  cookbooks: Cookbook [] | null
+  cookbooks: Cookbook [] | null | any
 }
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });

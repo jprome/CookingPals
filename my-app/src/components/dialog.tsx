@@ -41,7 +41,7 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
+         
         </IconButton>
       ) : null}
     </DialogTitle>
@@ -88,6 +88,9 @@ export default function CustomizedDialogs() {
           </Typography>
         </DialogContent>
         <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Save changes
+          </Button>
           <Button autoFocus onClick={handleClose}>
             Save changes
           </Button>

@@ -14,6 +14,7 @@ import { Reference, RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
 import EditRequestsSection from '../components/edit-profile/editRequestSection';
 import { getOtherInfo } from '../redux/actions/userAction';
+import FriendsSection from '../components/profile/friendsSection';
 
 const theme = createTheme();
 
@@ -34,7 +35,8 @@ interface SectionProps {
     st(): void,
     se(): void,
     own: boolean,
-    references: Reference []
+    references: Reference [],
+    cookbooks: any
 }
 
 const SectionComponent = (s:SectionProps) => {
@@ -64,7 +66,7 @@ const SectionComponent = (s:SectionProps) => {
         
     }
     if (s.section === 3){
-        return <Typography variant="h4">Friends/Groups</Typography>
+        return <FriendsSection friends={[]} />
     }
     if (s.section === 4 && s.own){
         return <Grid container spacing={0} rowSpacing={0}>
@@ -109,7 +111,7 @@ const Profile = () => {
             give : [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking],
             receive : [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]})
         }
-        else if (profile._id == "asdfadsf") {
+        else if (profile._id != location.pathname.substring(9) ) {
             dispatch(getOtherInfo(location.pathname.substring(9),auth.access_token!))
             setProfileState({...profileState, own: false}) // Need to add error - wrong id
             
@@ -122,7 +124,6 @@ const Profile = () => {
 
     },[location.pathname]);
 
-   
 
     const clickHandler = (e: MouseEvent<HTMLButtonElement>, index: number): void => {
         e.preventDefault();
@@ -171,7 +172,7 @@ const Profile = () => {
                             </Toolbar>
                         </Container>
                 </Grid>
-                <Button  onClick={() => navigate('/profile/6229148ca8745d1a30fcad60')}>Go to Gio's Profile</Button>
+               
                 <Grid  container columnSpacing={2} sx={{backgroundColor: '#EEEEEE33', height: "100vh", width:"100%" }}>
                     <Container maxWidth="xl">
                         <Grid item xs={12}>
@@ -195,6 +196,7 @@ const Profile = () => {
                                 se={() => setProfileState({ ...profileState, section: 0 , own: profileState.own })}
                                 own={profileState.own}
                                 references={profileState.own ? auth.user!.references! :  profile.references!}
+                                cookbooks={profileState.own ? auth.user!.cookbooks! :  profile.cookbooks!}
                                 />
                             </Box>
                         </Grid>
