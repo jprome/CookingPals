@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
+import { populate_user } from "../middleware/populate";
 
 const requestCtrl = {
 	updateRequest: async (req: IReqAuth, res: Response) => {
@@ -29,15 +30,11 @@ const requestCtrl = {
 	getRequest: async (req: Request, res: Response) => {
 		try {
 			// Get request
-			const request = await Users.find({
-				"request._id": req.query.id,
-			}).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+			const request = await populate_user(
+				Users.find({
+					"request._id": req.query.id,
+				})
+			);
 
 			return res.status(200).json(request);
 		} catch (err: any) {
@@ -78,13 +75,7 @@ const requestCtrl = {
 			};
 
 			// Find request based on filter
-			const request = await Users.find(filter).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+			const request = await populate_user(Users.find(filter));
 
 			return res.status(200).json(request);
 		} catch (err: any) {

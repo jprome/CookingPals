@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
 import friendRequest from "../models/friendRequestModel";
-var ObjectId = require("mongodb").ObjectId;
-
+import { populate_user } from "../middleware/populate";
 import bcrypt from "bcrypt";
+var ObjectId = require("mongodb").ObjectId;
 
 const userCtrl = {
 	updateUser: async (req: IReqAuth, res: Response) => {
@@ -15,22 +15,11 @@ const userCtrl = {
 		try {
 			// Update User
 			const userUpdate = req.body;
-			const newUser = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				userUpdate,
-				{
+			const newUser = await populate_user(
+				Users.findOneAndUpdate({ _id: req.user._id }, userUpdate, {
 					new: true,
-				}
-			)
-				.select("-password")
-				.populate({
-					path: "references",
-					populate: {
-						path: "reference_author",
-						select: "name picture account",
-					},
 				})
-				.populate("friends", "name");
+			);
 
 			return res.status(200).json(newUser);
 		} catch (err: any) {
@@ -55,22 +44,15 @@ const userCtrl = {
 			});
 
 			// Add request to user's request given
-			const userRequestUpdate = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$push: { friendRequestGiven: createdRequest },
-				},
-				{ new: true }
-			)
-				.select("-password")
-				.populate({
-					path: "references",
-					populate: {
-						path: "reference_author",
-						select: "name picture account",
+			const userRequestUpdate = await populate_user(
+				Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{
+						$push: { friendRequestGiven: createdRequest },
 					},
-				})
-				.populate("friends", "name");
+					{ new: true }
+				)
+			);
 
 			// Add request to user's request recieved
 			await Users.findOneAndUpdate(
@@ -111,23 +93,16 @@ const userCtrl = {
 				// Accept user friend Request
 
 				// Update user friends
-				const userRequestUpdate = await Users.findOneAndUpdate(
-					{ _id: req.user._id },
-					{
-						$pull: { friendRequestReceived: friendReq },
-						$push: { friends: friendReq.userRequest },
-					},
-					{ new: true }
-				)
-					.select("-password")
-					.populate({
-						path: "references",
-						populate: {
-							path: "reference_author",
-							select: "name picture account",
+				const userRequestUpdate = await populate_user(
+					Users.findOneAndUpdate(
+						{ _id: req.user._id },
+						{
+							$pull: { friendRequestReceived: friendReq },
+							$push: { friends: friendReq.userRequest },
 						},
-					})
-					.populate("friends", "name");
+						{ new: true }
+					)
+				);
 
 				// Update User friends
 				await Users.findOneAndUpdate(
@@ -181,16 +156,8 @@ const userCtrl = {
 	getUser: async (req: Request, res: Response) => {
 		try {
 			// Get user
-			const user = await Users.findById(req.query.id)
-				.select("-password")
-				.populate({
-					path: "references",
-					populate: {
-						path: "reference_author",
-						select: "name picture account",
-					},
-				})
-				.populate("friends", "name");
+			const user = await populate_user(Users.findById(req.query.id));
+
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json(user);

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
+import { populate_user } from "../middleware/populate";
 
 const referenceCtrl = {
 	updateReference: async (req: IReqAuth, res: Response) => {
@@ -59,11 +60,11 @@ const referenceCtrl = {
 	getReference: async (req: Request, res: Response) => {
 		try {
 			// Get Reference
-			const reference = await Users.find({
-				"references._id": req.query.id,
-			})
-				.select("references")
-				.populate("reference_author", "name picture account");
+			const reference = await populate_user(
+				Users.find({
+					"references._id": req.query.id,
+				})
+			);
 
 			return res.status(200).json(reference);
 		} catch (err: any) {
