@@ -15,19 +15,21 @@ const referenceCtrl = {
 			reference.reference_author = req.user._id;
 
 			// Update user
-			await Users.updateOne(
-				{
-					"references._id": reference._id,
-					"references.reference_author": req.user._id,
-				},
-				{
-					$set: {
-						references: reference,
+			const updatedUser = await populate_user(
+				Users.updateOne(
+					{
+						"references._id": reference._id,
+						"references.reference_author": req.user._id,
 					},
-				}
+					{
+						$set: {
+							references: reference,
+						},
+					}
+				)
 			);
 
-			return res.status(200).json({ msg: "Update Success!" });
+			return res.status(200).json(updatedUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -43,15 +45,17 @@ const referenceCtrl = {
 			reference.reference_author = req.user._id;
 
 			// Update User
-			await Users.findOneAndUpdate(
-				{ _id: to_id },
-				{
-					$push: { references: reference },
-				},
-				{ new: true }
+			const updatedUser = await populate_user(
+				Users.findOneAndUpdate(
+					{ _id: to_id },
+					{
+						$push: { references: reference },
+					},
+					{ new: true }
+				)
 			);
 
-			return res.status(200).json({ msg: "reference added" });
+			return res.status(200).json(updatedUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -78,20 +82,22 @@ const referenceCtrl = {
 			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
 			// Delete reference
-			await Users.updateOne(
-				{
-					"references.reference_author": req.user._id.toString(),
-				},
-				{
-					$pull: {
-						references: {
-							_id: req.body.id,
-						},
+			const updatedUser = await populate_user(
+				Users.updateOne(
+					{
+						"references.reference_author": req.user._id.toString(),
 					},
-				}
+					{
+						$pull: {
+							references: {
+								_id: req.body.id,
+							},
+						},
+					}
+				)
 			);
 
-			return res.status(200).json({ msg: "reference deleted" });
+			return res.status(200).json(updatedUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}

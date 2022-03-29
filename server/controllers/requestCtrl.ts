@@ -12,17 +12,19 @@ const requestCtrl = {
 		try {
 			// Update User
 			const request = req.body;
-			await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$set: {
-						request: request,
+			const updatedUser = await populate_user(
+				Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{
+						$set: {
+							request: request,
+						},
 					},
-				},
-				{ new: true }
+					{ new: true }
+				)
 			);
 
-			return res.status(200).json({ msg: "Update Success!" });
+			return res.status(200).json(updatedUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}

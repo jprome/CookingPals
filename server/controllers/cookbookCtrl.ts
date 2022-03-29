@@ -70,18 +70,20 @@ const cookbookCtrl = {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
-			await Users.updateOne(
-				{ _id: req.user._id },
-				{
-					$pull: {
-						cookbooks: {
-							_id: req.body.id,
+			const updatedUser = await populate_user(
+				Users.updateOne(
+					{ _id: req.user._id },
+					{
+						$pull: {
+							cookbooks: {
+								_id: req.body.id,
+							},
 						},
-					},
-				}
+					}
+				)
 			);
 
-			return res.status(200).json({ msg: "cookbook deleted" });
+			return res.status(200).json(updatedUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
