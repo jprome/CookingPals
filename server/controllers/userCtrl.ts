@@ -2,64 +2,63 @@ import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
 import friendRequest from "../models/friendRequestModel";
-var ObjectId = require("mongodb").ObjectId;
-
+import { populate_user } from "../middleware/populate";
 import bcrypt from "bcrypt";
+var ObjectId = require("mongodb").ObjectId;
 
 const userCtrl = {
 	updateUser: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
+			// Update User
 			const userUpdate = req.body;
-			await Users.findOneAndUpdate({ _id: req.user._id }, userUpdate, {
-				new: true,
-			}).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+			const newUser = await populate_user(
+				Users.findOneAndUpdate({ _id: req.user._id }, userUpdate, {
+					new: true,
+				})
+			);
 
-			return res.status(200).json(userUpdate);
+			return res.status(200).json(newUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
 	requestFriend: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
+		// Check if user already has this friend
 		if (req.user.friends.includes(ObjectId(req.body.friend_id)))
 			return res.status(400).json({ msg: "Already a friend with this user" });
 
 		try {
+			// Create Request
 			const createdRequest = await friendRequest.create({
 				userRequest: ObjectId(req.user.id),
 				userRecipient: ObjectId(req.body.friend_id),
 				status: 1,
 			});
 
-			const userRequestUpdate = await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$push: { friendRequestGiven: createdRequest._id },
-				},
-				{ new: true }
-			).populate({
-				path: "references",
-				populate: {
-					path: "reference_author",
-					select: "name picture account",
-				},
-			});
+			// Add request to user's request given
+			const userRequestUpdate = await populate_user(
+				Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{
+						$push: { friendRequestGiven: createdRequest },
+					},
+					{ new: true }
+				)
+			);
 
+			// Add request to user's request recieved
 			await Users.findOneAndUpdate(
 				{ _id: req.body.friend_id },
 				{
-					$push: { friendRequestReceived: createdRequest._id },
+					$push: { friendRequestReceived: createdRequest },
 				},
 				{ new: true }
 			);
@@ -71,50 +70,56 @@ const userCtrl = {
 	},
 
 	respondFriend: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
-		if (req.user.friends.includes(ObjectId(req.body.friend_id)))
-			return res.status(400).json({ msg: "Already a friend with this user" });
+
+		// Check to see if user isnt in friends list already
+
 		try {
 			const response = req.body.status;
 			const friendRequest_id = req.body.friendRequest_id;
 
+			// Check to see if freidn request exists
 			const friendReq = await friendRequest.findById(friendRequest_id);
-
 			if (!friendReq)
 				return res.status(400).json({ msg: "Invalid friendRequest." });
 
+			// Check to see if user isnt in friends list already
 			if (req.user.friends.includes(ObjectId(friendReq.userRequest)))
 				return res.status(400).json({ msg: "Already a friend with this user" });
 
 			if (response == 2) {
-				const userRequestUpdate = await Users.findOneAndUpdate(
-					{ _id: req.user._id },
-					{
-						$pull: { friendRequestReceived: friendRequest_id },
-						$push: { friends: friendReq.userRequest },
-					},
-					{ new: true }
-				).populate({
-					path: "references",
-					populate: {
-						path: "reference_author",
-						select: "name picture account",
-					},
-				});
+				// Accept user friend Request
 
+				// Update user friends
+				const userRequestUpdate = await populate_user(
+					Users.findOneAndUpdate(
+						{ _id: req.user._id },
+						{
+							$pull: { friendRequestReceived: friendReq },
+							$push: { friends: friendReq.userRequest },
+						},
+						{ new: true }
+					)
+				);
+
+				// Update User friends
 				await Users.findOneAndUpdate(
 					{ _id: friendReq.userRequest },
 					{
-						$pull: { friendRequestGiven: friendRequest_id },
+						$pull: { friendRequestGiven: friendReq },
 						$push: { friends: friendReq.userRecipient },
 					},
 					{ new: true }
 				);
+
+				// Delete friend Request
 				await friendRequest.findByIdAndDelete(friendRequest_id);
 
 				return res.status(200).json(userRequestUpdate);
 			} else if (response == 3) {
+				// Reject user
 				await friendRequest.findByIdAndDelete(friendRequest_id);
 				return res.status(200).json({ msg: "friend request rejectedr" });
 			}
@@ -124,13 +129,16 @@ const userCtrl = {
 	},
 
 	resetPassword: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
 			const { password } = req.body;
+			// Hash password
 			const passwordHash = await bcrypt.hash(password, 12);
 
+			// Update User
 			await Users.findOneAndUpdate(
 				{ _id: req.user._id },
 				{
@@ -147,15 +155,9 @@ const userCtrl = {
 
 	getUser: async (req: Request, res: Response) => {
 		try {
-			const user = await Users.findById(req.query.id)
-				.select("-password")
-				.populate({
-					path: "references",
-					populate: {
-						path: "reference_author",
-						select: "name picture account",
-					},
-				});
+			// Get user
+			const user = await populate_user(Users.findById(req.query.id));
+
 			if (!user) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json(user);
@@ -166,6 +168,7 @@ const userCtrl = {
 
 	deleteUser: async (req: Request, res: Response) => {
 		try {
+			// Delete User
 			const profileFound = await Users.findOneAndRemove({ _id: req.body.id });
 			if (!profileFound) return res.status(404).json({ msg: "User not found" });
 

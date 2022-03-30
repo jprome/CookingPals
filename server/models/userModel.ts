@@ -3,6 +3,7 @@ import { IUser } from "../config/interface";
 import Reference from "./referenceModel";
 import Cookbook from "./cookbookModel";
 import Request from "./requestModel";
+import friendRequestModel from "./friendRequestModel";
 
 const userSchema = new mongoose.Schema(
 	{
@@ -32,14 +33,8 @@ const userSchema = new mongoose.Schema(
 
 		intro: { type: String },
 		friends: { type: [mongoose.Schema.Types.ObjectId], ref: "user" },
-		friendRequestReceived: {
-			type: [mongoose.Schema.Types.ObjectId],
-			ref: "friendRequest",
-		},
-		friendRequestGiven: {
-			type: [mongoose.Schema.Types.ObjectId],
-			ref: "friendRequest",
-		},
+		friendRequestReceived: [friendRequestModel.schema],
+		friendRequestGiven: [friendRequestModel.schema],
 		groups: { type: [String] },
 		picture: {
 			type: String,

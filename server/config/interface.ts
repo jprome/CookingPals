@@ -5,10 +5,6 @@ import Recipe from "../models/recipeModel";
 import Cookbook from "../models/cookbookModel";
 import mongoose from "mongoose";
 
-export interface IArticle extends Document {
-	title: string;
-	description: string;
-}
 export interface IUser extends Document {
 	name: string;
 	account: string;
@@ -22,8 +18,8 @@ export interface IUser extends Document {
 	references: [Reference];
 	cookbook: [Cookbook];
 	request: food_request;
-	friendRequestReceived: [mongoose.Schema.Types.ObjectId];
-	friendRequestGiven: [mongoose.Schema.Types.ObjectId];
+	friendRequestReceived: [friendRequest];
+	friendRequestGiven: [friendRequest];
 
 	_doc: Object;
 	// TODO: Add other user properties
@@ -79,7 +75,8 @@ export interface Recipe extends Document {
 
 export interface Cookbook extends Document {
 	diet_filters: [string];
-	name: string;
+	title: string;
+	description: string;
 	recipes: [Recipe];
 }
 
@@ -98,11 +95,4 @@ export interface INewUser {
 	account: string;
 	password: string;
 	location: String;
-}
-
-export interface IUserParams {
-	name: string;
-	account: string;
-	password: string;
-	type: string;
 }

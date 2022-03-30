@@ -6,10 +6,12 @@ const cookbookSchema = new mongoose.Schema({
 	diet_filters: {
 		type: [String],
 	},
-
-	name: {
+	title: {
 		type: String,
 		required: true,
+	},
+	description: {
+		type: String,
 	},
 	recipes: [Recipe.schema],
 });

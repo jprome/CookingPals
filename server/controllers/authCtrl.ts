@@ -13,6 +13,7 @@ import { IDecodedToken, IUser } from "../config/interface";
 const authCtrl = {
 	register: async (req: Request, res: Response) => {
 		try {
+			// Check if User account already exists
 			const userFound = await Users.findOne({
 				account: req.body.account,
 			});
@@ -22,7 +23,9 @@ const authCtrl = {
 					.status(400)
 					.json({ msg: "Email or Phone number already exists." });
 
+			// Hash password
 			const passwordHash = await bcrypt.hash(req.body.password, 12);
+			// Construct new user
 			const newUser = new Users({
 				name: req.body.name,
 				account: req.body.account,
@@ -54,8 +57,7 @@ const authCtrl = {
 				// TODO: Add other profile properties
 			});
 
-			const active_token = generateActiveToken({ newUser });
-
+			// validate email or phone and send confirmation
 			if (validateEmail(req.body.account)) {
 				// TODO: Send a confirmation email
 				// sendMail(account, url, "Verify your email address");
@@ -71,8 +73,6 @@ const authCtrl = {
 				await newUser.save();
 				return res.status(200).json({ msg: "Success! Please check phone." });
 			}
-
-			// new user is sent to home profile - send response with token
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
@@ -82,11 +82,11 @@ const authCtrl = {
 		try {
 			const { account, password } = req.body;
 
+			// Check if user exists
 			const user = await Users.findOne({ account });
 			if (!user)
 				return res.status(400).json({ msg: "This account does not exits." });
 
-			// if user exists
 			loginUser(user, password, res);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
@@ -125,44 +125,27 @@ const authCtrl = {
 };
 
 const loginUser = async (user: IUser, password: string, res: Response) => {
+	// Check if passswords match
 	const isMatch = await bcrypt.compare(password, user.password);
-
 	if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." });
 
+	// Generate new refresh_tokens and access_tokens
 	const access_token = generateAccessToken({ id: user._id });
 	const refresh_token = generateRefreshToken({ id: user._id });
 
+	//  Add cookie to refreshToken path
 	res.cookie("refreshtoken", refresh_token, {
 		httpOnly: true,
 		path: `/api/auth/refresh_token`,
 		maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
 	});
 
+	// Respond with User
 	res.json({
 		msg: "Login Success!",
 		access_token,
 		user: { ...user._doc, password: "" },
 	});
 };
-
-// const registerUser = async (user: IUserParams, res: Response) => {
-// 	const newUser = new Users(user);
-// 	await newUser.save();
-
-// 	const access_token = generateAccessToken({ id: newUser._id });
-// 	const refresh_token = generateRefreshToken({ id: newUser._id });
-
-// 	res.cookie("refreshtoken", refresh_token, {
-// 		httpOnly: true,
-// 		path: `/api/refresh_token`,
-// 		maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
-// 	});
-
-// 	res.json({
-// 		msg: "Login Success!",
-// 		access_token,
-// 		user: { ...newUser._doc, password: "" },
-// 	});
-// };
 
 export default authCtrl;
