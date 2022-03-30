@@ -1,33 +1,42 @@
 import { Request, Response } from "express";
 import { IReqAuth } from "../config/interface";
 import Users from "../models/userModel";
+import { populate_user } from "../middleware/populate";
 
 const requestCtrl = {
 	updateRequest: async (req: IReqAuth, res: Response) => {
+		// Validate User
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
+			// Update User
 			const request = req.body;
-			await Users.findOneAndUpdate(
-				{ _id: req.user._id },
-				{
-					$set: {
-						request: request,
+			const updatedUser = await populate_user(
+				Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{
+						$set: {
+							request: request,
+						},
 					},
-				}
+					{ new: true }
+				)
 			);
 
-			return res.status(200).json({ msg: "Update Success!" });
+			return res.status(200).json(updatedUser);
 		} catch (err: any) {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
 	getRequest: async (req: Request, res: Response) => {
 		try {
-			const request = await Users.find({
-				"request._id": req.query.id,
-			}).select("request");
+			// Get request
+			const request = await populate_user(
+				Users.find({
+					"request._id": req.query.id,
+				})
+			);
 
 			return res.status(200).json(request);
 		} catch (err: any) {
@@ -36,6 +45,7 @@ const requestCtrl = {
 	},
 	searchRequests: async (req: Request, res: Response) => {
 		try {
+			// Get filters
 			const give_cookingFilter = getMatch(Number(req.query.give_cooking));
 			const give_ingredientsFilter = getMatch(
 				Number(req.query.give_ingredient)
@@ -49,14 +59,8 @@ const requestCtrl = {
 				Number(req.query.receive_experience)
 			);
 
-			console.log(give_cookingFilter);
-			console.log(give_ingredientsFilter);
-			console.log(give_experienceFilter);
-			console.log(receive_cookingFilter);
-			console.log(receive_ingredientsFilter);
-			console.log(receive_experienceFilter);
-
-			const request = await Users.find({
+			// Create query filter
+			var filter = {
 				"request.give_cooking": { $in: receive_cookingFilter },
 				"request.give_ingredient": { $in: receive_ingredientsFilter },
 				"request.give_experience": { $in: receive_experienceFilter },
@@ -70,7 +74,10 @@ const requestCtrl = {
 					{ "request.weekly_budget": { $gte: req.query.budgetLow } },
 					{ "request.weekly_budget": { $lte: req.query.budgetHigh } },
 				],
-			}).select("request");
+			};
+
+			// Find request based on filter
+			const request = await populate_user(Users.find(filter));
 
 			return res.status(200).json(request);
 		} catch (err: any) {
@@ -78,6 +85,8 @@ const requestCtrl = {
 		}
 	},
 };
+
+// 0 is maybe, -1 is not doing it, 1 is doing it
 const getMatch = (num: Number) => {
 	if (num === 0) {
 		return [0, -1, 1];
