@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
 import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
-import { Reference, RootStore } from '../utils/Typescript'
+import { Cookbook, Reference, RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
 import EditRequestsSection from '../components/edit-profile/editRequestSection';
 import { getOtherInfo } from '../redux/actions/userAction';
@@ -35,12 +35,13 @@ interface SectionProps {
     st(): void,
     se(): void,
     own: boolean,
-    references: Reference [],
+    references: any,
     cookbooks: any
 }
 
 const SectionComponent = (s:SectionProps) => {
     if (s.section === 0){
+        console.log(s)
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
 
@@ -55,7 +56,7 @@ const SectionComponent = (s:SectionProps) => {
                         own={s.own}
                         />
 
-                    <RecipesSection cookbooks={null}/>
+                    <RecipesSection  own={s.own} cookbooks={s.cookbooks}/>
                 </Grid>
             </React.Fragment>
     }
@@ -81,7 +82,7 @@ const SectionComponent = (s:SectionProps) => {
                     changeSection={s.se}
                 />
                 <br></br>
-                <RecipesSection cookbooks={null}/>
+                <RecipesSection own={s.own}cookbooks={s.cookbooks}/>
             </Grid>
     }
     else {
@@ -91,7 +92,7 @@ const SectionComponent = (s:SectionProps) => {
 
 const Profile = () => {
 
-    const initialState = { section: 0 , own: false, give: [0,0,0], receive:[0,0,0]}
+    const initialState = { section: 0 , own: true, give: [0,0,0], receive:[0,0,0]}
     const [profileState, setProfileState] = useState(initialState)
 
     const { auth } = useSelector((state: RootStore) => state, shallowEqual)
@@ -196,7 +197,7 @@ const Profile = () => {
                                 se={() => setProfileState({ ...profileState, section: 0 , own: profileState.own })}
                                 own={profileState.own}
                                 references={profileState.own ? auth.user!.references! :  profile.references!}
-                                cookbooks={profileState.own ? auth.user!.cookbooks! :  profile.cookbooks!}
+                                cookbooks={profileState.own ? auth.user!.cookbook! :  profile.cookbook!}
                                 />
                             </Box>
                         </Grid>

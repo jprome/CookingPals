@@ -9,6 +9,7 @@ import SearchRequest from "./pages/searchRequest"
 import Reference from "./pages/reference"
 import HomePage from "./pages/homePage"
 import SendFriendRequest from "./pages/sendFriendRequest"
+import CookbookPage from "./pages/cookbookPage"
 
 
 const App: React.FC = () => {
@@ -45,11 +46,12 @@ const App: React.FC = () => {
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
-            <Route path="/home" element={<HomePage />}></Route>
-            <Route path="/profile/:id" element={<Profile />}></Route>
-            <Route path="/search" element={<SearchRequest />}></Route>
-            <Route path="/profile/:id/reference" element={<Reference />}></Route>
-            <Route path="/profile/:id/sendFriendRequest" element={<SendFriendRequest />}></Route>
+            <Route path="/home" element={<HomePage />}/>
+            <Route path="/profile/:id" element={<Profile />}/>
+            <Route path="/search" element={<SearchRequest />}/>
+            <Route path="/profile/:id/reference" element={<Reference />}/>
+            <Route path="/profile/:id/sendFriendRequest" element={<SendFriendRequest />}/>
+            <Route path="/profile/:id/cookbook/:id" element={<CookbookPage />}/>
         </Routes>
     </main>
   )

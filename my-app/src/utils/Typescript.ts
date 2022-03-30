@@ -48,7 +48,7 @@ export interface IUser extends IUserLogin {
   location?: string | null
   profile_pic?: File | null
   updatedAt: string | null
-  cookbooks?: Cookbook [] |  null
+  cookbook?: Cookbook []  | any
   request?: RequestCP | null  // number describes state -> active,in-process,expired, secondNu
   friends?: string[] | null
   groups?: string[] | null
@@ -64,15 +64,19 @@ export interface IUser extends IUserLogin {
 // CookingPal Classes
 
 export interface Recipe {
-  id: string
+  id?: string
   name: string
-  description:string
+  description:string,
+  steps: string,
+  ingredients: string [],
   pic: File
 }
 export interface Cookbook {
-  id: string
-  diet: string []
-  recipe: Recipe []
+  id?: string
+  title: string,
+  diet_filters: string [],
+  description: string,
+  recipes: Recipe []
 }
 
 export interface RequestCP {

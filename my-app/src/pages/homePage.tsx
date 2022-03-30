@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Typography, Box, Paper} from '@mui/material'
-import { useLocation, useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 
 import Button from '@material-ui/core/Button';
@@ -42,6 +42,7 @@ interface SectionProps {
 
 const Profile = () => {
 
+    
     const [profileState, setProfileState] = useState()
 
     const { auth } = useSelector((state: RootStore) => state, shallowEqual)
@@ -54,8 +55,15 @@ const Profile = () => {
         //dispatch()
         dispatch(answerRequest(auth,id,answer))
     }
-    useEffect(() => {
 
+    
+    useEffect(() => {
+    
+        if (!auth.user) {
+            console.log("Logging out")
+            navigate("/login")
+        }
+        else{
         const request = {
             give_cooking: 0,
             give_experience: 0,
@@ -70,8 +78,9 @@ const Profile = () => {
         }
     
 
-    dispatch(findRequests("Fake Token",request))
-    console.log(request)
+        dispatch(findRequests("Fake Token",request))
+        console.log(request)
+        }
     },[]);
 
     return (
@@ -88,7 +97,8 @@ const Profile = () => {
                 
 
                 <Grid container>
-                    {searchRequest.users!.map((user) =>
+
+                    {(searchRequest.users ? searchRequest.users!.map((user) =>
                     {  
                         return ( 
                             <Grid item key={`${user._id}Grid4`} xs={4}>  
@@ -96,7 +106,8 @@ const Profile = () => {
                                         <ProfileCard user={user}></ProfileCard>
                                 
                             </Grid>)
-                    })}
+                    }):<div></div>)
+                } 
                </Grid>
 
                <Grid item xs={12} sx={{pl:20,ml:10,mt:10}}><Typography fontFamily="Helvetica" variant="h4">Friend Requests</Typography></Grid>  
@@ -105,7 +116,7 @@ const Profile = () => {
                 <Grid item xs={12} sx={{mt:3}}>
 
 
-                {auth.user!.friendRequestReceived.map((n:any) => {
+                {(auth.user ? auth.user!.friendRequestReceived.map((n:any) => {
                     return  <Box sx={{width:"750px", ml:10}}>
                         <Grid  
                             container
@@ -145,7 +156,8 @@ const Profile = () => {
 
                     </Box>
 
-                })}
+                }):<div></div>)
+            }
             
             </Grid>
 

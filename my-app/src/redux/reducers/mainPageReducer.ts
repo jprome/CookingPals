@@ -9,6 +9,7 @@ const initialState: IGet_Search_Results = {
     location:"United States Florida Miami",
     updatedAt:"asfd",
     account:"jose@gmail.com",
+    cookbook:[],
     request: {
       description:"Looking for people to partner with that like to eat plant based meals. I am fine with eating meat every once in a while, but would prefer forthe diet to be mostly meat. Message for more details!",
       give_cooking: 1,
@@ -22,7 +23,8 @@ const initialState: IGet_Search_Results = {
       active: true
     }}],
   access_token:"FakeToken",
-  msg:"No Message"
+  msg:"No Message",
+  
 }
 
 const mainPageReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {

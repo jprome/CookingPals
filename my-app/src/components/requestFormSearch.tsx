@@ -178,8 +178,7 @@ export default function RequestFormSearch() {
                                                                         width:"80px"}} 
                                                                     alt="Error"
                                                                     src={pics[index]}
-                                                                    
-                                                                /></PopOverUtil>
+                                                                    /></PopOverUtil>
                                                             </Button>
                                                         </Grid>)
                                                  })}
