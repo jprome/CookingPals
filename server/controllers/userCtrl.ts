@@ -26,6 +26,29 @@ const userCtrl = {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
+	editPicture: async (req: IReqAuth, res: Response) => {
+		// Validate User
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
+
+		try {
+			// Update User
+			const picture_url = req.body.picture;
+			const newUser = await populate_user(
+				Users.findOneAndUpdate(
+					{ _id: req.user._id },
+					{ picture: picture_url },
+					{
+						new: true,
+					}
+				)
+			);
+
+			return res.status(200).json(newUser);
+		} catch (err: any) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
 	requestFriend: async (req: IReqAuth, res: Response) => {
 		// Validate User
 		if (!req.user)
