@@ -19,6 +19,7 @@ export const getAPI = async (url: string, token?:string) => {
     const token_ = token ? token : '';
     const res = await axios.get(base + url, {
       headers: { Authorization: token_ }})
+      
     return res;
 
     }
@@ -27,11 +28,14 @@ export const getAPI = async (url: string, token?:string) => {
     }
 }
 
-export const getAPISendInfo = async (url: string,payload: object, token?:string, ) => {
+export const getAPISendInfo = async (url: string,payload: any, token?:string) => {
   try{
-    const res = await axios.get(base + url, {params: payload} )
+    const token_ = token ? token : '';
+    const res = await axios.get(base + url, 
+    
+      {params: payload, headers: { Authorization: token_ }}  )
     return res;
-
+    console.log(res)
     }
     catch(err){
       throw err
@@ -41,7 +45,7 @@ export const getAPISendInfo = async (url: string,payload: object, token?:string,
 export const patchAPI = async (url: string, post: object, token?:string) => {
   try{
     const token_ = token ? token : '';
-    const res = await axios.patch(base + {url}, post, {
+    const res = await axios.patch(base + url, post, {
       headers: { Authorization: token_ }})
     return res;
 

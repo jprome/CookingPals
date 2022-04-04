@@ -48,29 +48,35 @@ export interface IUser extends IUserLogin {
   location?: string | null
   profile_pic?: File | null
   updatedAt: string | null
-  cookbooks?: Cookbook [] |  null
+  cookbook?: Cookbook []  | any
   request?: RequestCP | null  // number describes state -> active,in-process,expired, secondNu
   friends?: string[] | null
   groups?: string[] | null
   references?: Reference[] | null
-  requestsSent?: [[string, number]] | null // number describes state -> rejected - accepted 
   friendRequest?: [[string, number]] | null // number describes whether its individual or group
   occupation?: string | null
   gender?: string | null
+  friendRequestGiven?: any
+  friendRequestReceived?:any
+
 }
 
 // CookingPal Classes
 
 export interface Recipe {
-  id: string
+  id?: string
   name: string
-  description:string
+  description:string,
+  steps: string,
+  ingredients: string [],
   pic: File
 }
 export interface Cookbook {
-  id: string
-  diet: string []
-  recipe: Recipe []
+  id?: string
+  title: string,
+  diet_filters: string [],
+  description: string,
+  recipes: Recipe []
 }
 
 export interface RequestCP {
@@ -83,7 +89,7 @@ export interface RequestCP {
   receive_ingredient: number,
   receive_experience: number,
 
-  diet: string[] 
+  diets: string[] 
   weekly_budget: number
   calendarRange?: Date [] // pair of dates
   active: boolean
@@ -105,13 +111,14 @@ export interface RequestSearch {
 export const diets = ['vegan','vegetarian'] // etc
 
 export interface Reference {
-  id: string
-  author: string
+  _id: string
+  rating: number
   comment: string
   date: Date
-  title: string // retrieve from original request
-  request: string 
   pictures: File []
+  reference_author?: any
+  reference_author_name?: string
+  reference_author_pic?: string
 }
 
 export interface Groups {

@@ -1,13 +1,15 @@
 import { AUTH, IAuth, IAuthType } from '../types/authType'
+import { IGet_Search_ResultsType , IGet_Search_Results, GET_REQUEST_SEARCH_RESULTS } from '../types/searchType'
 
-const initialState: IAuth = {
-  user: {
-    _id:"61f0cb711b4817db2be3036e",
+const initialState: IGet_Search_Results = {
+  users: [{
+    _id:"11b4817db2be3036e",
     name:"Jose Romero",
     password:"This is my password",
     location:"United States Florida Miami",
     updatedAt:"asfd",
     account:"jose@gmail.com",
+    cookbook:[],
     request: {
       description:"Looking for people to partner with that like to eat plant based meals. I am fine with eating meat every once in a while, but would prefer forthe diet to be mostly meat. Message for more details!",
       give_cooking: 1,
@@ -18,22 +20,23 @@ const initialState: IAuth = {
       receive_ingredient: 1,
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
-      active: true,
-    },
-    cookbook:[]
-  },
-  access_token:"FakeToken"
+      active: true
+    }}],
+  access_token:"FakeToken",
+  msg:"No Message",
+  
 }
-const authReducer = (state: IAuth = {}, action: IAuthType): IAuth => {
+
+const mainPageReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {
   switch (action.type){
-    case AUTH:
-      return action.payload
+    case GET_REQUEST_SEARCH_RESULTS :
+        return action.payload
     default:
       return state
   }
 }
 
-export default authReducer;
+export default mainPageReducer;
 
 
 

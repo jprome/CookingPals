@@ -12,7 +12,7 @@ import { preProcessFile } from 'typescript';
 interface RequestProps {
   give: number [],
   receive: number [],
-  diet: string [],
+  diets: string [],
   description: string,
   budget: number,
   active: boolean,
@@ -29,6 +29,9 @@ export default function SmallRequestsSection(props: RequestProps) {
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
   const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
+  const iconState = ["is not", "may be", "is"]
+
+  const iconStateOther = ["will not", "may ", "will"]
 
   return (
     <React.Fragment>
@@ -67,13 +70,13 @@ export default function SmallRequestsSection(props: RequestProps) {
                                                     return ( 
                                                         <Grid key={`${index}${n}Grid3`} item xs={4}>      
                                                                 <Button>
-                                                                <PopOverUtil message={`John will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`Name  ${iconStateOther[n+1]} contribute with ${textIcon[index]}`}>
                                                                     <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
@@ -91,13 +94,13 @@ export default function SmallRequestsSection(props: RequestProps) {
                                                     return (
                                                         <Grid item  key={`${index}${n}Grid4`} xs={4}>      
                                                                 <Button>
-                                                                <PopOverUtil message={`John is ${n ? "":"not"} looking for someone that can contribute by ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`Name  ${iconState[n+1]} looking for someone that can contribute by ${textIcon[index]}`}>
                                                                     <img 
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
@@ -121,7 +124,7 @@ export default function SmallRequestsSection(props: RequestProps) {
                                                     <Grid item xs={12}>
                                                     <Box sx={{ pt: 3 , typography: 'body1' , textAlign: 'left' , fontSize: 20 , fontWeight: 'bold'}}>
                                                     {"Diets: "}
-                                                            {props.diet.map((n,index) =>
+                                                            {props.diets.map((n,index) =>
                                                             {  
                                                                     return (
                                                                         <Button variant="contained" key={`${index}${n}Button3`} color="primary">

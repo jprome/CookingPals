@@ -9,6 +9,7 @@ const initialState: IGet_Search_Results = {
     location:"United States Florida Miami",
     updatedAt:"asfd",
     account:"jose@gmail.com",
+    cookbook:[],
     request: {
       description:"Looking for people to partner with that like to eat plant based meals. I am fine with eating meat every once in a while, but would prefer forthe diet to be mostly meat. Message for more details!",
       give_cooking: 1,
@@ -17,7 +18,7 @@ const initialState: IGet_Search_Results = {
       receive_cooking: 1,
       receive_experience: 1,
       receive_ingredient: 1,
-      diet:["Vegan","Vegetarian"],
+      diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true
     }}],
@@ -25,10 +26,10 @@ const initialState: IGet_Search_Results = {
   msg:"No Message"
 }
 
-const searchRequestReducer = (state: IGet_Search_Results = initialState, action: IGet_Search_ResultsType): IGet_Search_Results => {
+const searchRequestReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {
   switch (action.type){
     case GET_REQUEST_SEARCH_RESULTS :
-      return action.payload
+        return action.payload
     default:
       return state
   }

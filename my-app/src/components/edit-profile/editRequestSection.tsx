@@ -25,19 +25,20 @@ interface RequestProps {
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const dietsList = ["Vegan",
-     "Paleo",
-     "Low-Carb/Keto",
-     "Vegetarian",
-     "Mediterranean",
-     "Pescetarian",
-     "Plant-based raw food",
-     "Carnivore diet",
-     "Lactose Intolerant",
-     "Gluten-free",
-     "Religion",
-     "Allergies",
-     "Diabetic"]
+const dietsList = ["vegan",
+     "paleo",
+     "low-Carb/keto",
+     "vegetarian",
+     "mediterranean",
+     "pescetarian",
+     "omnivore",
+     "plant-based raw food",
+     "carnivore diet",
+     "lactose Intolerant",
+     "gluten-free",
+     "religion",
+     "allergies",
+     "diabetic"]
 
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function EditRequestsSection(props: RequestProps) {
@@ -48,9 +49,11 @@ export default function EditRequestsSection(props: RequestProps) {
   const [budget, setBudget] = React.useState(props.budget)
   const [diets, setDiets] = React.useState(props.diets)
   const [active, setActive] = React.useState(props.active)
+  
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
+  const iconState = ["will not", "may", "will"]
   const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,13 +62,13 @@ export default function EditRequestsSection(props: RequestProps) {
 
   const handleGiveChange = ( index: number) =>{
     const c = [...giveS]
-    c[index] = giveS[index] ? 0 : 1
+    c[index] = ((giveS[index] + 2) % 3) -1
     setGive(c)
   }
 
   const handleReceiveChange = ( index: number) =>{
     const c = [...receiveS]
-    c[index] = receiveS[index] ? 0 : 1
+    c[index] = ((receiveS[index] + 2)% 3) - 1
     setReceive(c)
   }
 
@@ -93,10 +96,12 @@ export default function EditRequestsSection(props: RequestProps) {
             receive_cooking:  receiveS[2],
             receive_experience: receiveS[1],
             receive_ingredient: receiveS[0],
-            diet: diets,
+            diets: diets,
             weekly_budget:budget,
             active: active,
     }
+    
+    console.log(request)
     
     dispatch(updateRequest(auth,request))
   }
@@ -166,13 +171,13 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                 handleGiveChange(index);
                                                             }}
                                                             >
-                                                                <PopOverUtil message={`John will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`John ${iconState[n+1]} contribute with ${textIcon[index]}`}>
                                                                     <img key={index}
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
@@ -198,7 +203,7 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"

@@ -10,10 +10,11 @@ import Button from '@material-ui/core/Button';
 import RecipesSection from '../components/profile/recipesSection'
 import RequestsSection from '../components/profile/requestsSection'
 import ReferencesSection from '../components/profile/referencesSection'
-import { RootStore } from '../utils/Typescript'
+import { Cookbook, Reference, RootStore } from '../utils/Typescript'
 import { shallowEqual } from '../utils/Valid'
 import EditRequestsSection from '../components/edit-profile/editRequestSection';
 import { getOtherInfo } from '../redux/actions/userAction';
+import FriendsSection from '../components/profile/friendsSection';
 
 const theme = createTheme();
 
@@ -27,25 +28,27 @@ interface SectionProps {
     section:number,
     give: number[],
     receive: number[],
-    diet: string[],
+    diets: string[],
     description: string,
     budget: number,
     active:boolean,
     st(): void,
     se(): void,
-    own: boolean
+    own: boolean,
+    references: any,
+    cookbooks: any
 }
 
 const SectionComponent = (s:SectionProps) => {
-
     if (s.section === 0){
+        console.log(s)
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
 
                     <RequestsSection  
                         give={s.give} 
                         receive={s.receive} 
-                        diet={s.diet} 
+                        diets={s.diets} 
                         description={s.description} 
                         budget={s.budget} 
                         active={s.active}
@@ -53,18 +56,18 @@ const SectionComponent = (s:SectionProps) => {
                         own={s.own}
                         />
 
-                    <RecipesSection cookbooks={null}/>
+                    <RecipesSection  own={s.own} cookbooks={s.cookbooks}/>
                 </Grid>
             </React.Fragment>
     }
     if (s.section === 2){
         return <React.Fragment>
-                    <ReferencesSection references={null}/>
+                    <ReferencesSection references={s.references}/>
                 </React.Fragment>
         
     }
     if (s.section === 3){
-        return <Typography variant="h4">Friends/Groups</Typography>
+        return <FriendsSection friends={[]} />
     }
     if (s.section === 4 && s.own){
         return <Grid container spacing={0} rowSpacing={0}>
@@ -72,66 +75,61 @@ const SectionComponent = (s:SectionProps) => {
                 <EditRequestsSection  
                     give={s.give} 
                     receive={s.receive} 
-                    diets={s.diet} 
+                    diets={s.diets} 
                     description={s.description} 
                     budget={s.budget}
                     active={s.active}
                     changeSection={s.se}
                 />
                 <br></br>
-                <RecipesSection cookbooks={null}/>
+                <RecipesSection own={s.own}cookbooks={s.cookbooks}/>
             </Grid>
     }
     else {
-        return <Typography> Error</Typography>
+        return <Typography>Error</Typography>
     }
 }
 
 const Profile = () => {
 
-    const initialState = { section: 0 , own: false, give: [0,0,0], receive:[0,0,0]}
+    const initialState = { section: 0 , own: true, give: [0,0,0], receive:[0,0,0]}
     const [profileState, setProfileState] = useState(initialState)
 
     const { auth } = useSelector((state: RootStore) => state, shallowEqual)
     const { profile } = useSelector((state: RootStore) => state, shallowEqual)
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    let location = useLocation();
 
     useEffect(() => {
+
+        if (!auth.user) {
+            navigate("/login")
+        }
         if (location.pathname.substring(9) == auth.user?._id){
             setProfileState({...profileState, own: true,
             give : [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking],
             receive : [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]})
         }
-        else if (profile._id == "") {
-            dispatch(getOtherInfo(location.pathname.substring(9)))
-            setProfileState({...profileState, own: false})
+        else if (profile._id != location.pathname.substring(9) ) {
+            dispatch(getOtherInfo(location.pathname.substring(9),auth.access_token!))
+            setProfileState({...profileState, own: false}) // Need to add error - wrong id
+            
         }
         else {
             setProfileState({...profileState, own: false,
             give : [profile.request!.give_ingredient,profile.request!.give_experience,profile.request!.give_cooking],
             receive : [profile.request!.receive_ingredient,profile.request!.receive_experience,profile.request!.receive_cooking]})
-            
         }
 
-    },[profile]);
-    
-   
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    },[location.pathname]);
 
-    if (!auth.user) {
-        navigate("login")
-    }
 
-    let location = useLocation();
-
-   
     const clickHandler = (e: MouseEvent<HTMLButtonElement>, index: number): void => {
         e.preventDefault();
         setProfileState({...profileState, section: index})
     }
-
-    
 
     return (
      
@@ -157,7 +155,7 @@ const Profile = () => {
                         }}>
                         
                         <Grid  item><Typography variant="h4">Picture</Typography></Grid> 
-                        <Grid  item><Typography variant="h4">Name</Typography></Grid> 
+                        <Grid  item><Typography variant="h4">{profileState.own ? auth.user!.name : profile!.name}</Typography></Grid> 
                         
                     </Box> 
                    
@@ -170,12 +168,12 @@ const Profile = () => {
                                 {sections.map((section) => (
                                     <Button key={section.name} onClick={(event) => clickHandler(event,section.index)} > {section.title}</Button>
                                 ))}
-
-                                <BasicMenu />
+                                {(!profileState.own ? <BasicMenu own={profileState.own} /> : <div></div>)}
+                                
                             </Toolbar>
                         </Container>
                 </Grid>
-                
+               
                 <Grid  container columnSpacing={2} sx={{backgroundColor: '#EEEEEE33', height: "100vh", width:"100%" }}>
                     <Container maxWidth="xl">
                         <Grid item xs={12}>
@@ -192,35 +190,22 @@ const Profile = () => {
                                 section={profileState.section} 
                                 give={profileState.give} 
                                 receive={profileState.receive} 
-                                diet={profileState.own ? auth.user!.request!.diet :  profile.request!.diet}
+                                diets={profileState.own ? auth.user!.request!.diets :  profile.request!.diets}
                                 budget={profileState.own ? auth.user!.request!.weekly_budget: profile.request!.weekly_budget}
                                 active={profileState.own ? auth.user!.request!.active : profile.request!.active}
                                 st={() => setProfileState({ ...profileState, section: 4 , own: profileState.own })}
                                 se={() => setProfileState({ ...profileState, section: 0 , own: profileState.own })}
                                 own={profileState.own}
+                                references={profileState.own ? auth.user!.references! :  profile.references!}
+                                cookbooks={profileState.own ? auth.user!.cookbook! :  profile.cookbook!}
                                 />
                             </Box>
                         </Grid>
                     </Container>
                 </Grid>
-
             </Grid>
         </ThemeProvider>
-   
     )
 }
 
 export default Profile
-
-
-
-
-/*
-
-
-
-
-
-
-
-*/
