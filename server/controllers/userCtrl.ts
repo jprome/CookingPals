@@ -169,7 +169,7 @@ const userCtrl = {
 	deleteUser: async (req: Request, res: Response) => {
 		try {
 			// Delete User
-			const profileFound = await Users.findOneAndRemove({ _id: req.body.id });
+			const profileFound = await Users.findOneAndRemove({ _id: req.query.id });
 			if (!profileFound) return res.status(404).json({ msg: "User not found" });
 
 			return res.status(200).json({ msg: "User deleted" });

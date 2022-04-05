@@ -76,7 +76,7 @@ const cookbookCtrl = {
 					{
 						$pull: {
 							cookbooks: {
-								_id: req.body.id,
+								_id: req.query.id,
 							},
 						},
 					}

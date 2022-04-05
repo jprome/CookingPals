@@ -90,7 +90,7 @@ const referenceCtrl = {
 					{
 						$pull: {
 							references: {
-								_id: req.body.id,
+								_id: req.query.id,
 							},
 						},
 					}
