@@ -153,8 +153,7 @@ const Profile = () => {
                         justifyContent: 'center',
                         height: "30vh"
                         }}>
-                        
-                        <Grid  item><Typography variant="h4">Picture</Typography></Grid> 
+                        <Grid  item><img src={auth.user!.picture ? auth.user?.picture : ""} /></Grid> 
                         <Grid  item><Typography variant="h4">{profileState.own ? auth.user!.name : profile!.name}</Typography></Grid> 
                         
                     </Box> 

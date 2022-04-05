@@ -42,23 +42,22 @@ export interface IUserRegister extends IUserLogin {
 }
 
 export interface IUser extends IUserLogin {
-  _id: string
-  name?: string | null
-  intro?: string | null
-  location?: string | null
-  profile_pic?: File | null
-  updatedAt: string | null
-  cookbook?: Cookbook []  | any
-  request?: RequestCP | null  // number describes state -> active,in-process,expired, secondNu
-  friends?: string[] | null
-  groups?: string[] | null
-  references?: Reference[] | null
-  friendRequest?: [[string, number]] | null // number describes whether its individual or group
-  occupation?: string | null
-  gender?: string | null
-  friendRequestGiven?: any
-  friendRequestReceived?:any
-
+	_id: string;
+	name?: string | null;
+	intro?: string | null;
+	location?: string | null;
+	picture?: string | null;
+	updatedAt: string | null;
+	cookbook?: Cookbook[] | any;
+	request?: RequestCP | null; // number describes state -> active,in-process,expired, secondNu
+	friends?: string[] | null;
+	groups?: string[] | null;
+	references?: Reference[] | null;
+	friendRequest?: [[string, number]] | null; // number describes whether its individual or group
+	occupation?: string | null;
+	gender?: string | null;
+	friendRequestGiven?: any;
+	friendRequestReceived?: any;
 }
 
 // CookingPal Classes
