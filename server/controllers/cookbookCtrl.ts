@@ -15,13 +15,14 @@ const cookbookCtrl = {
 			// Update Cookbook
 			const { cookbook } = req.body;
 			const updatedUser = await populate_user(
-				Users.updateOne(
+				Users.findOneAndUpdate(
 					{ _id: req.user._id, "cookbook._id": cookbook._id },
 					{
 						$set: {
-							cookbooks: cookbook,
+							cookbook: cookbook,
 						},
-					}
+					},
+					{ new: true }
 				)
 			);
 
