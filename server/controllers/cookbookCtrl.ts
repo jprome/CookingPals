@@ -58,7 +58,9 @@ const cookbookCtrl = {
 	getCookbook: async (req: Request, res: Response) => {
 		try {
 			// Find cookbook
-			const book = await cookbook.findById(req.query.id);
+			const book = await Users.find({ "cookbook._id": req.query.id }).select(
+				"cookbook"
+			);
 
 			return res.status(200).json(book);
 		} catch (err: any) {
@@ -70,17 +72,16 @@ const cookbookCtrl = {
 		if (!req.user)
 			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
-			const updatedUser = await populate_user(
-				Users.updateOne(
-					{ _id: req.user._id },
-					{
-						$pull: {
-							cookbooks: {
-								_id: req.query.id,
-							},
+			const updatedUser = await Users.findOneAndUpdate(
+				{ _id: req.user._id },
+				{
+					$pull: {
+						cookbook: {
+							_id: req.query.id,
 						},
-					}
-				)
+					},
+				},
+				{ new: true }
 			);
 
 			return res.status(200).json(updatedUser);

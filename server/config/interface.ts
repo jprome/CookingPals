@@ -68,6 +68,8 @@ export interface Recipe extends Document {
 	description: string;
 	ingredients: [string];
 	picture: string;
+	diet_filters: [string];
+	type: [string];
 }
 
 export interface Cookbook extends Document {
