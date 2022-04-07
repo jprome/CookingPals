@@ -9,6 +9,7 @@ import {
 } from "../config/generateToken";
 import { validateEmail, validPhone } from "../middleware/valid";
 import { IDecodedToken, IUser } from "../config/interface";
+import { populate_user } from "../middleware/populate";
 
 const authCtrl = {
 	register: async (req: Request, res: Response) => {
@@ -139,12 +140,12 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
 		path: `/api/auth/refresh_token`,
 		maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
 	});
-
+	const user_model = await populate_user(Users.findById(user._id));
 	// Respond with User
 	res.json({
 		msg: "Login Success!",
 		access_token,
-		user: { ...user._doc, password: "" },
+		user: user_model,
 	});
 };
 
