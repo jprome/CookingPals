@@ -6,24 +6,24 @@ export const populate_user = (user: any) => {
 				path: "references",
 				populate: {
 					path: "reference_author",
-					select: "name picture account",
+					select: "name picture",
 				},
 			})
 			.populate({
 				path: "friendRequestReceived",
 				populate: {
 					path: "userRequest",
-					select: "name picture account",
+					select: "name picture",
 				},
 			})
 			.populate({
 				path: "friendRequestGiven",
 				populate: {
 					path: "userRecipient",
-					select: "name picture account",
+					select: "name picture ",
 				},
 			})
-			.populate("friends", "name");
+			.populate("friends", "name picture");
 	}
 	return user;
 };

@@ -53,12 +53,9 @@ export interface Reference extends Document {
 	picture: string;
 }
 export interface food_request extends Document {
-	give_ingredients: number;
-	give_cooking: number;
-	give_experience: number;
-	receive_ingredients: number;
-	receive_cooking: number;
-	receive_experience: number;
+	ingredients: number;
+	cooking: number;
+	experience: number;
 	description: string;
 	diets: [string];
 	active: boolean;
