@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { IAuth, IAuthType, AUTH } from '../types/authType' // 
+import { IAuth, IAuthType, AUTH, EDIT_COOKBOOK } from '../types/authType' // 
 import { IAlertType, ALERT } from '../types/alertType'
 
 //import { checkImage, imageUpload } from '../../utils/ImageUpload'
@@ -250,4 +250,34 @@ async (dispatch: Dispatch<IAlertType | IAuthType>) => {
 
     }
 }
+
+
+
+
+export const editCookbook = (auth: IAuth, cookbook: any, message: string) => 
+async (dispatch: Dispatch<IAlertType | IAuthType>) => {
+    if(!auth.access_token || !auth.user) return;
+    try {
+      
+      const res = await patchAPI('cookbook/update', cookbook , auth.access_token)
+      dispatch({ type: ALERT, payload: {loading: true}})
+  
+      console.log(message)
+
+      dispatch({ 
+        type: EDIT_COOKBOOK,
+        payload: {
+          access_token: auth.access_token,
+          user:  res.data,
+        } 
+      })
+
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
+      console.log(err.response.data.msg)
+
+    }
+}
+
+
 

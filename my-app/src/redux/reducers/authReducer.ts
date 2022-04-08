@@ -1,4 +1,4 @@
-import { AUTH, IAuth, IAuthType } from '../types/authType'
+import { AUTH, CREATE_COOKBOOK, DELETE_COOKBOOK, EDIT_COOKBOOK, GET_OTHER_INFO, IAuth, IAuthType, RESET_PASSWORD, UPDATE_REQUEST } from '../types/authType'
 
 const initialState: IAuth = {
   user: {
@@ -25,6 +25,21 @@ const authReducer = (state: IAuth = {}, action: IAuthType): IAuth => {
   switch (action.type){
     case AUTH:
       return action.payload
+    case UPDATE_REQUEST:
+      return action.payload
+    case UPDATE_REQUEST:
+      return action.payload
+    case RESET_PASSWORD:
+      return action.payload
+    case GET_OTHER_INFO:
+     return action.payload
+    case CREATE_COOKBOOK:
+      return action.payload
+    case DELETE_COOKBOOK:
+      return action.payload
+    case EDIT_COOKBOOK:
+      return action.payload
+      
     default:
       return state
   }

@@ -42,17 +42,18 @@ const dietsList = ["vegan",
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function EditRequestsSection(props: RequestProps) {
 
-  const [desc, setDesc] = React.useState(props.description);
-  const [giveS, setGive] = React.useState(props.give);
+  const [desc, setDesc]     = React.useState(props.description);
+  const [giveS, setGive]    = React.useState(props.give);
   const [budget, setBudget] = React.useState(props.budget)
-  const [diets, setDiets] = React.useState(props.diets)
+  const [diets, setDiets]   = React.useState(props.diets)
   const [active, setActive] = React.useState(props.active)
   
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
-  const iconState = ["will not", "may", "will"]
-  const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
+  const iconState = ["will not"," are willing"]
+
+  const textIcon = [["be sharing ingredients", "teach/learn cooking expertise", "be sharing cooking time"], ["to share ingredients", "to teach/learn cooking expertise", "to share cooking time"]]
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDesc(event.target.value);
@@ -129,24 +130,6 @@ export default function EditRequestsSection(props: RequestProps) {
                                 <MyPaper  elevation={5} >
 
                                     <Grid container sx={ {pt: 3}}> 
-                                    
-                                        <Grid item xs={1}  sx={ {pt: 8}} >
-                                            <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
-                                                <Grid item xs={12}>
-                                                    <Box>
-                                                        Give:
-                                                    </Box>
-                                                </Grid>
-                                     
-                                                <Grid item xs={12}>
-                                                    <Box >
-                                                        Receive:
-                                                    </Box>
-                                                </Grid>
-                                 
-                                               
-                                           </Grid>
-                                        </Grid>
 
                                         <Grid item xs={3} sx={ {pt: 5}} >
 
@@ -160,13 +143,13 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                 handleGiveChange(index);
                                                             }}
                                                             >
-                                                                <PopOverUtil message={`John ${iconState[n+1]} contribute with ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`You ${iconState[n]} ${textIcon[n][index]}`}>
                                                                     <img key={index}
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*(n+1),
+                                                                        opacity: 0.3 + 0.7*(n),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"

@@ -24,7 +24,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { ListItemSecondaryAction } from '@material-ui/core';
-import { deleteCookbook } from '../redux/actions/userAction';
+import { deleteCookbook, editCookbook } from '../redux/actions/userAction';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -124,12 +124,12 @@ export default function CookbookPage() {
   // - Current state info
 
   // State for current cookbook
-  const cookbookStateSample = { own: false, cookbook: []}
+  const cookbookStateSample = { own: false, cookbook: { _id:'',title: '', description: '', recipes:[] as any, diet_filters:[] as string[]}}
   const [cookbookState, setCookbookState] = useState<IState>(cookbookStateSample)
   const {cookbook, own } = cookbookState
 
   //State for editing current cookbook
-  const [cookbookEditState, setCookbookEditState] = useState([] as any)
+  const [cookbookEditState, setCookbookEditState] = useState({ _id:'',title: '', description: '', recipes:[] as any, diet_filters:[] as string[]})
 
   //State for current recipe
   const initialState ={ name: '', description: '', steps:[] as string[],ingredients:[] as string[], step:"", ingredient:"", diet_filters:[] as string[]}
@@ -141,17 +141,21 @@ export default function CookbookPage() {
   const [recipeState, setRecipeState] = useState(initialState)
   const {name, description, step, ingredient, steps, ingredients, diet_filters} =  recipeState
 
-  
-  
-
   const navigate = useNavigate();
   const dispatch = useDispatch()
   let location = useLocation();
 
   
-  const handleChangeInput = (e: InputChange) => {
-    const {value, name} = e.target
-    setRecipeState({...recipeState, [name]:value})
+  const handleChangeInput = (e: InputChange, n?: number) => {
+    if (!edit_cookbook_dialog){
+      const {value, name} = e.target
+      setRecipeState({...recipeState, [name]:value})
+    }
+    else {
+      const {value, name} = e.target
+      setCookbookEditState({...cookbookEditState, [name]:value})
+    }
+    
   }
 
   // Handle Dilogs 
@@ -171,8 +175,20 @@ export default function CookbookPage() {
     }
     else {
       setOpenEditCookbook(true)
-      console.log(cookbook)
-      setCookbookEditState(cookbook)
+      const temp_title = cookbook.title ?  cookbook.title : ''
+      const temp_description = cookbook.description ? cookbook.description : ''
+      const temp_recipes = cookbook.recipes ? cookbook.recipes : [] as any
+      const temp_diet_filters = cookbook.diet_filters ? cookbook.diet_filters : [] as string []
+
+      setCookbookEditState(
+        {
+          _id:cookbook._id,
+          title:temp_title,
+          description:temp_description,
+          recipes:temp_recipes,
+          diet_filters: temp_diet_filters
+        }
+      )
     }
   };
 
@@ -186,7 +202,7 @@ export default function CookbookPage() {
         setEdit(false);
         setRecipeState(initialState)
     }
-    else if (n ==2){
+    else if (n == 2){
       setOpenDeleteCookbook(false)
     }
     else {
@@ -195,6 +211,7 @@ export default function CookbookPage() {
   };
 
 // ----
+
 
   const handleSubmitRecipeNew = (e: FormSubmit) => {
     e.preventDefault()
@@ -207,14 +224,15 @@ export default function CookbookPage() {
     }
 
     const new_cookbook = {...cookbook as any}
-    new_cookbook.recipes = { ... new_cookbook.recipes, new_recipe}
+    new_cookbook.recipes = [... new_cookbook.recipes, new_recipe]
 
-    //dispathc(addRecipe)
-     //dispatch(editCookbook(auth,new_cookbook,"newRecipe"))
+    setCookbookState({...cookbookState,cookbook: new_cookbook})
+    dispatch(editCookbook(auth,{cookbook:new_cookbook},"newRecipe"))
     setRecipeState(initialState)
     setOpenRecipe(false)
     setAlertOpen({state:true,message:"Recipe Added!"})
   }
+
 
   const handleSubmitRecipeEdit = () => {
 
@@ -229,12 +247,26 @@ export default function CookbookPage() {
     const new_cookbook = {...cookbook as any}
     new_cookbook.recipes[indexRecipe] = new_recipe
 
-    //dispatch(editCookbook(auth,new_cookbook,"editRecipe"))
+    dispatch(editCookbook(auth,{cookbook:new_cookbook},"editRecipe"))
     setOpenRecipe(false)
     setRecipeState(initialState)
     setAlertOpen({state:true,message:"Recipe Edited!"})
     setIndexRecipe(-1)
     setEdit(false)
+  }
+
+  const handleDeleteRecipe = () => {
+
+    const new_cookbook = {...cookbook as any}
+    new_cookbook.recipes.splice(indexRecipe,1)
+
+    dispatch(editCookbook(auth,{cookbook:new_cookbook},"deleteRecipe"))
+    setCookbookState({...cookbookState,cookbook: new_cookbook})
+    setOpenRecipe(false)
+    setRecipeState(initialState)
+    setAlertOpen({state:true,message:"Recipe Deleted!"})
+    setIndexRecipe(-1)
+
   }
 
   // Handling state used for creating/editing recipes 
@@ -260,20 +292,32 @@ export default function CookbookPage() {
     }
   }
 
-  const handleDietChange = (diet: string) => {
-    if (diet_filters.indexOf(diet) > -1 ){
-        const filtered = diet_filters.filter(item => item !== diet)
-        setRecipeState({...recipeState, diet_filters:filtered})
+  const handleDietChange = (diet: string, n?: number) => {
+    if (!n){
+    
+      if (diet_filters.indexOf(diet) > -1 ){
+          const filtered = diet_filters.filter(item => item !== diet)
+          setRecipeState({...recipeState, diet_filters:filtered})
+      }
+      else {
+        setRecipeState({...recipeState, diet_filters:[...diet_filters,diet]})
+      }
     }
-    else {
-      setRecipeState({...recipeState, diet_filters:[...diet_filters,diet]})
+    else { 
+
+      if (cookbookEditState.diet_filters.indexOf(diet) > -1 ){
+        const filtered = cookbookEditState.diet_filters.filter(item => item !== diet)
+        setCookbookEditState({...cookbookEditState, diet_filters:filtered})
+      }
+      else {
+        setCookbookEditState({...cookbookEditState, diet_filters:[...cookbookEditState.diet_filters,diet]})
+      }
     }
   }
-  // 
 
   const handleChangeToEdit = () => {
-
     if (!edit){
+
       const temp_name = currentRecipeState.name ? currentRecipeState.name : ''
       const temp_description = currentRecipeState.description ? currentRecipeState.description : ''
       const temp_steps = currentRecipeState.steps ? currentRecipeState.steps : [] as string[]
@@ -281,8 +325,8 @@ export default function CookbookPage() {
       const diet_filters = currentRecipeState.diet_filters ? currentRecipeState.diet_filters  : [] as string []
     
       setRecipeState({ name: temp_name, description: temp_description, steps:temp_steps,ingredients:temp_ingredients as string[], step:"", ingredient:"", diet_filters:diet_filters})
+      
     }
-
     setEdit((edit) => !edit )
 
   }
@@ -293,7 +337,12 @@ export default function CookbookPage() {
   }
 
   const handleCookbookEditSubmit = () => {
-    console.log(cookbookEditState)
+
+    dispatch(editCookbook(auth,{cookbook: cookbookEditState},"editCookbook"))
+    setCookbookState({...cookbookState,cookbook: cookbookEditState})
+    setRecipeState(initialState)
+    setAlertOpen({state:true,message:"Cookbook Edited!"})
+    setOpenEditCookbook(false)
   }
 
 
@@ -313,6 +362,11 @@ export default function CookbookPage() {
     }
 
   },[])
+
+  useEffect(() =>{
+
+
+  },[edit])
 
   return (
     <React.Fragment>
@@ -470,6 +524,9 @@ export default function CookbookPage() {
                                   <DialogActions>
                                   <Button onClick={() => handleDialogClose(1)} color="primary">
                                       Go Back
+                                  </Button>
+                                  <Button onClick={() => handleDeleteRecipe()} color="primary">
+                                      Delete Recipe
                                   </Button>
                                   <Button type="submit" onClick={() => handleChangeToEdit()} color="primary">
                                       Edit Recipe
@@ -891,12 +948,12 @@ export default function CookbookPage() {
                                     {"Diets: "}
                                       {dietsList.map((n,index) =>
                                         {  
-                                          if (diet_filters.indexOf(n) === -1)
+                                          if (cookbookEditState.diet_filters.indexOf(n) === -1)
                                             return ( 
                                     
                                                 <Button variant="outlined"  color="secondary"
                                                 onClick={() => {
-                                                    handleDietChange(n)
+                                                    handleDietChange(n,1)
                                                 }}
                                                 >
                                                     {n}
@@ -905,7 +962,7 @@ export default function CookbookPage() {
                                               return (
                                                   <Button variant="contained" color="primary"
                                                   onClick={() => {
-                                                      handleDietChange(n)
+                                                      handleDietChange(n,1)
                                                   }}
                                                   >
                                                       {n}
@@ -920,8 +977,8 @@ export default function CookbookPage() {
                                     <Button onClick={() => handleDialogClose(3)} color="primary">
                                         Cancel
                                     </Button>
-                                    <Button type="submit" onClick={() => handleDialogClose(3)} color="primary">
-                                        Create Cookbook
+                                    <Button onClick={() => handleCookbookEditSubmit()} color="primary">
+                                        Edit Cookbook
                                     </Button>
                                     </DialogActions>
                                     </form>

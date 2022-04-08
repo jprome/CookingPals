@@ -35,7 +35,8 @@ interface SectionProps {
     se(): void,
     own: boolean,
     references: any,
-    cookbooks: any
+    cookbooks: any,
+    name:string
 }
 
 const SectionComponent = (s:SectionProps) => {
@@ -45,6 +46,7 @@ const SectionComponent = (s:SectionProps) => {
                 <Grid container spacing={0} rowSpacing={0}>
 
                     <RequestsSection  
+                        name={s.name}
                         give={s.give} 
                         diets={s.diets} 
                         description={s.description} 
@@ -183,6 +185,7 @@ const Profile = () => {
                             }}> 
 
                             <SectionComponent 
+                                name = {profileState.own ? auth.user!.name! : profile.name!} 
                                 description={profileState.own ? auth.user!.request!.description : profile.request!.description} 
                                 section={profileState.section} 
                                 give={profileState.give} 

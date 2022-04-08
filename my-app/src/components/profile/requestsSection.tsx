@@ -16,8 +16,8 @@ interface RequestProps {
   budget: number,
   active: boolean,
   changeSection?(): void,
-  own: boolean
-  // will add a true / false prop to distiguish own account against others to have changing privileges
+  own: boolean,
+  name: string
 }
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
@@ -80,7 +80,7 @@ export default function RequestsSection(props: RequestProps) {
                                                     return ( 
                                                         <Grid key={`${index}Grid5`} item xs={4}>      
                                                                 <Button>
-                                                                <PopOverUtil message={`John ${iconState[n+1]} contribute with ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`${props.name} ${iconState[n+1]} contribute with ${textIcon[index]}`}>
                                                                     <img 
                                                                     style={{ 
                                                                         //position:"fixed", 

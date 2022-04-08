@@ -42,24 +42,7 @@ export default function SmallRequestsSection(props: RequestProps) {
                         <ThemeProvider theme={lightTheme}>
 
                                     <Grid container> 
-                                    
-                                        <Grid item xs={3}  sx={ {pt: 8}} >
-                                            <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
-                                                <Grid item xs={12}>
-                                                    <Box>
-                                                        Give:
-                                                    </Box>
-                                                </Grid>
-                                     
-                                                <Grid item xs={12}>
-                                                    <Box >
-                                                        Receive:
-                                                    </Box>
-                                                </Grid>
-                                 
-                                               
-                                           </Grid>
-                                        </Grid>
+
 
                                         <Grid item xs={9} sx={ {pt: 5}} >
 
@@ -75,7 +58,7 @@ export default function SmallRequestsSection(props: RequestProps) {
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.2 + 0.4*(n+1),
+                                                                        opacity: 0.3 + 0.7*(n),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
