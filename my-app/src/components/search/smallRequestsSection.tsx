@@ -11,7 +11,6 @@ import { preProcessFile } from 'typescript';
 
 interface RequestProps {
   give: number [],
-  receive: number [],
   diets: string [],
   description: string,
   budget: number,
@@ -88,29 +87,7 @@ export default function SmallRequestsSection(props: RequestProps) {
                                                  })}
                                             </Grid>
 
-                                            <Grid container >
-                                                {props.receive.map((n,index) =>
-                                                {
-                                                    return (
-                                                        <Grid item  key={`${index}${n}Grid4`} xs={4}>      
-                                                                <Button>
-                                                                <PopOverUtil message={`Name  ${iconState[n+1]} looking for someone that can contribute by ${textIcon[index]}`}>
-                                                                    <img 
-                                                                    style={{ 
-                                                                        //position:"fixed", 
-                                                                        zIndex:10, 
-                                                                        padding:2,
-                                                                        opacity: 0.2 + 0.4*(n+1),
-                                                                        height:"80px", 
-                                                                        width:"80px"}} 
-                                                                    alt="Error"
-                                                                    src={pics[index]}
-                                                                /></PopOverUtil>
-                                                                </Button>
-                                                        </Grid>
-                                                      )
-                                                })}
-                                            </Grid>
+                                          
                                                                             
                                         </Grid>
 

@@ -8,7 +8,6 @@ import imageBack from "../../images/01.jpg";
 import imageBackCookbook from "../../images/cookbook_icon.png";
 import ButtonBase from '@mui/material/ButtonBase';
 
-
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -42,7 +41,7 @@ export default function RecipesSection(props: RecipesProps) {
 
   const initialState ={ title: '', description: ''}
   const [cookbookInput, setInput] = useState(initialState)
-  const {title, description } =  cookbookInput
+  const {title, description} =  cookbookInput
 
   const { auth } = useSelector((state: RootStore) => state, shallowEqual)
 
@@ -100,7 +99,7 @@ export default function RecipesSection(props: RecipesProps) {
                                 >
                                 {props.cookbooks.map((n:any) => {
  
-                                return <React.Fragment>
+                                return <React.Fragment key={`${n.title}Cookboks`} >
                                     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
                                 
                                         <ImageButton
@@ -108,7 +107,6 @@ export default function RecipesSection(props: RecipesProps) {
                                         key={n}
                                         style={{
                                             width:700,
-                                           
                                         }}
                                         onClick={() => navigate(`cookbook/${n._id}`)}
                                         >
@@ -126,7 +124,7 @@ export default function RecipesSection(props: RecipesProps) {
                                                 pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
                                             }}
                                             >
-                                            {"Cookbook"}
+                                            {n.title}
                                             <ImageMarked className="MuiImageMarked-root" />
                                             </Typography>
                                         </Image>
@@ -137,15 +135,7 @@ export default function RecipesSection(props: RecipesProps) {
                             })}
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
                                 
-                                <ImageButton
-                                focusRipple
-                                key={"addNewRecipe"}
-                                style={{
-                                    width:700,
-                                   
-                                }}
-                           
-                                >
+                                <ImageButton focusRipple  key={"addNewRecipe"} style={{width:700}}>
                                 <ImageSrcNew  style={{ backgroundImage:`url(${imageBackCookbook})` }} />
                                 <ImageBackdrop className="MuiImageBackdrop-root" />
                                 

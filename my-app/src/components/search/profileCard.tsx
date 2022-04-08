@@ -94,8 +94,7 @@ export const ProfileCard = (props: profileCardProps) => {
                                     }}> 
                                     <SmallRequestsSection   
                                             description={props.user.request!.description} 
-                                            give={[props.user.request!.give_ingredient,props.user.request!.give_experience,props.user.request!.give_cooking]}
-                                            receive={ [props.user.request!.receive_ingredient,props.user.request!.receive_experience,props.user.request!.receive_cooking]} 
+                                            give={[props.user.request!.ingredient,props.user.request!.experience,props.user.request!.cooking]}
                                             diets={props.user.request!.diets}
                                             budget={props.user.request!.weekly_budget}
                                             active={props.user.request!.active}

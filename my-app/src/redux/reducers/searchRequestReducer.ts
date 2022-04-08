@@ -12,12 +12,9 @@ const initialState: IGet_Search_Results = {
     cookbook:[],
     request: {
       description:"Looking for people to partner with that like to eat plant based meals. I am fine with eating meat every once in a while, but would prefer forthe diet to be mostly meat. Message for more details!",
-      give_cooking: 1,
-      give_experience: 1,
-      give_ingredient: 1,
-      receive_cooking: 1,
-      receive_experience: 1,
-      receive_ingredient: 1,
+      cooking: 1,
+      experience: 1,
+      ingredient: 1,
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true

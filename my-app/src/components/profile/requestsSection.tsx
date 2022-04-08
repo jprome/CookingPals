@@ -11,7 +11,6 @@ import { preProcessFile } from 'typescript';
 
 interface RequestProps {
   give: number [],
-  receive: number [],
   diets: string [],
   description: string,
   budget: number,
@@ -66,17 +65,8 @@ export default function RequestsSection(props: RequestProps) {
                                     
                                         <Grid item xs={1}  sx={ {pt: 8}} >
                                             <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
-                                                <Grid item xs={12}>
-                                                    <Box>
-                                                        Give:
-                                                    </Box>
-                                                </Grid>
-                                     
-                                                <Grid item xs={12}>
-                                                    <Box >
-                                                        Receive:
-                                                    </Box>
-                                                </Grid>
+
+
                                  
                                                
                                            </Grid>
@@ -96,7 +86,7 @@ export default function RequestsSection(props: RequestProps) {
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity:0.2 + 0.4*(n+1),
+                                                                        opacity:0.3 + 0.7*(n),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
@@ -108,29 +98,7 @@ export default function RequestsSection(props: RequestProps) {
                                                  })}
                                             </Grid>
 
-                                            <Grid container >
-                                                {props.receive.map((n,index) =>
-                                                {
-                                                    return (
-                                                        <Grid key={`${index}Grid6`} item xs={4}>      
-                                                                <Button>
-                                                                <PopOverUtil message={`John ${iconStateR[n+1]} looking for someone that can contribute by ${textIcon[index]}`}>
-                                                                    <img 
-                                                                    style={{ 
-                                                                        //position:"fixed", 
-                                                                        zIndex:10, 
-                                                                        padding:2,
-                                                                        opacity: 0.2 + 0.4*(n+1),
-                                                                        height:"80px", 
-                                                                        width:"80px"}} 
-                                                                    alt="Error"
-                                                                    src={pics[index]}
-                                                                /></PopOverUtil>
-                                                                </Button>
-                                                        </Grid>
-                                                      )
-                                                })}
-                                            </Grid>
+                                           
                                                                             
                                         </Grid>
 
@@ -181,7 +149,7 @@ export default function RequestsSection(props: RequestProps) {
                                                                         if (props.changeSection){
                                                                             props.changeSection()
                                                                         }
-                                                                    }}variant="contained">Change Request</Button>
+                                                                    }}variant="contained">Edit Request</Button>
                                                                     : <div></div>}
                                                           
                                                                 </Grid>

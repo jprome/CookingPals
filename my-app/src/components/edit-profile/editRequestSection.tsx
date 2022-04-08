@@ -15,7 +15,6 @@ import { updateRequest } from '../../redux/actions/userAction';
 
 interface RequestProps {
   give: number [],
-  receive: number [],
   diets: string [],
   description: string,
   budget: number,
@@ -45,7 +44,6 @@ export default function EditRequestsSection(props: RequestProps) {
 
   const [desc, setDesc] = React.useState(props.description);
   const [giveS, setGive] = React.useState(props.give);
-  const [receiveS, setReceive] = React.useState(props.receive);
   const [budget, setBudget] = React.useState(props.budget)
   const [diets, setDiets] = React.useState(props.diets)
   const [active, setActive] = React.useState(props.active)
@@ -62,14 +60,8 @@ export default function EditRequestsSection(props: RequestProps) {
 
   const handleGiveChange = ( index: number) =>{
     const c = [...giveS]
-    c[index] = ((giveS[index] + 2) % 3) -1
+    c[index] = ((giveS[index] + 1) % 2)
     setGive(c)
-  }
-
-  const handleReceiveChange = ( index: number) =>{
-    const c = [...receiveS]
-    c[index] = ((receiveS[index] + 2)% 3) - 1
-    setReceive(c)
   }
 
   const handleDietChange = (diet: string) => {
@@ -90,12 +82,9 @@ export default function EditRequestsSection(props: RequestProps) {
 
     const request : RequestCP = {
             description: desc,
-            give_cooking: giveS[2],
-            give_experience: giveS[1],
-            give_ingredient: giveS[0],
-            receive_cooking:  receiveS[2],
-            receive_experience: receiveS[1],
-            receive_ingredient: receiveS[0],
+            cooking: giveS[2],
+            experience: giveS[1],
+            ingredient: giveS[0],
             diets: diets,
             weekly_budget:budget,
             active: active,
@@ -177,7 +166,7 @@ export default function EditRequestsSection(props: RequestProps) {
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.2 + 0.4*(n+1),
+                                                                        opacity: 0.3 + 0.7*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
@@ -189,29 +178,7 @@ export default function EditRequestsSection(props: RequestProps) {
                                                  })}
                                             </Grid>
 
-                                            <Grid container >
-                                                {receiveS.map((n,index) =>
-                                                {
-                                                    return (
-                                                        <Grid item xs={4}>      
-                                                            <Button
-                                                            onClick={() => {
-                                                                handleReceiveChange(index);}}>
-                                                                <PopOverUtil message="John can contribute with ingredients">
-                                                                    <img key={index}
-                                                                    style={{ 
-                                                                        //position:"fixed", 
-                                                                        zIndex:10, 
-                                                                        padding:2,
-                                                                        opacity: 0.2 + 0.4*(n+1),
-                                                                        height:"80px", 
-                                                                        width:"80px"}} 
-                                                                    alt="Error"
-                                                                    src={pics[index]}
-                                                                /></PopOverUtil>
-                                                            </Button>
-                                                        </Grid>)})}
-                                            </Grid>
+                                           
                                                                             
                                         </Grid>
 

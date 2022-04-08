@@ -64,12 +64,12 @@ export interface IUser extends IUserLogin {
 // CookingPal Classes
 
 export interface Recipe {
-  id?: string
+  _id?: string
   name: string
   description:string,
-  steps: string,
+  steps: string[],
   ingredients: string [],
-  pic: File
+  pic?: File
 }
 export interface Cookbook {
   id?: string
@@ -82,12 +82,10 @@ export interface Cookbook {
 export interface RequestCP {
   description: string
 
-  give_cooking: number,
-  give_ingredient: number,
-  give_experience: number,
-  receive_cooking: number,
-  receive_ingredient: number,
-  receive_experience: number,
+  cooking: number,
+  ingredient: number,
+  experience: number,
+
 
   diets: string[] 
   weekly_budget: number

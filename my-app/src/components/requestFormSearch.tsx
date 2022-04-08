@@ -37,7 +37,6 @@ const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function RequestFormSearch() {
 
   const [giveS, setGive] = React.useState([1,1,1]);
-  const [receiveS, setReceive] = React.useState([1,1,1]);
   const [budgetHigh, setBudgetHigh] = React.useState(0)
   const [budgetLow, setBudgetLow] = React.useState(0)
   const [diets, setDiets] = React.useState(["vegan"])
@@ -47,18 +46,11 @@ export default function RequestFormSearch() {
 
   const textIcon = ["buying ingredients", "sharing experience/expertise", "giving cooking time"]
   const iconState = ["will not", "may", "will"]
-  const iconStateReceive = ["are not","may be", "are"]
 
   const handleGiveChange = ( index: number) =>{
     const c = [...giveS]
     c[index] = ((giveS[index] + 2) % 3) -1
     setGive(c)
-  }
-
-  const handleReceiveChange = ( index: number) =>{
-    const c = [...receiveS]
-    c[index] = ((receiveS[index] + 2)% 3) - 1
-    setReceive(c)
   }
 
   const handleDietChange = (diet: string) => {
@@ -90,9 +82,6 @@ export default function RequestFormSearch() {
             give_cooking: giveS[2],
             give_experience: giveS[1],
             give_ingredient: giveS[0],
-            receive_cooking:  receiveS[2],
-            receive_experience: receiveS[1],
-            receive_ingredient: receiveS[0],
             diets: diets,
             budgetLow:budgetLow,
             budgetHigh:budgetHigh,
@@ -133,27 +122,10 @@ export default function RequestFormSearch() {
                                
                             
                                     <Box sx={{ display:'flex', pt: 3, pl:3 , typography: 'header1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                        Search Request
+                                        Search For Your Next Cookingpal
                                     </Box>
                                     <Grid container sx={ {pt: 0, pl:5}}> 
                                         
-                                        <Grid item xs={1}  sx={ {pt: 8}} >
-                                            <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
-                                                <Grid item xs={12}>
-                                                    <Box>
-                                                        Give:
-                                                    </Box>
-                                                </Grid>
-                                     
-                                                <Grid item xs={12}>
-                                                    <Box >
-                                                        Receive:
-                                                    </Box>
-                                                </Grid>
-                                 
-                                               
-                                           </Grid>
-                                        </Grid>
 
                                         <Grid item xs={11} sx={ {pt: 5}} >
 
@@ -182,30 +154,6 @@ export default function RequestFormSearch() {
                                                             </Button>
                                                         </Grid>)
                                                  })}
-                                            </Grid>
-
-                                            <Grid container >
-                                                {receiveS.map((n,index) =>
-                                                {
-                                                    return (
-                                                        <Grid key={`${index}${n}Grid2`}  item xs={4}>      
-                                                            <Button
-                                                            onClick={() => {
-                                                                handleReceiveChange(index);}}>
-                                                                <PopOverUtil message={`You ${iconStateReceive[n+1]} looking for someone that can contribute by ${textIcon[n+1]}`}>
-                                                                    <img 
-                                                                    style={{ 
-                                                                        //position:"fixed", 
-                                                                        zIndex:10, 
-                                                                        padding:2,
-                                                                        opacity: 0.2 + 0.4*(n+1),
-                                                                        height:"80px", 
-                                                                        width:"80px"}} 
-                                                                    alt="Error"
-                                                                    src={pics[index]}
-                                                                /></PopOverUtil>
-                                                            </Button>
-                                                        </Grid>)})}
                                             </Grid>
                                                                             
                                         </Grid>
@@ -253,6 +201,7 @@ export default function RequestFormSearch() {
                                                                 InputLabelProps={{ shrink: true }}
                                                                 name="numberformat"
                                                                 id="formatted-numberformat-input"
+
                                                                 InputProps={{
                                                                 inputComponent: NumberFormat as any,
                                                                 }}

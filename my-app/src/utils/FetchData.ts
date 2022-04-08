@@ -35,7 +35,7 @@ export const getAPISendInfo = async (url: string,payload: any, token?:string) =>
     
       {params: payload, headers: { Authorization: token_ }}  )
     return res;
-    console.log(res)
+    
     }
     catch(err){
       throw err
@@ -67,13 +67,14 @@ export const putAPI = async (url: string, post: object, token?:string) => {
   }
 }
 
-export const deleteAPI = async (url: string, token?:string) => {
+
+export const deleteAPI = async (url: string,payload: any, token?:string) => {
   try{
     const token_ = token ? token : '';
-    const res = await axios.delete(base + url, {
-      headers: { Authorization: token_ }})
+    const res = await axios.delete(base + url, 
+    
+      {params: payload, headers: { Authorization: token_ }}  )
     return res;
-
     }
     catch(err){
       throw err

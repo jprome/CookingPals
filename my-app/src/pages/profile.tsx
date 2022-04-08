@@ -27,7 +27,6 @@ const sections = [
 interface SectionProps {
     section:number,
     give: number[],
-    receive: number[],
     diets: string[],
     description: string,
     budget: number,
@@ -41,13 +40,12 @@ interface SectionProps {
 
 const SectionComponent = (s:SectionProps) => {
     if (s.section === 0){
-        console.log(s)
+     
         return <React.Fragment>
                 <Grid container spacing={0} rowSpacing={0}>
 
                     <RequestsSection  
                         give={s.give} 
-                        receive={s.receive} 
                         diets={s.diets} 
                         description={s.description} 
                         budget={s.budget} 
@@ -74,7 +72,6 @@ const SectionComponent = (s:SectionProps) => {
 
                 <EditRequestsSection  
                     give={s.give} 
-                    receive={s.receive} 
                     diets={s.diets} 
                     description={s.description} 
                     budget={s.budget}
@@ -109,8 +106,8 @@ const Profile = () => {
         }
         if (location.pathname.substring(9) == auth.user?._id){
             setProfileState({...profileState, own: true,
-            give : [auth.user!.request!.give_ingredient,auth.user!.request!.give_experience,auth.user!.request!.give_cooking],
-            receive : [auth.user!.request!.receive_ingredient,auth.user!.request!.receive_experience,auth.user!.request!.receive_cooking]})
+            give : [auth.user!.request!.ingredient,auth.user!.request!.experience,auth.user!.request!.cooking]})
+        
         }
         else if (profile._id != location.pathname.substring(9) ) {
             dispatch(getOtherInfo(location.pathname.substring(9),auth.access_token!))
@@ -119,8 +116,8 @@ const Profile = () => {
         }
         else {
             setProfileState({...profileState, own: false,
-            give : [profile.request!.give_ingredient,profile.request!.give_experience,profile.request!.give_cooking],
-            receive : [profile.request!.receive_ingredient,profile.request!.receive_experience,profile.request!.receive_cooking]})
+            give : [profile.request!.ingredient,profile.request!.experience,profile.request!.cooking]})
+       
         }
 
     },[location.pathname]);
@@ -189,7 +186,6 @@ const Profile = () => {
                                 description={profileState.own ? auth.user!.request!.description : profile.request!.description} 
                                 section={profileState.section} 
                                 give={profileState.give} 
-                                receive={profileState.receive} 
                                 diets={profileState.own ? auth.user!.request!.diets :  profile.request!.diets}
                                 budget={profileState.own ? auth.user!.request!.weekly_budget: profile.request!.weekly_budget}
                                 active={profileState.own ? auth.user!.request!.active : profile.request!.active}

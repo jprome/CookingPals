@@ -3,7 +3,7 @@ import { IAuth, IAuthType, AUTH } from '../types/authType' //
 import { IAlertType, ALERT } from '../types/alertType'
 
 //import { checkImage, imageUpload } from '../../utils/ImageUpload'
-import { patchAPI, getAPI, getAPISendInfo, postAPI } from '../../utils/FetchData'
+import { patchAPI, getAPI, getAPISendInfo, postAPI, deleteAPI } from '../../utils/FetchData'
 import { checkPassword } from '../../utils/Valid'
 
 import { Cookbook, RequestCP } from '../../utils/Typescript'
@@ -226,3 +226,28 @@ async (dispatch: Dispatch<IAlertType | IAuthType>) => {
 
     }
 }
+
+export const deleteCookbook = (auth: IAuth, id: string) => 
+async (dispatch: Dispatch<IAlertType | IAuthType>) => {
+    if(!auth.access_token || !auth.user) return;
+    try {
+      
+      const res = await deleteAPI('cookbook/remove', {id:id} , auth.access_token)
+      console.log(res)
+      dispatch({ type: ALERT, payload: {loading: true}})
+  
+      dispatch({ 
+        type: AUTH,
+        payload: {
+          access_token: auth.access_token,
+          user:  res.data,
+        } 
+      })
+
+    } catch (err: any) {
+      dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
+      console.log(err.response.data.msg)
+
+    }
+}
+

@@ -87,15 +87,13 @@ const Profile = () => {
      
         <ThemeProvider theme={theme}>
             <Grid container spacing={1} sx={{backgroundColor: '#EEEEEE33'}} component="main">
-            
-               
+                          
                 <Grid item xs={12} sx={{pl:10,ml:10,pt:10,mt:10,pb:5}}><Typography fontFamily="Helvetica" variant="h2">Welcome back!</Typography></Grid>
                 <Grid item xs={12} sx={{pl:10,ml:10,pt:10,mt:10,pb:5}}><Typography fontFamily="Helvetica" variant="h4">Today's Best Recipes</Typography></Grid>
-                 <Grid item xs={12} sx={{ml:15,mr:15}}> <ButtonBases /></Grid>
-                 <Grid item xs={12} sx={{ml:15,mr:15}}> <ButtonBases /></Grid>
+                <Grid item xs={12} sx={{ml:15,mr:15}}> <ButtonBases /></Grid>
+                <Grid item xs={12} sx={{ml:15,mr:15}}> <ButtonBases /></Grid>
                 <Grid item xs={12} sx={{pl:20,ml:10,mt:10}}><Typography fontFamily="Helvetica" variant="h4">CookingPal Recommendations</Typography></Grid>  
                 
-
                 <Grid container>
 
                     {(searchRequest.users ? searchRequest.users!.map((user) =>
