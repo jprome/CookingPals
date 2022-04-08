@@ -13,10 +13,10 @@ const referenceCtrl = {
 			const { reference } = req.body;
 			// Updated reference_author
 			reference.reference_author = req.user._id;
-
+			console.log(reference);
 			// Update user
 			const updatedUser = await populate_user(
-				Users.updateOne(
+				Users.findOneAndUpdate(
 					{
 						"references._id": reference._id,
 						"references.reference_author": req.user._id,
@@ -25,7 +25,8 @@ const referenceCtrl = {
 						$set: {
 							references: reference,
 						},
-					}
+					},
+					{ new: true }
 				)
 			);
 
@@ -64,11 +65,9 @@ const referenceCtrl = {
 	getReference: async (req: Request, res: Response) => {
 		try {
 			// Get Reference
-			const reference = await populate_user(
-				Users.find({
-					"references._id": req.query.id,
-				})
-			);
+			const reference = await Users.find({
+				"references._id": req.query.id,
+			}).select("references");
 
 			return res.status(200).json(reference);
 		} catch (err: any) {
@@ -83,17 +82,18 @@ const referenceCtrl = {
 		try {
 			// Delete reference
 			const updatedUser = await populate_user(
-				Users.updateOne(
+				Users.findOneAndUpdate(
 					{
-						"references.reference_author": req.user._id.toString(),
+						"references.reference_author": req.user._id,
 					},
 					{
 						$pull: {
 							references: {
-								_id: req.body.id,
+								_id: req.query.id,
 							},
 						},
-					}
+					},
+					{ new: true }
 				)
 			);
 
