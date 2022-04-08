@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Users from "../models/userModel";
+import User from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
@@ -15,7 +15,7 @@ const authCtrl = {
 	register: async (req: Request, res: Response) => {
 		try {
 			// Check if User account already exists
-			const userFound = await Users.findOne({
+			const userFound = await User.findOne({
 				account: req.body.account,
 			});
 
@@ -27,7 +27,7 @@ const authCtrl = {
 			// Hash password
 			const passwordHash = await bcrypt.hash(req.body.password, 12);
 			// Construct new user
-			const newUser = new Users({
+			const newUser = new User({
 				name: req.body.name,
 				account: req.body.account,
 				password: passwordHash,
@@ -43,16 +43,13 @@ const authCtrl = {
 				cookbooks: [],
 				request: {
 					description: "",
-					give_cooking: 0,
-					give_experience: 0,
-					give_ingredient: 0,
-					receive_cooking: 0,
-					receive_experience: 0,
-					receive_ingredient: 0,
+					cooking: 0,
+					experience: 0,
+					ingredient: 0,
 					diets: [],
 					weekly_budget: 0,
 					active: false,
-					location: "",
+					location: req.body.location,
 				},
 
 				// TODO: Add other profile properties
@@ -84,7 +81,7 @@ const authCtrl = {
 			const { account, password } = req.body;
 
 			// Check if user exists
-			const user = await Users.findOne({ account });
+			const user = await User.findOne({ account });
 			if (!user)
 				return res.status(400).json({ msg: "This account does not exits." });
 
@@ -112,7 +109,7 @@ const authCtrl = {
 			if (!decoded.id)
 				return res.status(400).json({ msg: "Please login now!" });
 
-			const user = await Users.findById(decoded.id).select("-password");
+			const user = await User.findById(decoded.id).select("-password");
 			if (!user)
 				return res.status(400).json({ msg: "This account does not exist." });
 
@@ -140,7 +137,7 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
 		path: `/api/auth/refresh_token`,
 		maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
 	});
-	const user_model = await populate_user(Users.findById(user._id));
+	const user_model = await populate_user(User.findById(user._id));
 	// Respond with User
 	res.json({
 		msg: "Login Success!",

@@ -134,7 +134,7 @@ const userCtrl = {
 			return res.status(400).json({ msg: "Invalid Authentication." });
 
 		try {
-			const { password } = req.body;
+			const password = req.body.password;
 			// Hash password
 			const passwordHash = await bcrypt.hash(password, 12);
 
@@ -171,6 +171,16 @@ const userCtrl = {
 			// Delete User
 			const profileFound = await Users.findOneAndRemove({ _id: req.query.id });
 			if (!profileFound) return res.status(404).json({ msg: "User not found" });
+
+			// Delete all friendRequest associated with the user
+			await friendRequest.deleteMany({
+				$or: [
+					{ userRequest: ObjectId(req.query.id) },
+					{ userRecipient: ObjectId(req.query.id) },
+				],
+			});
+
+			// TODO: Figure out what to with chat. Should we delete chats?
 
 			return res.status(200).json({ msg: "User deleted" });
 		} catch (err: any) {

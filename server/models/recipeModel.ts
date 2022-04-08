@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import { Recipe } from "../config/interface";
 
 const recipeSchema = new mongoose.Schema({
+	diet_filters: {
+		type: [String],
+	},
 	name: {
 		type: String,
 		required: true,
@@ -10,6 +13,9 @@ const recipeSchema = new mongoose.Schema({
 		type: String,
 	},
 	ingredients: {
+		type: [String],
+	},
+	steps: {
 		type: [String],
 	},
 	picture: {
