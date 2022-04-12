@@ -30,6 +30,22 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Please add your current location"],
 		},
+		occupation: {
+			type: String,
+			default: "N/A",
+		},
+		gender: {
+			type: String,
+			default: "N/A",
+		},
+		age: {
+			type: String,
+			default: "N/A",
+		},
+		languages: {
+			type: [String],
+			default: "N/A",
+		},
 
 		intro: { type: String },
 		friends: { type: [mongoose.Schema.Types.ObjectId], ref: "user" },
@@ -45,11 +61,6 @@ const userSchema = new mongoose.Schema(
 		references: [Reference.schema],
 		cookbook: [Cookbook.schema],
 		request: Request.schema,
-
-		// TODO: add other profile details
-
-		// friendrequest [id, status ]
-		// Request_accepted: [requst],
 	},
 	{
 		timestamps: true,

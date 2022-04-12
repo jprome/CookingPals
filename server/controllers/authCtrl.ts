@@ -11,6 +11,23 @@ import { validateEmail, validPhone } from "../middleware/valid";
 import { IDecodedToken, IUser } from "../config/interface";
 import { populate_user } from "../middleware/populate";
 
+const calculateAge = (birthDate: any, otherDate: any) => {
+	birthDate = new Date(birthDate);
+	otherDate = new Date(otherDate);
+
+	var years = otherDate.getFullYear() - birthDate.getFullYear();
+
+	if (
+		otherDate.getMonth() < birthDate.getMonth() ||
+		(otherDate.getMonth() == birthDate.getMonth() &&
+			otherDate.getDate() < birthDate.getDate())
+	) {
+		years--;
+	}
+
+	return years;
+};
+
 const authCtrl = {
 	register: async (req: Request, res: Response) => {
 		try {
@@ -32,7 +49,11 @@ const authCtrl = {
 				account: req.body.account,
 				password: passwordHash,
 				location: req.body.location,
-				dob: req.body.dob,
+				dob: req.body.dob, // should be in MM/DD/YYYY format
+				occupation: req.body.occupation,
+				gender: req.body.gender,
+				age: calculateAge(req.body.dob, Date.now()),
+				languages: req.body.languages,
 				intro: "",
 				friends: [],
 				friendRequestReceived: [],

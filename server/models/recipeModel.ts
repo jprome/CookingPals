@@ -5,6 +5,12 @@ const recipeSchema = new mongoose.Schema({
 	diet_filters: {
 		type: [String],
 	},
+	cover_pic: {
+		type: String,
+	},
+	content_pic: {
+		type: [String],
+	},
 	name: {
 		type: String,
 		required: true,
