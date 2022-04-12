@@ -1,176 +1,216 @@
-import * as React from 'react';
-import { Grid, Box, Paper} from '@mui/material'
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import PopOverUtil from '../PopOverUtil';
+import * as React from "react";
+import { Grid, Box, Paper, Chip, Checkbox } from "@mui/material";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import PopOverUtil from "../PopOverUtil";
 import ingredientIcon from "../../images/ingredient.png";
 import cookingIcon from "../../images/cooking.png";
 import experienceIcon from "../../images/experience.png";
-import { Button } from '@material-ui/core';
-import { preProcessFile } from 'typescript';
-
+import { Button } from "@material-ui/core";
+import { capitalize } from "@material-ui/core";
+import Switch from "@mui/material/Switch";
+import { preProcessFile } from "typescript";
 
 interface RequestProps {
-  give: number [],
-  diets: string [],
-  description: string,
-  budget: number,
-  active: boolean,
-  changeSection?(): void,
-  own: boolean,
-  name: string
+  give: number[];
+  diets: string[];
+  description: string;
+  budget: number;
+  active: boolean;
+  changeSection?(): void;
+  own: boolean;
+  name: string;
 }
 
-const lightTheme = createTheme({ palette: { mode: 'light' } });
+const lightTheme = createTheme({ palette: { mode: "light" } });
 
-const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
+const MyPaper = styled(Paper)({
+  height: "fit-content",
+  lineHeight: "60px",
+  borderRadius: 20,
+});
 
 export default function RequestsSection(props: RequestProps) {
+  const pics = [ingredientIcon, experienceIcon, cookingIcon];
 
-  const pics = [ingredientIcon,experienceIcon,cookingIcon]
-  const textIcon = ["buying ingredients", "sharing experience/expertise", "cooking time"]
-  const iconState = ["will not", "may", "will"]
-  const iconStateR = ["will not", "may be", "will"]
+  const iconState = ["will not", " are willing"];
 
+  const textIcon = [
+    [
+      "be sharing ingredients",
+      "teach/learn cooking expertise",
+      "be sharing cooking time",
+    ],
+    [
+      "to share ingredients",
+      "to teach/learn cooking expertise",
+      "to share cooking time",
+    ],
+  ];
 
   return (
     <React.Fragment>
-        <Grid item 
-                xs={12}  
-                sx = {{borderRadius: 4}}
-                //sm={8} 
-                //md={5} 
-                //component={Paper} 
-                //elevation={5} 
-                //square 
+      <Grid item xs={6} columnSpacing={10}>
+        <Box
+          sx={{
+            pl: 2,
+            pr: 2,
+            pb: 2,
+            gap: 2,
+            textAlign: "center",
+          }}
+        >
+          <MyPaper elevation={5}>
+            <Grid
+              container
+              borderRadius={8}
+              sx={{ padding: 5, borderRadius: 8 }}
+            >
+              <Grid item xs={12} sx={{ pt: 5 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    pr: 5,
+                    typography: "body1",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    textAlign: "left",
+                  }}
                 >
-                <Grid container spacing={2}>
-    
-                    <Grid item xs={12}  columnSpacing={10} >
-                        <ThemeProvider theme={lightTheme}>
-                            <Box
-                                sx={{
-                                    p: 2,
-                                    bgcolor: 'background.default',
-                                    //display: 'grid',
-                                    gridTemplateColumns: { md: '1fr 1fr' },
-                                    gap: 2,
-                                    textAlign: 'center',
-                                   
-                                }}
-                                >
-                               
-                                <MyPaper  elevation={5} >
+                  {props.description}
+                </Box>
+              </Grid>
 
-                                    <Grid container sx={ {pt: 3}}> 
-                                    
-                                        <Grid item xs={1}  sx={ {pt: 8}} >
-                                            <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
-
-
-                                 
-                                               
-                                           </Grid>
-                                        </Grid>
-
-                                        <Grid item xs={3} sx={ {pt: 5}} >
-
-                                            <Grid container >
-                                                {props.give.map((n,index) =>
-                                                {  
-                                                    return ( 
-                                                        <Grid key={`${index}Grid5`} item xs={4}>      
-                                                                <Button>
-                                                                <PopOverUtil message={`${props.name} ${iconState[n+1]} contribute with ${textIcon[index]}`}>
-                                                                    <img 
-                                                                    style={{ 
-                                                                        //position:"fixed", 
-                                                                        zIndex:10, 
-                                                                        padding:2,
-                                                                        opacity:0.3 + 0.7*(n),
-                                                                        height:"80px", 
-                                                                        width:"80px"}} 
-                                                                    alt="Error"
-                                                                    src={pics[index]}
-                                                                    
-                                                                /></PopOverUtil>
-                                                                </Button>
-                                                        </Grid>)
-                                                 })}
-                                            </Grid>
-
-                                           
-                                                                            
-                                        </Grid>
-
-                                        <Grid item xs={8}>
-                                            <Grid container   direction="row" spacing={10}>
-                                                <Grid item xs={12}>
-                                                    <Box sx={{ display:'flex', pr: 5 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                                        {props.description}
-                                                    </Box>
-                                                    
-                                                    <Grid item xs={12}>
-                                                    <Box sx={{ pt: 3 , typography: 'body1' , textAlign: 'left' , fontSize: 20 , fontWeight: 'bold'}}>
-                                                    {"Diets: "}
-                                                            {props.diets.map((n,index) =>
-                                                            {  
-                                                                    return (
-                                                                        <Button variant="contained" key={`${index}Button5`} color="primary">
-                                                                            
-                                                                            {n}
-                                                                        </Button>
-                                                                    )
-                                                            })}
-                                                    </Box>
-                                                    </Grid>
-
-                                                    
-                                                    <Grid item xs={3}>
-                                                        <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                                           Budget: {props.budget}
-                                                        </Box>
-                                                    </Grid>
-                                                    <Grid item xs={12}>
-                                                        <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'right'}}>
-                                                        <PopOverUtil message="If active your request can be seen by other users">
-                                                        <Button variant="contained">{ props.active ? "Active" : "Inactive"}</Button>
-                                                        </PopOverUtil>
-                                                        </Box>
-                                                    </Grid>
-
-                                                    <Grid item xs={12}>
-                                                        <Box sx={{ display:'flex', pr: 5 , pt:3, pb:5, typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-
-                                                            <Grid container justifyContent="flex-end" alignItems="flex-end">
-                                                                <Grid item >
-                                                                {(props.changeSection && props.own )?  
-                                                                
-                                                                    <Button   onClick={() => {
-                                                                        if (props.changeSection){
-                                                                            props.changeSection()
-                                                                        }
-                                                                    }}variant="contained">Edit Request</Button>
-                                                                    : <div></div>}
-                                                          
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Box>
-                                                    </Grid>
-
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-
-                                    </Grid>
-
-                                </MyPaper>
-
-                            </Box>
-                        </ThemeProvider>
-                    </Grid>
-
+              <Grid item xs={12} sx={{ pt: 5 }}>
+                <Grid container>
+                  {props.give.map((n, index) => {
+                    return (
+                      <Grid key={`${index}Grid5`} item xs={4}>
+                        <Button>
+                          <PopOverUtil
+                            message={`You ${iconState[n]} ${textIcon[n][index]}`}
+                          >
+                            <img
+                              style={{
+                                //position:"fixed",
+                                zIndex: 10,
+                                padding: 2,
+                                opacity: 0.3 + 0.7 * n,
+                                height: "130px",
+                                width: "130px",
+                              }}
+                              alt="Error"
+                              src={pics[index]}
+                            />
+                          </PopOverUtil>
+                        </Button>
+                      </Grid>
+                    );
+                  })}
                 </Grid>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    pt: 3,
+                    typography: "body1",
+                    textAlign: "left",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {props.diets.map((n, index) => {
+                    return (
+                      <Chip
+                        variant="outlined"
+                        size="medium"
+                        sx={{ mr: 1, mb: 1, fontSize: 15 }}
+                        label={capitalize(n)}
+                        key={`${index}Button5`}
+                      />
+                    );
+                  })}
+                </Box>
+              </Grid>
+
+              <Grid item xs={3}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    pt: 3,
+                    typography: "body1",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    textAlign: "left",
+                    pr: 2,
+                  }}
+                >
+                  Budget ${props.budget}
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    pt: 3,
+                    typography: "body1",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    pr: 10,
+                  }}
+                >
+                  Availability
+                  <PopOverUtil message="If checked your request can be found by other users">
+                    <Checkbox
+                      sx={{ pl: 10, pt: 10 }}
+                      checked={props.active}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                  </PopOverUtil>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    pr: 5,
+                    pt: 3,
+                    pb: 5,
+                    typography: "body1",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    textAlign: "left",
+                  }}
+                >
+                  <Grid
+                    container
+                    justifyContent="flex-end"
+                    alignItems="flex-end"
+                  >
+                    <Grid item>
+                      {props.changeSection && props.own ? (
+                        <Button
+                          onClick={() => {
+                            if (props.changeSection) {
+                              props.changeSection();
+                            }
+                          }}
+                          variant="contained"
+                        >
+                          Edit Request
+                        </Button>
+                      ) : (
+                        <div></div>
+                      )}
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
             </Grid>
+          </MyPaper>
+        </Box>
+      </Grid>
     </React.Fragment>
   );
 }

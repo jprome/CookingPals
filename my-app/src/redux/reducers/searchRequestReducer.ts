@@ -18,9 +18,12 @@ const initialState: IGet_Search_Results = {
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true
-    }}],
+    },
+    picture: ""
+  }],
   access_token:"FakeToken",
-  msg:"No Message"
+  msg:"No Message",
+
 }
 
 const searchRequestReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {

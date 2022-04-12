@@ -17,7 +17,8 @@ const initialState: IUser = {
       weekly_budget:75,
       active: true,
     },
-    cookbook: []
+    cookbook: [],
+    picture: ""
 
 }
 const profileReducer = (state: IUser = initialState, action: ICurrentProfileView): IUser => {

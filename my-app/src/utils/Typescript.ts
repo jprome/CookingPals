@@ -46,7 +46,6 @@ export interface IUser extends IUserLogin {
   name?: string | null
   intro?: string | null
   location?: string | null
-  profile_pic?: File | null
   updatedAt: string | null
   cookbook?: Cookbook []  | any
   request?: RequestCP | null  // number describes state -> active,in-process,expired, secondNu
@@ -58,6 +57,7 @@ export interface IUser extends IUserLogin {
   gender?: string | null
   friendRequestGiven?: any
   friendRequestReceived?:any
+  picture: string
 
 }
 
@@ -69,14 +69,16 @@ export interface Recipe {
   description:string,
   steps: string[],
   ingredients: string [],
-  pic?: File
+  cover_pic:string,
+  content_pics: string [],
 }
 export interface Cookbook {
   id?: string
   title: string,
   diet_filters: string [],
   description: string,
-  recipes: Recipe []
+  recipes: Recipe [],
+  cover_pic: string
 }
 
 export interface RequestCP {
@@ -85,7 +87,6 @@ export interface RequestCP {
   cooking: number,
   ingredient: number,
   experience: number,
-
 
   diets: string[] 
   weekly_budget: number
@@ -113,7 +114,7 @@ export interface Reference {
   rating: number
   comment: string
   date: Date
-  pictures: File []
+  picture: string
   reference_author?: any
   reference_author_name?: string
   reference_author_pic?: string

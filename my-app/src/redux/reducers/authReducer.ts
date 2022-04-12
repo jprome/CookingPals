@@ -17,7 +17,8 @@ const initialState: IAuth = {
       weekly_budget:75,
       active: true,
     },
-    cookbook:[]
+    cookbook:[],
+    picture: ""
   },
   access_token:"FakeToken"
 }
