@@ -18,6 +18,11 @@ export interface IUser extends Document {
 	references: [Reference];
 	cookbook: [Cookbook];
 	request: food_request;
+	occupation: string;
+	gender: string;
+	age: string;
+	languages: [string];
+
 	friendRequestReceived: [friendRequest];
 	friendRequestGiven: [friendRequest];
 
@@ -70,11 +75,14 @@ export interface Recipe extends Document {
 	picture: string;
 	diet_filters: [string];
 	type: [string];
+	cover_pic: string;
+	content_pic: [string];
 }
 
 export interface Cookbook extends Document {
 	diet_filters: [string];
 	title: string;
+	cover_pic: string;
 	description: string;
 	recipes: [Recipe];
 }

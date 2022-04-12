@@ -22,7 +22,7 @@ const referenceSchema = new mongoose.Schema({
 		required: true,
 	},
 	picture: {
-		type: String,
+		type: [String],
 	},
 });
 

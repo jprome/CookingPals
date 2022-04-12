@@ -1,6 +1,10 @@
 import * as React from "react"
-import { Routes, Route} from "react-router-dom"
-import Login from "./pages/login"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";import Login from "./pages/login"
 import Register from "./pages/register"
 import Profile from "./pages/profile"
 import Header from "./components/headerNav"
@@ -10,6 +14,8 @@ import Reference from "./pages/reference"
 import HomePage from "./pages/homePage"
 import SendFriendRequest from "./pages/sendFriendRequest"
 import CookbookPage from "./pages/cookbookPage"
+import Messenger from "./pages/Messenger/Messenger";
+import { useSelector } from "react-redux"
 
 
 const App: React.FC = () => {
@@ -38,16 +44,19 @@ const App: React.FC = () => {
   */
   
   let location = useLocation();
+  const user = useSelector(state=> state)
+  console.log(user)
   
   return (
     <main>
-        {[ "/register" , "/login"].indexOf(location.pathname) > -1  ? null : <Header />}
+        {[ "/register" , "/login", "/messenger"].indexOf(location.pathname) > -1  ? null : <Header />}
 
         <Routes>
             <Route path="/login" element={<Login />}/>
             <Route path="/register" element={<Register />}/>
             <Route path="/home" element={<HomePage />}/>
             <Route path="/profile/:id" element={<Profile />}/>
+            <Route path="/messenger" element={<Messenger />}/>                 
             <Route path="/search" element={<SearchRequest />}/>
             <Route path="/profile/:id/reference" element={<Reference />}/>
             <Route path="/profile/:id/sendFriendRequest" element={<SendFriendRequest />}/>

@@ -6,6 +6,9 @@ const cookbookSchema = new mongoose.Schema({
 	diet_filters: {
 		type: [String],
 	},
+	cover_pic: {
+		type: String,
+	},
 	title: {
 		type: String,
 		required: true,
