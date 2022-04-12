@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
 		request: Request.schema,
 
 		// TODO: add other profile details
-		// Chats : [Chats],
+
 		// friendrequest [id, status ]
 		// Request_accepted: [requst],
 	},
