@@ -24,9 +24,6 @@ const recipeSchema = new mongoose.Schema({
 	steps: {
 		type: [String],
 	},
-	picture: {
-		type: String,
-	},
 });
 
 export default mongoose.model<Recipe>("recipe", recipeSchema);
