@@ -51,7 +51,7 @@ const Register = () => {
                         }}>
                         <Grid  item><Typography variant="h4">Login to your account</Typography></Grid> 
                         <Grid  item><RegisterForm /></Grid> 
-                        <Grid  item><Typography variant="h6">Dont have an account? <Link to='/register'> Join free today </Link></Typography></Grid>   
+                        <Grid  item><Typography variant="h6">Have an account? <Link to='/login'> Log in</Link></Typography></Grid>   
                     </Box> 
                 </Grid>
 

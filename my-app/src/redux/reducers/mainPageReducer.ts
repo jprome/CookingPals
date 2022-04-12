@@ -15,15 +15,17 @@ const initialState: IGet_Search_Results = {
       cooking: 1,
       experience: 1,
       ingredient: 1,
+
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true
     }}],
   access_token:"FakeToken",
-  msg:"No Message"
+  msg:"No Message",
+  
 }
 
-const searchRequestReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {
+const mainPageReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {
   switch (action.type){
     case GET_REQUEST_SEARCH_RESULTS :
         return action.payload
@@ -32,7 +34,7 @@ const searchRequestReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, a
   }
 }
 
-export default searchRequestReducer;
+export default mainPageReducer;
 
 
 

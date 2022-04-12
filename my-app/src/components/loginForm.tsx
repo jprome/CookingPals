@@ -37,7 +37,9 @@ const LoginPass = () => {
   useEffect(() =>{
     if (auth.user) {
       if (auth.user._id && auth.access_token)
+        console.log(auth)
         setToProfile()
+
     }
   },[auth.user,auth.access_token, setToProfile])
 

@@ -4,16 +4,26 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { ArrowDropDownCircleOutlined } from '@material-ui/icons';
 import Grid from '@material-ui/core/Grid';
+import { useNavigate } from 'react-router-dom';
 
-export default function BasicMenu() {
+export default function BasicMenu(props: {own:boolean}) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (a:number|null) => {
     setAnchorEl(null);
-    console.log(a)
+
+    if(a == 3){
+      navigate('sendFriendRequest')
+
+    }
+    else if (a == 4){
+      navigate('reference')
+    }
+    
   };
 
   return (
@@ -51,9 +61,15 @@ export default function BasicMenu() {
           <Grid item>
           <MenuItem onClick={() => handleClose(4)}>Send Group Invite</MenuItem>
           </Grid>
+          {(!props.own )?  
+             <Grid item>
+             <MenuItem onClick={() => handleClose(4)}>Write Reference</MenuItem>
+             </Grid>
+              : <div></div>}
         </Grid>
 
       </Menu>
     </div>
   );
 }
+

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import auth from './authReducer'
-import searchRequestReducer from './searchRequestReducer'
+import searchRequest from './searchRequestReducer'
 import profile from './currentProfileReducer'
 
 export default combineReducers({
-  auth, searchRequestReducer, profile
+  auth, searchRequest, profile
 })

@@ -47,9 +47,11 @@ export default function Header() {
                         alignItems: 'right',
                         justifyContent: 'right'
                         }}>
+                            <Link to='/home'> 
                             <IconButton>
                                 <HomeOutlinedIcon />
                             </IconButton>
+                            </Link>
                     </Box>
                     </Grid>
 
@@ -60,7 +62,7 @@ export default function Header() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         }}>
-                            <Link to='/friends-groups'> 
+                            <Link to='/messenger'> 
                             <IconButton>
                                 <GroupOutlinedIcon />
                             </IconButton>

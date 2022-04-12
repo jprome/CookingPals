@@ -18,45 +18,39 @@ interface RequestProps {
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
-const dietsList = ["Vegan",
-     "Paleo",
-     "Low-Carb/Keto",
-     "Vegetarian",
-     "Mediterranean",
-     "Pescetarian",
-     "Plant-based raw food",
-     "Carnivore diet",
-     "Lactose Intolerant",
-     "Gluten-free",
-     "Religion",
-     "Allergies",
-     "Diabetic"]
+const dietsList = ["vegan",
+     "paleo",
+     "low-Carb/keto",
+     "vegetarian",
+     "mediterranean",
+     "pescetarian",
+     "omnivore",
+     "plant-based raw food",
+     "carnivore diet",
+     "lactose Intolerant",
+     "gluten-free",
+     "religion",
+     "allergies",
+     "diabetic"]
 
 const MyPaper = styled(Paper)({ height: "fit-content", lineHeight: '60px' });
 export default function RequestFormSearch() {
 
   const [giveS, setGive] = React.useState([1,1,1]);
-  const [receiveS, setReceive] = React.useState([1,1,1]);
   const [budgetHigh, setBudgetHigh] = React.useState(0)
   const [budgetLow, setBudgetLow] = React.useState(0)
-  const [diets, setDiets] = React.useState(["Paleo"])
+  const [diets, setDiets] = React.useState(["vegan"])
   const [location, setLocation] = React.useState("")
 
   const pics = [ingredientIcon,experienceIcon,cookingIcon]
 
   const textIcon = ["buying ingredients", "sharing experience/expertise", "giving cooking time"]
-
+  const iconState = ["will not", "may", "will"]
 
   const handleGiveChange = ( index: number) =>{
     const c = [...giveS]
-    c[index] = giveS[index] ? 0 : 1
+    c[index] = ((giveS[index] + 2) % 3) -1
     setGive(c)
-  }
-
-  const handleReceiveChange = ( index: number) =>{
-    const c = [...receiveS]
-    c[index] = receiveS[index] ? 0 : 1
-    setReceive(c)
   }
 
   const handleDietChange = (diet: string) => {
@@ -85,18 +79,15 @@ export default function RequestFormSearch() {
     // send request
 
     const request = {
-            description: "",
             give_cooking: giveS[2],
             give_experience: giveS[1],
             give_ingredient: giveS[0],
-            receive_cooking:  receiveS[2],
-            receive_experience: receiveS[1],
-            receive_ingredient: receiveS[0],
-            //diet: diets,
+            diets: diets,
             budgetLow:budgetLow,
             budgetHigh:budgetHigh,
+            location:"Gainesville, FL, USA"
     }
-
+    console.log(request)
     dispatch(findRequests("Fake Token",request))
   }
 
@@ -131,27 +122,10 @@ export default function RequestFormSearch() {
                                
                             
                                     <Box sx={{ display:'flex', pt: 3, pl:3 , typography: 'header1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
-                                        Search Request
+                                        Search For Your Next Cookingpal
                                     </Box>
                                     <Grid container sx={ {pt: 0, pl:5}}> 
                                         
-                                        <Grid item xs={1}  sx={ {pt: 8}} >
-                                            <Grid container rowSpacing={7} justifyContent="center" alignContent="center">
-                                                <Grid item xs={12}>
-                                                    <Box>
-                                                        Give:
-                                                    </Box>
-                                                </Grid>
-                                     
-                                                <Grid item xs={12}>
-                                                    <Box >
-                                                        Receive:
-                                                    </Box>
-                                                </Grid>
-                                 
-                                               
-                                           </Grid>
-                                        </Grid>
 
                                         <Grid item xs={11} sx={ {pt: 5}} >
 
@@ -165,46 +139,21 @@ export default function RequestFormSearch() {
                                                                 handleGiveChange(index);
                                                             }}
                                                             >
-                                                                <PopOverUtil message={`You will  ${n ? "":"not"} contribute with ${textIcon[index]}`}>
+                                                                <PopOverUtil message={`You ${iconState[n+1]} contribute with ${textIcon[index]}`}>
                                                                     <img
                                                                     style={{ 
                                                                         //position:"fixed", 
                                                                         zIndex:10, 
                                                                         padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
+                                                                        opacity: 0.2 + 0.4*(n+1),
                                                                         height:"80px", 
                                                                         width:"80px"}} 
                                                                     alt="Error"
                                                                     src={pics[index]}
-                                                                    
-                                                                /></PopOverUtil>
+                                                                    /></PopOverUtil>
                                                             </Button>
                                                         </Grid>)
                                                  })}
-                                            </Grid>
-
-                                            <Grid container >
-                                                {receiveS.map((n,index) =>
-                                                {
-                                                    return (
-                                                        <Grid key={`${index}${n}Grid2`}  item xs={4}>      
-                                                            <Button
-                                                            onClick={() => {
-                                                                handleReceiveChange(index);}}>
-                                                                <PopOverUtil message={`${n ? "":"Not"} looking for someone that can contribute by ${textIcon[index]}`}>
-                                                                    <img 
-                                                                    style={{ 
-                                                                        //position:"fixed", 
-                                                                        zIndex:10, 
-                                                                        padding:2,
-                                                                        opacity: 0.3 + 0.7*n,
-                                                                        height:"80px", 
-                                                                        width:"80px"}} 
-                                                                    alt="Error"
-                                                                    src={pics[index]}
-                                                                /></PopOverUtil>
-                                                            </Button>
-                                                        </Grid>)})}
                                             </Grid>
                                                                             
                                         </Grid>
@@ -252,6 +201,7 @@ export default function RequestFormSearch() {
                                                                 InputLabelProps={{ shrink: true }}
                                                                 name="numberformat"
                                                                 id="formatted-numberformat-input"
+
                                                                 InputProps={{
                                                                 inputComponent: NumberFormat as any,
                                                                 }}
@@ -279,6 +229,19 @@ export default function RequestFormSearch() {
                                                         </Box>
                                                     </Grid>
                                                    
+                                                    <Grid item xs={3}>
+                                                        <Box sx={{ display:'flex', pt: 3 , typography: 'body1' ,  fontWeight: 'bold', fontSize: 20 , textAlign: 'left'}}>
+                                                            <TextField
+                                                                label="Location"
+                                                                value={"Gainesville, FL, USA"}
+                                                                InputLabelProps={{ shrink: true }}
+                                                                name="location"
+                                                                id="location"
+    
+                                                                
+                                                            />
+                                                        </Box>
+                                                    </Grid>
 
 
 

@@ -28,7 +28,50 @@ const io = new Server(http, {
 	},
 });
 
-io.on("connection", (socket: Socket) => {
+// let users: any[] = [];
+
+// const addUser = (userId: any, socketId: string) => {
+// 	!users.some((user) => user.userId === userId) &&
+// 		users.push({ userId, socketId });
+// };
+
+// const removeUser = (socketId: string) => {
+// 	users = users.filter((user) => user.socketId !== socketId);
+// };
+
+// const getUser = (userId: any) => {
+// 	return users.find((user) => user.userId === userId);
+// };
+
+// io.on("connection", (socket) => {
+// 	//when ceonnect
+// 	console.log("a user connected.");
+
+// 	//take userId and socketId from user
+// 	socket.on("addUser", (userId) => {
+// 		addUser(userId, socket.id);
+// 		io.emit("getUsers", users);
+// 	});
+
+// 	//send and get message
+// 	socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+// 		const user = getUser(receiverId);
+// 		console.log(user);
+// 		io.to(user.socketId).emit("getMessage", {
+// 			senderId,
+// 			text,
+// 		});
+// 	});
+
+// 	//when disconnect
+// 	socket.on("disconnect", () => {
+// 		console.log("a user disconnected!");
+// 		removeUser(socket.id);
+// 		io.emit("getUsers", users);
+// 	});
+// });
+
+io.on("connection", (socket) => {
 	console.log("Connected to socket.io");
 	socket.on("setup", (userData) => {
 		socket.join(userData._id);
@@ -39,27 +82,24 @@ io.on("connection", (socket: Socket) => {
 		socket.join(room);
 		console.log("User Joined Room: " + room);
 	});
-	socket.on("typing", (room) => socket.in(room).emit("typing"));
-	socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-	socket.on("new message", (newMessageReceived) => {
-		var chat = newMessageReceived.chat;
-
+	socket.on("new message", (newMessageRecieved) => {
+		var chat = newMessageRecieved.chat;
 		if (!chat.users) return console.log("chat.users not defined");
 
-		chat.users.forEach((user: { _id: string | string[] }) => {
-			if (user._id == newMessageReceived.sender._id) return;
+		chat.users.forEach((user: any) => {
+			if (user._id == newMessageRecieved.sender._id) return;
+			console.log(newMessageRecieved.content);
 
-			socket.in(user._id).emit("message received", newMessageReceived);
+			socket.in(user._id).emit("message received", newMessageRecieved);
 		});
 	});
 
-	socket.off("setup", (userData) => {
+	socket.on("disconnect", (userData: any) => {
 		console.log("USER DISCONNECTED");
 		socket.leave(userData._id);
 	});
 });
-
 // Routes
 app.use("/api/auth", routes.authRouter);
 app.use("/api/user", routes.userRouter);
