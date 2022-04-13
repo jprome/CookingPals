@@ -103,6 +103,7 @@ export default function EditRequestsSection(props: RequestProps) {
       diets: diets,
       weekly_budget: budget,
       active: active,
+      location: "Gainesville, FL, USA",
     };
 
     console.log(request);

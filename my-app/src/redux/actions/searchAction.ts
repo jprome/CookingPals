@@ -13,9 +13,10 @@ export const findRequests = (token: string, request: any
     try {
         dispatch({ type: ALERT, payload: {loading: true}})
 
-        const res = await getAPISendInfo('request/search', request)
+        console.log(request)
+        const res = await getAPISendInfo('request/search', request, token)
 
-
+      
         dispatch({ 
         type: GET_REQUEST_SEARCH_RESULTS,
         payload: {

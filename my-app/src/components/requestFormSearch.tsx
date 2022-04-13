@@ -94,7 +94,7 @@ export default function RequestFormSearch() {
       location: "Gainesville, FL, USA",
     };
     console.log(request);
-    dispatch(findRequests("Fake Token", request));
+    dispatch(findRequests(auth.access_token!, request));
   };
 
   return (

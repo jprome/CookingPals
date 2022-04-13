@@ -16,6 +16,7 @@ const initialState: IUser = {
       diets:[],
       weekly_budget:75,
       active: true,
+      location:"Gainesville, FL, USA"
     },
     cookbook: [],
     picture: ""

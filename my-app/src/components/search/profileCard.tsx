@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import SmallRequestsSection from "./smallRequestsSection";
 
 import { IUser, RootStore } from "../../utils/Typescript";
-import default_avatar from "../../images/default_avatar.png";
+import sample_profile_pic from "../../images/sample_profile_pic.jpg";
 
 const theme = createTheme();
 const MyPaper = styled(Paper)({
@@ -61,24 +61,36 @@ export const ProfileCard = (props: profileCardProps) => {
       <Box sx={{ m: 2 }}>
         <MyPaper elevation={5} sx={{ p: 3 }}>
           <Grid container spacing={1}>
-            <Grid item xs={3} sx={{}}>
+            <Grid
+              item
+              xs={3}
+              sx={{
+                alignContent: "center",
+                textAlign: "center",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
               <Button onClick={() => navigate(`/profile/${props.user._id}`)}>
                 <div>
                   <img
                     style={{
-                      borderRadius: "100px",
-                      height: "200px",
-                      width: "200px",
+                      borderRadius: "90px",
+                      height: "180px",
+                      width: "180px",
                       alignContent: "center",
                       textAlign: "center",
                       display: "block",
                       marginLeft: "auto",
                       marginRight: "auto",
+                      objectFit: "cover",
+                      backgroundSize: "cover",
                     }}
                     src={
                       props.user.picture
                         ? props.user.picture.length > 1
-                          ? props.user.picture
+                          ? sample_profile_pic
                           : "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
                         : "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
                     }

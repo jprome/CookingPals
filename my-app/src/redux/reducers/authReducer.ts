@@ -16,6 +16,7 @@ const initialState: IAuth = {
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
       active: true,
+      location:"Gainesville, FL, USA"
     },
     cookbook:[],
     picture: ""

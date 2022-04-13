@@ -53,9 +53,12 @@ const requestCtrl = {
 			return res.status(500).json({ msg: err.message });
 		}
 	},
-	searchRequests: async (req: Request, res: Response) => {
+	searchRequests: async (req: IReqAuth, res: Response) => {
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
 			// Get filters
+			
 			var cookingFilter = [];
 			if (Number(req.query.cooking) == 1) {
 				cookingFilter = [0, 1];
@@ -65,6 +68,7 @@ const requestCtrl = {
 
 			// Create query filter
 			var filter = {
+				_id: { $ne: req.user._id },
 				"request.cooking": { $in: cookingFilter },
 				"request.location": req.query.location,
 				"request.diets": { $in: req.query.diets },

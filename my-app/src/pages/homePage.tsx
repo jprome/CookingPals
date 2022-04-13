@@ -69,7 +69,7 @@ const Profile = () => {
         location: auth.user!.location!,
       };
 
-      dispatch(findRequests("Fake Token", request));
+      dispatch(findRequests(auth.access_token!, request));
       console.log(request);
     }
   }, []);
