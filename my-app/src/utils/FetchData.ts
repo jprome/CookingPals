@@ -38,6 +38,7 @@ export const getAPISendInfo = async (url: string,payload: any, token?:string) =>
     
     }
     catch(err){
+      console.log(err)
       throw err
     }
 }

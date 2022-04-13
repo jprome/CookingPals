@@ -18,10 +18,14 @@ const initialState: IGet_Search_Results = {
 
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
-      active: true
-    }}],
+      active: true,
+      location: "Gainesville, FL, USA"
+    },    
+    picture: ""
+  }],
   access_token:"FakeToken",
   msg:"No Message",
+  
   
 }
 
