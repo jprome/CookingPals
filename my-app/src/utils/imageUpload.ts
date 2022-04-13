@@ -1,17 +1,17 @@
 
 import ReactS3Client from 'react-aws-s3-typescript'
-import { s3Config } from './configs3'
+//import { s3Config } from './configs3'
 
 const uploadFile = async (file:any) => {
        
-        const s3 = new ReactS3Client(s3Config);
+        //const s3 = new ReactS3Client(s3Config);
 
         const filename = 'filename-to-be-uploaded';
 
         try {
-            const res = await s3.uploadFile(file, filename);
+            //const res = await s3.uploadFile(file, filename);
 
-            console.log(res);
+            //console.log(res);
             
         } catch (exception) {
             console.log(exception);
