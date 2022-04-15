@@ -64,19 +64,33 @@ const requestCtrl = {
 			} else {
 				cookingFilter = [0];
 			}
+			var filter = {};
 
 			// Create query filter
-			var filter = {
-				_id: { $ne: req.user._id },
-				"request.cooking": { $in: cookingFilter },
-				"request.location": req.query.location,
-				"request.diets": { $in: req.query.diets },
-				"request.active": true,
-				$and: [
-					{ "request.weekly_budget": { $gte: req.query.budgetLow } },
-					{ "request.weekly_budget": { $lte: req.query.budgetHigh } },
-				],
-			};
+			if (req.query.diets!.length! > 0) {
+				filter = {
+					_id: { $ne: req.user._id },
+					"request.cooking": { $in: cookingFilter },
+					"request.location": req.query.location,
+					"request.diets": { $in: req.query.diets },
+					"request.active": true,
+					$and: [
+						{ "request.weekly_budget": { $gte: req.query.budgetLow } },
+						{ "request.weekly_budget": { $lte: req.query.budgetHigh } },
+					],
+				};
+			} else {
+				filter = {
+					_id: { $ne: req.user._id },
+					"request.cooking": { $in: cookingFilter },
+					"request.location": req.query.location,
+					"request.active": true,
+					$and: [
+						{ "request.weekly_budget": { $gte: req.query.budgetLow } },
+						{ "request.weekly_budget": { $lte: req.query.budgetHigh } },
+					],
+				};
+			}
 
 			// Find request based on filter
 			const request = await populate_user(Users.find(filter));

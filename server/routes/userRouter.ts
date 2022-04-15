@@ -9,6 +9,8 @@ user_router.patch("/reset_password", auth, userCtrl.resetPassword);
 user_router.get("/get/", userCtrl.getUser);
 user_router.delete("/remove", userCtrl.deleteUser);
 
+user_router.get("/search/", auth, userCtrl.searchUsers);
+
 // Friend Stuff
 user_router.post("/request_friend", auth, userCtrl.requestFriend);
 user_router.post("/respond_friend", auth, userCtrl.respondFriend);
