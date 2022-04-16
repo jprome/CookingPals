@@ -153,6 +153,33 @@ const userCtrl = {
 		}
 	},
 
+	searchUsers: async (req: IReqAuth, res: Response) => {
+		// Validate User
+		if (!req.user)
+			return res.status(400).json({ msg: "Invalid Authentication." });
+
+		try {
+			var keyword = {};
+			if (req.query.search) {
+				keyword = {
+					$or: [
+						{ name: { $regex: req.query.search, $options: "i" } },
+						{ email: { $regex: req.query.search, $options: "i" } },
+					],
+				};
+			}
+
+			const users = await Users.find(keyword)
+				.find({
+					_id: { $ne: req.user._id },
+				})
+				.select("_id name account picture");
+			return res.status(200).json(users);
+		} catch (err: any) {
+			return res.status(500).json({ msg: err.message });
+		}
+	},
+
 	getUser: async (req: Request, res: Response) => {
 		try {
 			// Get user
