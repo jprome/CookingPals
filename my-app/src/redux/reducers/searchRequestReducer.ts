@@ -17,10 +17,14 @@ const initialState: IGet_Search_Results = {
       ingredient: 1,
       diets:["Vegan","Vegetarian"],
       weekly_budget:75,
-      active: true
-    }}],
+      active: true,
+      location: "Gainesville, FL, USA"
+    },
+    picture: ""
+  }],
   access_token:"FakeToken",
-  msg:"No Message"
+  msg:"No Message",
+
 }
 
 const searchRequestReducer = (state: IGet_Search_Results = {msg:"Incomplete"}, action: IGet_Search_ResultsType): IGet_Search_Results => {

@@ -58,6 +58,7 @@ const requestCtrl = {
 			return res.status(400).json({ msg: "Invalid Authentication." });
 		try {
 			// Get filters
+			
 			var cookingFilter = [];
 			if (Number(req.query.cooking) == 1) {
 				cookingFilter = [0, 1];

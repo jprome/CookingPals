@@ -44,40 +44,43 @@ export interface IChat extends Document {
 }
 
 export interface IUser extends IUserLogin {
-	_id: string;
-	name?: string | null;
-	intro?: string | null;
-	location?: string | null;
-	profile_pic?: File | null;
-	updatedAt: string | null;
-	cookbook?: Cookbook[] | any;
-	request?: RequestCP | null; // number describes state -> active,in-process,expired, secondNu
-	friends?: string[] | null;
-	groups?: string[] | null;
-	references?: Reference[] | null;
-	friendRequest?: [[string, number]] | null; // number describes whether its individual or group
-	occupation?: string | null;
-	gender?: string | null;
-	friendRequestGiven?: any;
-	friendRequestReceived?: any;
+  _id: string
+  name?: string | null
+  intro?: string | null
+  location?: string | null
+  updatedAt: string | null
+  cookbook?: Cookbook []  | any
+  request?: RequestCP | null  // number describes state -> active,in-process,expired, secondNu
+  friends?: string[] | null
+  groups?: string[] | null
+  references?: Reference[] | null
+  friendRequest?: [[string, number]] | null // number describes whether its individual or group
+  occupation?: string | null
+  gender?: string | null
+  friendRequestGiven?: any
+  friendRequestReceived?:any
+  picture: string
+
 }
 
 // CookingPal Classes
 
 export interface Recipe {
-	_id?: string;
-	name: string;
-	description: string;
-	steps: string[];
-	ingredients: string[];
-	pic?: File;
+  _id?: string
+  name: string
+  description:string,
+  steps: string[],
+  ingredients: string [],
+  cover_pic:string,
+  content_pics: string [],
 }
 export interface Cookbook {
-	id?: string;
-	title: string;
-	diet_filters: string[];
-	description: string;
-	recipes: Recipe[];
+  id?: string
+  title: string,
+  diet_filters: string [],
+  description: string,
+  recipes: Recipe [],
+  cover_pic: string
 }
 
 export interface RequestCP {
@@ -91,6 +94,7 @@ export interface RequestCP {
 	weekly_budget: number;
 	calendarRange?: Date[]; // pair of dates
 	active: boolean;
+	location: string
 }
 
 export interface RequestSearch {
@@ -113,7 +117,8 @@ export interface Reference {
 	rating: number;
 	comment: string;
 	date: Date;
-	pictures: File[];
+	picture: string;
+	pictures: string[];
 	reference_author?: any;
 	reference_author_name?: string;
 	reference_author_pic?: string;

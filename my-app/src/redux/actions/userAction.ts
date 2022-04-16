@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import { IAuth, IAuthType, AUTH, EDIT_COOKBOOK } from '../types/authType' // 
+import { IAuth, IAuthType, AUTH, EDIT_COOKBOOK, DELETE_COOKBOOK, CREATE_COOKBOOK } from '../types/authType' // 
 import { IAlertType, ALERT } from '../types/alertType'
 
 //import { checkImage, imageUpload } from '../../utils/ImageUpload'
@@ -8,6 +8,8 @@ import { checkPassword } from '../../utils/Valid'
 
 import { Cookbook, RequestCP } from '../../utils/Typescript'
 import { GET_CURRENT_PROFILE, POST_REFERENCE, ICurrentProfileView } from '../types/profileType'
+//import { checkImage, imageUpload } from '../../utils/imageUpload'
+import { Photo } from '@material-ui/icons'
 
 
 export const updateUser = (avatar: File, name: string, auth: IAuth
@@ -37,7 +39,7 @@ export const updateUser = (avatar: File, name: string, auth: IAuth
       } 
     })
 
-    const res = await patchAPI('user', {
+    const res = await patchAPI('user/update', {
       ...auth.user
     }, auth.access_token)
 
@@ -47,18 +49,62 @@ export const updateUser = (avatar: File, name: string, auth: IAuth
     dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
   }
 }
+/*
 
+export const updateUserPhoto = (
+  avatar: File, auth: IAuth
+) => async (dispatch: Dispatch<IAlertType |  IAuthType>) => {
+  if(!auth.access_token || !auth.user) return;
+
+  let url = '';
+  try {
+    dispatch({ type: ALERT, payload: {loading: true}})
+    console.log("1")
+
+    if(avatar){
+      const check = checkImage(avatar)
+      if(check) {
+        return dispatch({ type: ALERT,payload: { errors: check } })
+      }
+      const photo = await imageUpload(avatar)
+      
+      const res = await patchAPI('user/update', {
+       avatar: photo.url
+      }, auth.access_token)
+
+      console.log("Profile pic submitted")
+
+
+     
+      dispatch({ 
+        type: AUTH,
+        payload: {
+          access_token: auth.access_token,
+          user: {
+            ...auth.user, picture: photo.url
+          }
+        } 
+      })
+    }
+
+   
+    
+    dispatch({ type: ALERT, payload: {loading: false}})
+
+  } catch (err: any) {
+    dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
+  }
+}
+*/
 export const updateRequest = (auth: IAuth, request: RequestCP
   ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
     if(!auth.access_token || !auth.user) return;
   
-    //const res = await patchAPI('request/update', {request}, auth.access_token)
-    
     try {
       
       const res = await patchAPI('request/update', request, auth.access_token)
       dispatch({ type: ALERT, payload: {loading: true}})
-  
+    
       dispatch({ 
         type: AUTH,
         payload: {
@@ -69,18 +115,11 @@ export const updateRequest = (auth: IAuth, request: RequestCP
         } 
       })
   
-     //const res = await patchAPI('request/update', {
-     // request
-     // }, auth.access_token)
-  
-    //dispatch({ type: ALERT, payload: {success: res.data.msg}})
-  
     } catch (err: any) {
       dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
     }
-  }
+}
   
-
 export const resetPassword = (
   password: string, cf_password: string, token: string
 ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
@@ -100,7 +139,6 @@ export const resetPassword = (
   }
 }
 
-
 export const getOtherInfo = (id: string, token: string) => 
 async (dispatch: Dispatch<IAlertType | ICurrentProfileView>) => {
   try {
@@ -118,8 +156,6 @@ async (dispatch: Dispatch<IAlertType | ICurrentProfileView>) => {
     dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
   }
 }
-
-
 
 export const postReference = (request: any, token: string) => 
 async (dispatch: Dispatch<IAlertType | ICurrentProfileView>) => {
@@ -141,9 +177,6 @@ async (dispatch: Dispatch<IAlertType | ICurrentProfileView>) => {
     dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
   }
 }
-
-
-
 
 export const sendFriendRequest = (auth: IAuth, request: {friend_id: string}
   ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
@@ -213,7 +246,7 @@ async (dispatch: Dispatch<IAlertType | IAuthType>) => {
       dispatch({ type: ALERT, payload: {loading: true}})
   
       dispatch({ 
-        type: AUTH,
+        type: CREATE_COOKBOOK,
         payload: {
           access_token: auth.access_token,
           user:  res.data,
@@ -237,7 +270,7 @@ async (dispatch: Dispatch<IAlertType | IAuthType>) => {
       dispatch({ type: ALERT, payload: {loading: true}})
   
       dispatch({ 
-        type: AUTH,
+        type: DELETE_COOKBOOK,
         payload: {
           access_token: auth.access_token,
           user:  res.data,
@@ -250,9 +283,6 @@ async (dispatch: Dispatch<IAlertType | IAuthType>) => {
 
     }
 }
-
-
-
 
 export const editCookbook = (auth: IAuth, cookbook: any, message: string) => 
 async (dispatch: Dispatch<IAlertType | IAuthType>) => {
