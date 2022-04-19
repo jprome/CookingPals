@@ -9,7 +9,7 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import SmallRequestsSection from "./smallRequestsSection";
 
 import { IUser, RootStore } from "../../utils/Typescript";
-import sample_profile_pic from "../../images/sample_profile_pic.jpg";
+import default_avatar from "../../images/default_avatar.png";
 
 const theme = createTheme();
 const MyPaper = styled(Paper)({
@@ -56,6 +56,21 @@ export default ProfileCards;
 export const ProfileCard = (props: profileCardProps) => {
   let navigate = useNavigate();
 
+  const imageOnLoadHandler = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    console.log(
+      `The image with url of ${event.currentTarget.src} has been loaded`
+    );
+  };
+
+  // This function is triggered if an error occurs while loading an image
+  const imageOnErrorHandler = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    event.currentTarget.src = default_avatar;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ m: 2 }}>
@@ -87,14 +102,10 @@ export const ProfileCard = (props: profileCardProps) => {
                       objectFit: "cover",
                       backgroundSize: "cover",
                     }}
-                    src={
-                      props.user.picture
-                        ? props.user.picture.length > 1
-                          ? sample_profile_pic
-                          : "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-                        : "https://t4.ftcdn.net/jpg/00/64/67/63/240_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-                    }
-                    alt="avatar"
+                    src={`https://cookingpal-pictures.s3.amazonaws.com/${props.user._id}/profile_pic.png`}
+                    onLoad={imageOnLoadHandler}
+                    onError={imageOnErrorHandler}
+                    alt="error"
                   />
                 </div>
               </Button>

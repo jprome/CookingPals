@@ -93,7 +93,7 @@ export default function RequestFormSearch() {
       budgetHigh: budgetHigh,
       location: "Gainesville, FL, USA",
     };
-    console.log(request);
+
     dispatch(findRequests(auth.access_token!, request));
   };
 

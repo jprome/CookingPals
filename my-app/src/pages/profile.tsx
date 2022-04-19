@@ -20,7 +20,7 @@ import {
 } from "../utils/Typescript";
 import { shallowEqual } from "../utils/Valid";
 import EditRequestsSection from "../components/edit-profile/editRequestSection";
-import { getOtherInfo } from "../redux/actions/userAction";
+import { getOtherInfo, updateUserPhoto } from "../redux/actions/userAction";
 import FriendsSection from "../components/profile/friendsSection";
 
 import default_avatar from "../images/default_avatar.png";
@@ -53,6 +53,7 @@ interface SectionProps {
   references: any;
   cookbooks: any;
   name: string;
+  friends: any;
 }
 
 const SectionComponent = (s: SectionProps) => {
@@ -84,7 +85,7 @@ const SectionComponent = (s: SectionProps) => {
     );
   }
   if (s.section === 3) {
-    return <FriendsSection friends={[]} />;
+    return <FriendsSection friends={s.friends} />;
   }
   if (s.section === 4 && s.own) {
     return (
@@ -117,6 +118,7 @@ const Profile = () => {
     receive: [0, 0, 0],
     picture: [] as any,
     avatar: "",
+    error: false,
   };
   const [profileState, setProfileState] = useState(initialState);
 
@@ -192,9 +194,8 @@ const Profile = () => {
       const file = files[0];
 
       setProfileState({ ...profileState, picture: file });
-      // dispatch(updateUserPhoto(file as File, auth));
-
-      console.log(file);
+      dispatch(updateUserPhoto(file, auth));
+      console.log("After dispatch");
     }
   };
 
@@ -204,6 +205,21 @@ const Profile = () => {
     if (profileState.avatar) {
       console.log(profileState.avatar);
     }
+  };
+
+  const imageOnLoadHandler = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    console.log(
+      `The image with url of ${event.currentTarget.src} has been loaded`
+    );
+  };
+
+  // This function is triggered if an error occurs while loading an image
+  const imageOnErrorHandler = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    event.currentTarget.src = default_avatar;
   };
 
   return (
@@ -233,14 +249,12 @@ const Profile = () => {
                   <div className="info_avatar">
                     <img
                       style={{}}
-                      src={
-                        profileState.avatar
-                          ? profileState.avatar.length > 2
-                            ? auth.user!.picture
-                            : default_avatar
-                          : default_avatar
-                      }
-                      alt="avatar"
+                      src={`https://cookingpal-pictures.s3.amazonaws.com/${
+                        profileState.own ? auth.user!._id : profile._id
+                      }/profile_pic.png`}
+                      onLoad={imageOnLoadHandler}
+                      onError={imageOnErrorHandler}
+                      alt="error"
                     />
                     <span>
                       <i className="fas fa-camera" />
@@ -260,18 +274,18 @@ const Profile = () => {
               <Grid item>
                 <img
                   style={{
+                    objectFit: "cover",
+                    backgroundSize: "cover",
                     borderRadius: "175px",
                     height: "350px",
                     width: "350px",
                   }}
-                  src={
-                    profileState.avatar
-                      ? profileState.avatar.length > 2
-                        ? auth.user!.picture
-                        : default_avatar
-                      : default_avatar
-                  }
-                  alt="avatar"
+                  src={`https://cookingpal-pictures.s3.amazonaws.com/${
+                    profileState.own ? auth.user!._id : profile._id
+                  }/profile_pic.png`}
+                  onLoad={imageOnLoadHandler}
+                  onError={imageOnErrorHandler}
+                  alt="error"
                 />
               </Grid>
             )}
@@ -373,6 +387,9 @@ const Profile = () => {
                     profileState.own
                       ? auth.user!.request!.active
                       : profile.request!.active
+                  }
+                  friends={
+                    profileState.own ? auth.user!.friends : profile.friends
                   }
                   st={() =>
                     setProfileState({
