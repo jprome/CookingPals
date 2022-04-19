@@ -143,6 +143,7 @@ const Profile = () => {
           auth.user!.request!.cooking,
         ],
         avatar: auth.user.picture,
+        section: 0,
       });
     } else if (profile._id != location.pathname.substring(9)) {
       dispatch(
@@ -159,6 +160,7 @@ const Profile = () => {
           profile.request!.cooking,
         ],
         avatar: profile.picture,
+        section: 0,
       });
     }
   }, [location.pathname]);
@@ -174,6 +176,7 @@ const Profile = () => {
           auth.user!.request!.cooking,
         ],
         avatar: auth.user.picture,
+        section: 0,
       });
     }
   }, [auth]);

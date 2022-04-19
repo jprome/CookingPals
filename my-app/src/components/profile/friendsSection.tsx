@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Grid, Box, Paper, Typography, Divider } from "@mui/material";
+import { Grid, Box, Paper, Typography, Divider, Button } from "@mui/material";
 
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import default_avatar from "../../images/default_avatar.png";
+import { useNavigate } from "react-router-dom";
 
 interface FriendsProps {
   friends: any;
@@ -29,6 +30,7 @@ export default function FriendsSection(props: FriendsProps) {
     event.currentTarget.src = default_avatar;
   };
 
+  let navigate = useNavigate();
   return (
     <React.Fragment>
       <Grid container>
@@ -48,21 +50,25 @@ export default function FriendsSection(props: FriendsProps) {
                   sx={{ pb: 2, pt: 2, margin: 1, alignContent: "left" }}
                 >
                   <Grid item xs={2}>
-                    <img
-                      style={{
-                        zIndex: -5,
-                        borderRadius: "75px",
-                        height: "150px",
-                        width: "150px",
-                        objectFit: "cover",
-                        backgroundSize: "cover",
-                      }}
-                      className="login-photo"
-                      src={`https://cookingpal-pictures.s3.amazonaws.com/${n._id}/profile_pic.png`}
-                      onLoad={imageOnLoadHandler}
-                      onError={imageOnErrorHandler}
-                      alt="error"
-                    />
+                    <Button onClick={() => navigate(`/profile/${n._id}`)}>
+                      <div>
+                        <img
+                          style={{
+                            zIndex: -5,
+                            borderRadius: "75px",
+                            height: "150px",
+                            width: "150px",
+                            objectFit: "cover",
+                            backgroundSize: "cover",
+                          }}
+                          className="login-photo"
+                          src={`https://cookingpal-pictures.s3.amazonaws.com/${n._id}/profile_pic.png`}
+                          onLoad={imageOnLoadHandler}
+                          onError={imageOnErrorHandler}
+                          alt="error"
+                        />
+                      </div>
+                    </Button>
                   </Grid>
 
                   <Grid item xs={8}>
@@ -114,7 +120,7 @@ export default function FriendsSection(props: FriendsProps) {
                         backgroundSize: "cover",
                       }}
                       className="login-photo"
-                      src={`https://cookingpal-pictures.s3.amazonaws.com/${n._id}/profile_pic.png`}
+                      src={default_avatar}
                       onLoad={imageOnLoadHandler}
                       onError={imageOnErrorHandler}
                       alt="error"
