@@ -1,6 +1,6 @@
 
 import ReactS3Client from 'react-aws-s3-typescript'
-import { s3Config, S3Controller } from './configs3'
+import { S3Controller } from './configs3'
 
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
@@ -18,30 +18,13 @@ export const uploadFile = async (file:any, url:any) => {
         }
    
 }
+
 //
-// id_cookbook_cookbook-id_cover-pic
-// id_cookbook_cookbook-id_recipe_recipe-id_cover-pic
-// id_cookbook_cookbook-id_recipe_recipe-id_content-pics_
+// id/cookbook_cookbook-id_cover-pic
+// id/cookbook_cookbook-id_recipe_recipe-id_cover-pic
+// id/cookbook_cookbook-id_recipe_recipe-id_content-pics_
 
-// id_profile_pic
-
-const deleteFile = async (file:any) => {
-       
-  const s3 = new ReactS3Client(s3Config);
-
-  const filename = 'filename-to-be-uploaded';
-
-  try {
-      const res = await s3.deleteFile("")
-
-      console.log(res);
-      
-  } catch (exception) {
-      console.log(exception);
-     
-  }
-
-}
+// id/profile_pic
 
 export const checkImage = (file: File) => {
         let err = ''
@@ -53,20 +36,3 @@ export const checkImage = (file: File) => {
         return err;
 }
 
-/*
-export const imageUpload = async (file: File) => {
-        const formData = new FormData()
-        formData.append("file", file)
-        formData.append("upload_preset", "jpc4kuzk")
-        formData.append("cloud_name", "dcminucpx")
-      
-        const res = await fetch("https://api.cloudinary.com/v1_1/dcminucpx/upload", {
-          method: "POST",
-          body: formData
-        })
-      
-        const data = await res.json()
-
-        return { public_id: data.public_id, url: data.secure_url };
-      }
-*/

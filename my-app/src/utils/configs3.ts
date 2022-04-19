@@ -1,16 +1,8 @@
 import dotenv from 'dotenv'
 import S3 from 'aws-sdk/clients/s3';
 import { Observable, of } from 'rxjs';
+import {accessKeyId, secretAccessKey, bucket } from './s3Keys'
 
-export const s3Config = {
-        bucketName:  'cookingpal-pictures',
-        region: 'us-east-1',
-        accessKeyId:'AKIASYRDM6S6UPQIRHHW',
-        secretAccessKey: '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',
-        s3Url: 'https://s3.amazonaws.com/cookingpal-pictures/filename.png',signatureVersion: 'v4'
-        
-    }
-// frxJKPUOIlLr+GZG1qvqwyQQ08luVlc/qICwach5 Ah+GsB5CKInoq3rk0Th0UZ089Y2fYDL5eLxNrGkV
 
 class FileUpload {
   name: string;
@@ -20,19 +12,17 @@ class FileUpload {
     this.name = name;
     this.url = url;
   }
-
 }
-
 export class S3Controller {
 
-  BUCKET = 'cookingpal-pictures'; // For example, 'my_bucket'.
+  BUCKET = bucket; // For example, 'my_bucket'.
   FOLDER = 'bucket'
 
   private static getS3Bucket(): any {
     return new S3(
       {
-        accessKeyId:'AKIASYRDM6S6UPQIRHHW',
-        secretAccessKey: 'Ah+GsB5CKInoq3rk0Th0UZ089Y2fYDL5eLxNrGkV',
+        accessKeyId:accessKeyId,
+        secretAccessKey: secretAccessKey,
         region: 'us-east-1', // For example, 'us-east-1'.
         signatureVersion: 'v4'
       }
@@ -42,8 +32,8 @@ export class S3Controller {
   public uploadFile(file:File,url:string) {
     const bucket = new S3(
       {
-        accessKeyId:'AKIASYRDM6S6UPQIRHHW',
-        secretAccessKey: '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',
+        accessKeyId:accessKeyId,
+        secretAccessKey: secretAccessKey,
        region: 'us-east-1',
        signatureVersion: 'v4',
       }
