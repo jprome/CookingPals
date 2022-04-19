@@ -12,6 +12,20 @@ interface ReferencesProps {
 const lightTheme = createTheme({ palette: { mode: "light" } });
 
 export default function ReferencesSection(props: ReferencesProps) {
+  const imageOnLoadHandler = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    console.log(
+      `The image with url of ${event.currentTarget.src} has been loaded`
+    );
+  };
+
+  // This function is triggered if an error occurs while loading an image
+  const imageOnErrorHandler = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    event.currentTarget.src = default_avatar;
+  };
   return (
     <React.Fragment>
       <Grid
@@ -51,16 +65,14 @@ export default function ReferencesSection(props: ReferencesProps) {
                                 borderRadius: "50px",
                                 height: "100px",
                                 width: "100px",
+                                objectFit: "cover",
+                                backgroundSize: "cover",
                               }}
                               className="login-photo"
-                              src={
-                                n.picture
-                                  ? n.picture.length > 1
-                                    ? n.picture
-                                    : default_avatar
-                                  : default_avatar
-                              }
-                              alt={"login"}
+                              src={`https://cookingpal-pictures.s3.amazonaws.com/${n._id}/profile_pic.png`}
+                              onLoad={imageOnLoadHandler}
+                              onError={imageOnErrorHandler}
+                              alt="error"
                             />
                           </Grid>
 

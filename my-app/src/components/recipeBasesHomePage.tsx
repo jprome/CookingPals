@@ -4,22 +4,27 @@ import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
 import imageBack from "../images/01.jpg";
+import breakfast from "../images/breakfast.png";
+
+import burger from "../images/burger.png";
+import dinner from "../images/dinner.png";
+
 import { url } from "inspector";
 import { Container } from "@mui/material";
 
 const images = [
   {
-    url: imageBack,
+    url: breakfast,
     title: "Breakfast",
     width: "40%",
   },
   {
-    url: imageBack,
+    url: burger,
     title: "Burgers",
     width: "30%",
   },
   {
-    url: imageBack,
+    url: dinner,
     title: "Dinner",
     width: "30%",
   },
@@ -102,7 +107,7 @@ export default function ButtonBases() {
             width: image.width,
           }}
         >
-          <ImageSrc style={{ backgroundImage: `url(${imageBack})` }} />
+          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <Image>
             <Typography

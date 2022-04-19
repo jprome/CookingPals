@@ -10,6 +10,7 @@ import { Cookbook, RequestCP } from '../../utils/Typescript'
 import { GET_CURRENT_PROFILE, POST_REFERENCE, ICurrentProfileView } from '../types/profileType'
 //import { checkImage, imageUpload } from '../../utils/imageUpload'
 import { Photo } from '@material-ui/icons'
+import { checkImage, uploadFile } from '../../utils/imageUpload'
 
 
 export const updateUser = (avatar: File, name: string, auth: IAuth
@@ -19,14 +20,15 @@ export const updateUser = (avatar: File, name: string, auth: IAuth
   // let url = '';
   try {
 
+  
     dispatch({ type: ALERT, payload: {loading: true}})
     /*if(avatar){
       const check = checkImage(avatar)
       if(check) 
         return dispatch({ type: ALERT,payload: { errors: check } })
 
-      const photo = await imageUpload(avatar)
-      url = photo.url
+      const photo = await uploadFile(avatar, `${auth.user._id}_profile_cover-pic`)
+      
     }*/
 
     dispatch({ 
@@ -49,7 +51,7 @@ export const updateUser = (avatar: File, name: string, auth: IAuth
     dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
   }
 }
-/*
+
 
 export const updateUserPhoto = (
   avatar: File, auth: IAuth
@@ -59,17 +61,19 @@ export const updateUserPhoto = (
   let url = '';
   try {
     dispatch({ type: ALERT, payload: {loading: true}})
-    console.log("1")
 
     if(avatar){
       const check = checkImage(avatar)
+
       if(check) {
+        console.log(check)
         return dispatch({ type: ALERT,payload: { errors: check } })
       }
-      const photo = await imageUpload(avatar)
+
+      const photo = await uploadFile(avatar, `${auth.user._id}/profile_pic.png`)
       
       const res = await patchAPI('user/update', {
-       avatar: photo.url
+       avatar: `${auth.user._id}/profile_pic.png`
       }, auth.access_token)
 
       console.log("Profile pic submitted")
@@ -81,7 +85,7 @@ export const updateUserPhoto = (
         payload: {
           access_token: auth.access_token,
           user: {
-            ...auth.user, picture: photo.url
+            ...auth.user, picture: `${auth.user._id}/profile_pic.png`
           }
         } 
       })
@@ -92,10 +96,11 @@ export const updateUserPhoto = (
     dispatch({ type: ALERT, payload: {loading: false}})
 
   } catch (err: any) {
-    dispatch({ type: ALERT, payload: {errors: err.response.data.msg}})
+    console.log(err)
+    dispatch({ type: ALERT, payload: {errors: err}})
   }
 }
-*/
+
 export const updateRequest = (auth: IAuth, request: RequestCP
   ) => async (dispatch: Dispatch<IAlertType | IAuthType>) => {
     if(!auth.access_token || !auth.user) return;
